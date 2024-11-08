@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ChessLogic;
 
 namespace ChessUI
 {
@@ -16,9 +17,39 @@ namespace ChessUI
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly Image[,] pieceImages = new Image[10, 9];
+        private GameState gameState;
         public MainWindow()
         {
             InitializeComponent();
+            InitializeBoard();
+            gameState = new GameState(Player.Red, Board.Initial());
+            DrawBoard(gameState.Board);
+        }
+
+        private void InitializeBoard()
+        {
+            for (int r = 0; r < 10; r++)
+            {
+                for (int c = 0; c < 9; c++)
+                {
+                    Image image = new Image();
+                    pieceImages[r, c] = image;
+                    PieceGrid.Children.Add(image);
+                }
+            }
+        }
+
+        private void DrawBoard(Board board)
+        {
+            for(int r = 0; r < 10; r++)
+            {
+                for(int c = 0;c < 9; c++)
+                {
+                    Piece piece = board[r, c];
+                    pieceImages[r,c].Source = Images.GetImage(piece);
+                }
+            }
         }
     }
 }

@@ -5,11 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChessUI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="600"
-        Icon="Assets/icon.png">
-    <Grid>
-        <Grid.Background>
-            <ImageBrush ImageSource="Assets/board.jpg"/>
-        </Grid.Background>
-    </Grid>
+        Title="Cờ Tướng" Width="600" SizeToContent="Height"
+        Icon="Assets/icon.png"
+        WindowStartupLocation="CenterScreen"
+        Background="#101010">
+    <Viewbox>
+        <Grid x:Name="BoardGrid"
+              Width="600"
+              Height="600">
+            <Grid.Background>
+                <ImageBrush ImageSource="Assets/board.jpg"/>
+            </Grid.Background>
+
+            <UniformGrid x:Name="PieceGrid"
+                         Rows="10"
+                         Columns="9"
+                         RenderOptions.BitmapScalingMode="HighQuality">
+            </UniformGrid>
+        </Grid>
+
+        
+    </Viewbox>
+    
 </Window>
