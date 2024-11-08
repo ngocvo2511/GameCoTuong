@@ -9,7 +9,45 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\board.jpg" />
+    <None Remove="Assets\icon.png" />
+    <None Remove="Assets\MaDo.png" />
+    <None Remove="Assets\MaXanh.png" />
+    <None Remove="Assets\PhaoDo.png" />
+    <None Remove="Assets\PhaoXanh.png" />
+    <None Remove="Assets\SiDo.png" />
+    <None Remove="Assets\SiXanh.png" />
+    <None Remove="Assets\TinhDo.png" />
+    <None Remove="Assets\TinhXanh.png" />
+    <None Remove="Assets\TotDo.png" />
+    <None Remove="Assets\TotXanh.png" />
+    <None Remove="Assets\TuongDo.png" />
+    <None Remove="Assets\TuongXanh.png" />
+    <None Remove="Assets\XeDo.png" />
+    <None Remove="Assets\XeXanh.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ChessLogic\ChessLogic.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\board.jpg" />
+    <Resource Include="Assets\MaDo.png" />
+    <Resource Include="Assets\MaXanh.png" />
+    <Resource Include="Assets\PhaoDo.png" />
+    <Resource Include="Assets\PhaoXanh.png" />
+    <Resource Include="Assets\icon.png" />
+    <Resource Include="Assets\SiDo.png" />
+    <Resource Include="Assets\SiXanh.png" />
+    <Resource Include="Assets\TinhDo.png" />
+    <Resource Include="Assets\TinhXanh.png" />
+    <Resource Include="Assets\TotDo.png" />
+    <Resource Include="Assets\TotXanh.png" />
+    <Resource Include="Assets\TuongDo.png" />
+    <Resource Include="Assets\TuongXanh.png" />
+    <Resource Include="Assets\XeDo.png" />
+    <Resource Include="Assets\XeXanh.png" />
   </ItemGroup>
 
 </Project>
