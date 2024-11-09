@@ -69,5 +69,18 @@ namespace ChessLogic
         {
             return this[pos] == null;
         }
+        public static bool IsInPalace(Position pos, Player color)
+        {
+            if (color == Player.Red)
+            {
+                return pos.Row >= 6 && pos.Row <= 9 && pos.Column >= 3 && pos.Column <= 5;
+            }
+            else if (color == Player.Black)
+            {
+                return pos.Row >= 0 && pos.Row <= 2 && pos.Column >= 3 && pos.Column <= 5;
+            }
+            else return false;
+        }
+
     }
 }
