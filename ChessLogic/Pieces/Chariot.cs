@@ -32,7 +32,8 @@ namespace ChessLogic
             {
                 if (board.IsEmpty(pos))
                 {
-                    yield return pos; continue;
+                    yield return pos; 
+                    continue;
                 }
 
                 Piece piece = board[pos];
