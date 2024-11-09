@@ -10,6 +10,11 @@ namespace ChessLogic
     {
         public override PieceType Type => PieceType.Cannon;
         public override Player Color { get; }
+
+        private static readonly Direction[] dirs = new Direction[]
+        {
+            Direction.North, Direction.South, Direction.East, Direction.West
+        };
         public Cannon(Player color)
         {
             Color = color;
