@@ -23,22 +23,25 @@ namespace ChessLogic
 
         private static IEnumerable<Position> PotentialToPositions(Position from, Board board)
         {
-            foreach (Direction vDir in new Direction[] { Direction.North, Direction.South })
+            foreach (Direction dir in new Direction[] { Direction.North, Direction.South })
             {
-                foreach (Direction hDir in new Direction[] { Direction.West, Direction.East })
+
+                Position toPos = from + dir;
+                if (board.IsEmpty(toPos)) //co the di theo huong nay
                 {
-                    Position toPos1 = from + vDir;
-                    Position toPos2 = from + hDir;
-                    if (board.IsEmpty(toPos1)) //co the di theo huong nay
-                    {
-                        yield return from + 2 * vDir + hDir;
-                    }
+                    yield return from + 2 * dir + Direction.West;
+                    yield return from + 2 * dir + Direction.East;
+                }
+            }
 
-                    if (board.IsEmpty(toPos2)) //co the di theo huong nay
-                    {
-                        yield return from + 2 * hDir + vDir;
-                    }
+            foreach (Direction dir in new Direction[] { Direction.East, Direction.West })
+            {
 
+                Position toPos = from + dir;
+                if (board.IsEmpty(toPos)) //co the di theo huong nay
+                {
+                    yield return from + 2 * dir + Direction.North;
+                    yield return from + 2 * dir + Direction.South;
                 }
             }
         }
