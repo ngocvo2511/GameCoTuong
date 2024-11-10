@@ -10,13 +10,13 @@ namespace ChessLogic
     {
         public ValuePiece()
         {
-            rAdvisor=ReverseMatrix(bSoldier);
-            rCannon=ReverseMatrix(bCannon);
-            rChariot=ReverseMatrix(rChariot);
-            rElephant=ReverseMatrix(rElephant);
-            rGeneral=ReverseMatrix(rGeneral);
-            rSoldier=ReverseMatrix(rSoldier);
-            rHorse=ReverseMatrix(rHorse);
+            rAdvisor = ReverseMatrix(bSoldier);
+            rCannon = ReverseMatrix(bCannon);
+            rChariot = ReverseMatrix(rChariot);
+            rElephant = ReverseMatrix(rElephant);
+            rGeneral = ReverseMatrix(rGeneral);
+            rSoldier = ReverseMatrix(rSoldier);
+            rHorse = ReverseMatrix(rHorse);
         }
         private readonly int[,] bSoldier = new int[10, 9]
         {
@@ -120,12 +120,12 @@ namespace ChessLogic
         {
             int row = matrix.GetLength(0);
             int col = matrix.GetLength(1);
-            int[,] newMatrix= new int[row, col];
-            for(int i=0;i<row; i++)
+            int[,] newMatrix = new int[row, col];
+            for (int i = 0; i < row; i++)
             {
-                for(int j = 0; j < col; j++)
+                for (int j = 0; j < col; j++)
                 {
-                    newMatrix[i,j]= matrix[row-i-1,col-j-1];
+                    newMatrix[i, j] = matrix[row - i - 1, col - j - 1];
                 }
             }
             return newMatrix;
@@ -133,11 +133,11 @@ namespace ChessLogic
         public int GetValueBoard(Board board)
         {
             int totalvalue = 0;
-            for(int i = 0; i < 10; i++)
+            for (int i = 0; i < 10; i++)
             {
-                for(int j = 0; j < 9; j++)
+                for (int j = 0; j < 9; j++)
                 {
-                    if (board[i,j] != null)
+                    if (board[i, j] != null)
                     {
                         switch (board[i, j].Type)
                         {
