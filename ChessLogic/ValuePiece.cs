@@ -8,6 +8,16 @@ namespace ChessLogic
 {
     public class ValuePiece
     {
+        public ValuePiece()
+        {
+            rAdvisor=ReverseMatrix(bSoldier);
+            rCannon=ReverseMatrix(bCannon);
+            rChariot=ReverseMatrix(rChariot);
+            rElephant=ReverseMatrix(rElephant);
+            rGeneral=ReverseMatrix(rGeneral);
+            rSoldier=ReverseMatrix(rSoldier);
+            rHorse=ReverseMatrix(rHorse);
+        }
         private readonly int[,] bSoldier = new int[10, 9]
         {
             {0,  0,  0,  0,  0,  0,  0,  0,  0 },
@@ -106,6 +116,20 @@ namespace ChessLogic
         private readonly int[,] rElephant;
         private readonly int[,] rAdvisor;
         private readonly int[,] rGeneral;
+        private int[,] ReverseMatrix(int[,] matrix)
+        {
+            int row = matrix.GetLength(0);
+            int col = matrix.GetLength(1);
+            int[,] newMatrix= new int[row, col];
+            for(int i=0;i<row; i++)
+            {
+                for(int j = 0; j < col; j++)
+                {
+                    newMatrix[i,j]= matrix[row-i-1,col-j-1];
+                }
+            }
+            return newMatrix;
+        }
         public int GetValueBoard(Board board)
         {
             int totalvalue = 0;
