@@ -27,7 +27,7 @@ namespace ChessLogic
             {
 
                 Position toPos = from + dir;
-                if (board.IsEmpty(toPos)) //co the di theo huong nay
+                if (Board.IsInside(toPos) && board.IsEmpty(toPos)) //co the di theo huong nay
                 {
                     yield return from + 2 * dir + Direction.West;
                     yield return from + 2 * dir + Direction.East;
@@ -38,7 +38,7 @@ namespace ChessLogic
             {
 
                 Position toPos = from + dir;
-                if (board.IsEmpty(toPos)) //co the di theo huong nay
+                if (Board.IsInside(toPos) && board.IsEmpty(toPos)) //co the di theo huong nay
                 {
                     yield return from + 2 * dir + Direction.North;
                     yield return from + 2 * dir + Direction.South;

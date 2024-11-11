@@ -74,10 +74,9 @@ namespace ChessUI
             Color color = Color.FromArgb(150, 25, 255, 125);
             foreach (Position to in moveCache.Keys)
             {
-                MessageBox.Show(to.Row + " " + to.Column);
                 highlights[to.Row, to.Column].Fill = new SolidColorBrush(color);
             }
-            
+
         }
 
         private void HideHighlights()
@@ -133,7 +132,7 @@ namespace ChessUI
             HideHighlights();
 
 
-            if(moveCache.TryGetValue(pos, out Move move))
+            if (moveCache.TryGetValue(pos, out Move move))
             {
                 HandleMove(move);
             }
