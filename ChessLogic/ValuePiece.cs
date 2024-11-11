@@ -12,11 +12,11 @@ namespace ChessLogic
         {
             rAdvisor = ReverseMatrix(bSoldier);
             rCannon = ReverseMatrix(bCannon);
-            rChariot = ReverseMatrix(rChariot);
-            rElephant = ReverseMatrix(rElephant);
-            rGeneral = ReverseMatrix(rGeneral);
-            rSoldier = ReverseMatrix(rSoldier);
-            rHorse = ReverseMatrix(rHorse);
+            rChariot = ReverseMatrix(bChariot);
+            rElephant = ReverseMatrix(bElephant);
+            rGeneral = ReverseMatrix(bGeneral);
+            rSoldier = ReverseMatrix(bSoldier);
+            rHorse = ReverseMatrix(bHorse);
         }
         private readonly int[,] bSoldier = new int[10, 9]
         {
@@ -99,8 +99,8 @@ namespace ChessLogic
         private readonly int[,] bGeneral = new int[10, 9]
         {
             {0, 0, 0, 0, 2, 0, 0, 0, 0 },
-            {0, 0, 0, 0, 2, 0, 0, 0, 0 },
-            {0, 0, 0, 0, 2, 0, 0, 0, 0 },
+            {0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            {0, 0, 0, 0, 0, 0, 0, 0, 0 },
             {0, 0, 0, 0, 0, 0, 0, 0, 0 },
             {0, 0, 0, 0, 0, 0, 0, 0, 0 },
             {0, 0, 0, 0, 0, 0, 0, 0, 0 },
