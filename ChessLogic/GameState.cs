@@ -43,6 +43,7 @@ namespace ChessLogic
         }
         public void UndoMove(bool testMove=false)
         {
+            if (isAI == true && CurrentPlayer == Player.Black) return;
             if (!Moved.Any()) return;
             int i;
             if (testMove == false && isAI == true && CurrentPlayer == Player.Red) i = 2;
