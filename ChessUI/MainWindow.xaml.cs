@@ -18,6 +18,7 @@ namespace ChessUI
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Position selectedPos = null;
         public MainWindow()
         {
             InitializeComponent();

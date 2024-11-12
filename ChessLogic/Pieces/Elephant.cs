@@ -53,7 +53,7 @@ namespace ChessLogic
                 }
 
                 Position to = middlePos + dir;
-                if (!Board.IsInside(to) && (board.IsEmpty(to) || board[to].Color != Color))
+                if (Board.IsInside(to) && (board.IsEmpty(to) || board[to].Color != Color))
                 {
                     yield return to;
                 }
