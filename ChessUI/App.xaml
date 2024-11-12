@@ -4,6 +4,45 @@
              xmlns:local="clr-namespace:ChessUI"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <SolidColorBrush x:Key="StrokeColor1">#ff781e</SolidColorBrush>
+        <SolidColorBrush x:Key="StrokeColor2">#5b7b57</SolidColorBrush>
+        <SolidColorBrush x:Key="FillColor">#eceae4</SolidColorBrush>
+        <SolidColorBrush x:Key="TextColor">#ff781e</SolidColorBrush>
+        <SolidColorBrush x:Key="ButtonColor">#e4e2cf</SolidColorBrush>
+
+        <Style TargetType="Border" x:Key="BorderStyle1">
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="{StaticResource StrokeColor1}"/>
+            <Setter Property="Background" Value="{StaticResource FillColor}"/>
+        </Style>
+        
+        <Style TargetType="Border" x:Key="BorderStyle2">
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="BorderBrush" Value="{StaticResource StrokeColor2}"/>
+            <Setter Property="Background" Value="{StaticResource FillColor}"/>
+            <Setter Property="CornerRadius" Value="10"/>
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="TextStyle">
+            <Setter Property="FontFamily" Value="Segoe UI Black"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+        </Style>
+
+        <Style TargetType="Button" x:Key="ButtonStyle1">
+            <Setter Property="FontFamily" Value="Cascadia Mono SemiBold"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="{StaticResource StrokeColor2}"/>
+            <Setter Property="Background" Value="{StaticResource FillColor}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+            <Style.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="25"/>
+                </Style>
+            </Style.Resources>
+        </Style>
+
     </Application.Resources>
 </Application>

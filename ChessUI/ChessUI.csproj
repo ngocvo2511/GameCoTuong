@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\background.jpg" />
     <None Remove="Assets\board.jpg" />
     <None Remove="Assets\icon.png" />
     <None Remove="Assets\MaDo.png" />
@@ -32,6 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\background.jpg" />
     <Resource Include="Assets\board.jpg" />
     <Resource Include="Assets\MaDo.png" />
     <Resource Include="Assets\MaXanh.png" />
