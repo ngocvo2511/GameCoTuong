@@ -18,12 +18,17 @@ namespace ChessUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Position selectedPos = null;
         public MainWindow()
         {
             InitializeComponent();
-            MainContentArea.Content = new Menus.MainMenu();
-        }
 
+            selectGameModeMenu.BackButtonClicked += BackButtonClicked;
+            instructionMenu.BackButtonClicked += BackButtonClicked;
+            settingsMenu.BackButtonClicked += BackButtonClicked;
+        }
+        private void BackButtonClicked(object sender, EventArgs e)
+        {
+            mainMenu.Visibility = Visibility.Visible;
+        }
     }
 }

@@ -3,17 +3,21 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ChessUI"
+        xmlns:local="clr-namespace:ChessUI.Menus"
         mc:Ignorable="d"
-        Title="Cờ Tướng" Height ="600"  Width="1000"
+        Title="Cờ Tướng" Height ="720"  Width="1200"
         Icon="Assets/icon.png"
-        WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
-    
+        WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
+
     <Grid>
-        <ContentControl x:Name="MainContentArea"/>
         <Grid.Background>
             <ImageBrush ImageSource="Assets/background.jpg"/>
         </Grid.Background>
+
+        <local:MainMenu x:Name="mainMenu" Visibility="Visible"/>
+        <local:SelectGameModeMenu x:Name="selectGameModeMenu" Visibility="Collapsed"/>
+        <local:InstructionsMenu x:Name="instructionMenu" Visibility="Collapsed"/>
+        <local:SettingsMenu x:Name="settingsMenu" Visibility="Collapsed"/>
+
     </Grid>
-    
 </Window>

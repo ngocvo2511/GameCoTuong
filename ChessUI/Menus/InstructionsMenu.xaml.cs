@@ -20,15 +20,17 @@ namespace ChessUI.Menus
     /// </summary>
     public partial class InstructionsMenu : UserControl
     {
+        public event EventHandler BackButtonClicked;
         public InstructionsMenu()
         {
             InitializeComponent();
         }
 
-        private void HomeButton_Click(object sender, RoutedEventArgs e)
+        private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            var mainWindow = (MainWindow)Application.Current.MainWindow;
-            mainWindow.MainContentArea.Content = new MainMenu();
+            this.Visibility = Visibility.Collapsed;
+            BackButtonClicked?.Invoke(this, EventArgs.Empty);
         }
+
     }
 }

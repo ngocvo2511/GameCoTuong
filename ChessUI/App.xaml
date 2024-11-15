@@ -11,11 +11,12 @@
         <SolidColorBrush x:Key="ButtonColor">#e4e2cf</SolidColorBrush>
 
         <Style TargetType="Border" x:Key="BorderStyle1">
+            <Setter Property="Opacity" Value="1"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="BorderBrush" Value="{StaticResource StrokeColor1}"/>
             <Setter Property="Background" Value="{StaticResource FillColor}"/>
         </Style>
-        
+
         <Style TargetType="Border" x:Key="BorderStyle2">
             <Setter Property="BorderThickness" Value="2"/>
             <Setter Property="BorderBrush" Value="{StaticResource StrokeColor2}"/>

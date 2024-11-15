@@ -1,53 +1,52 @@
-﻿<UserControl x:Class="ChessUI.Menus.MainMenu"
+﻿<UserControl x:Class="ChessUI.Menus.PauseMenu"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:ChessUI"
+             xmlns:local="clr-namespace:ChessUI.Menus"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="1200">
     <Border Width="400"
-            Height="400"
-            Style="{StaticResource BorderStyle1}" Opacity="0.75">
+            Height="450"
+            Style="{StaticResource BorderStyle1}">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.2*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="0.25*"/>
+                <RowDefinition Height="0.3*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock x:Name="GameTitle" Grid.Row="1"
-                       Text="CỜ TƯỚNG"
+            <TextBlock Grid.Row="0"
+                       Text="Tạm dừng"
                        Style="{StaticResource TextStyle}"
-                       FontSize="55"/>
+                       FontSize="45"/>
 
-            <Button x:Name="PlayButton" Grid.Row="2"
-                    Content="Chơi"
+            <Button x:Name="ContinueButton" Grid.Row="1"
+                    Content="Tiếp tục chơi"
                     Style="{StaticResource ButtonStyle1}"
                     Width="220"
-                    Height="50" Click="PlayButton_Click"/>
+                    Height="50" Click="ContinueButton_Click"/>
 
-            <Button x:Name="InstructionsButton" Grid.Row="3"
-                    Content="Hướng dẫn chơi"
+            <Button x:Name="NewButton" Grid.Row="2"
+                    Content="Tạo ván chơi mới"
                     Style="{StaticResource ButtonStyle1}"
                     Width="220"
-                    Height="50" Click="InstructionsButton_Click"/>
+                    Height="50" Click="NewButton_Click"/>
+
+            <Button x:Name="HomeButton" Grid.Row="3"
+                    Content="Màn hình chính"
+                    Style="{StaticResource ButtonStyle1}"
+                    Width="220"
+                    Height="50" Click="HomeButton_Click"/>
 
             <Button x:Name="SettingsButton" Grid.Row="4"
                     Content="Cài đặt"
                     Style="{StaticResource ButtonStyle1}"
                     Width="220"
                     Height="50" Click="SettingsButton_Click"/>
-
-            <Button x:Name="HistoryButton" Grid.Row="5"
-                    Content="Lịch sử chơi"
-                    Style="{StaticResource ButtonStyle1}"
-                    Width="220"
-                    Height="50" Click="HistoryButton_Click"/>
 
         </Grid>
     </Border>

@@ -28,19 +28,22 @@ namespace ChessUI.Menus
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
             var mainWindow = (MainWindow)Application.Current.MainWindow;
-            mainWindow.MainContentArea.Content = new SelectGameModeMenu();
+            mainWindow.selectGameModeMenu.Visibility = Visibility.Visible;
+            this.Visibility = Visibility.Collapsed;
         }
 
         private void InstructionsButton_Click(object sender, RoutedEventArgs e)
         {
             var mainWindow = (MainWindow)Application.Current.MainWindow;
-            mainWindow.MainContentArea.Content = new InstructionsMenu();
+            mainWindow.instructionMenu.Visibility = Visibility.Visible;
+            this.Visibility = Visibility.Collapsed;
         }
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
             var mainWindow = (MainWindow)Application.Current.MainWindow;
-            mainWindow.MainContentArea.Content = new SettingsMenu();
+            mainWindow.settingsMenu.Visibility = Visibility.Visible;
+            this.Visibility = Visibility.Collapsed;
         }
 
         private void HistoryButton_Click(object sender, RoutedEventArgs e)

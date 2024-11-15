@@ -1,36 +1,33 @@
-﻿<Window x:Name="Game1pWindow1" x:Class="ChessUI.Game1pWindow"
+﻿<Window x:Class="ChessUI.GameWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ChessUI"
+        xmlns:local="clr-namespace:ChessUI.Menus"
         mc:Ignorable="d"
-        Title="Cờ Tướng" Height ="600"  Width="1000"
-        Icon="Assets/icon.png"
-        ResizeMode="NoResize">
+        Title="Cờ Tướng" Height ="720"  Width="1200"
+        Icon="Assets/icon.png" ResizeMode="CanMinimize">
 
     <Grid>
         <Grid.Background>
             <ImageBrush ImageSource="Assets/background.jpg"/>
         </Grid.Background>
-        
+
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3.5*"/>
-            <ColumnDefinition Width="7*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="3.3*"/>
+            <ColumnDefinition Width="6*"/>
+            <ColumnDefinition Width="1.2*"/>
         </Grid.ColumnDefinitions>
-        
-        <ContentControl x:Name="MainContentArea"/>
-        
+
         <Viewbox Grid.Column="1" Grid.RowSpan="2">
             <Grid x:Name="BoardGrid"
-                  Width="600"
-                  Height="600">
+                  Width="720"
+                  Height="720">
                 <Grid.Background>
                     <ImageBrush ImageSource="Assets/board.jpg"/>
                 </Grid.Background>
@@ -47,6 +44,23 @@
                 </UniformGrid>
             </Grid>
         </Viewbox>
-                
+        <Button x:Name="PauseButton" Grid.Row="0" Grid.Column="2"
+                Content="Tạm dừng"
+                Style="{StaticResource ButtonStyle1}"
+                Width="110"
+                Height="50"
+                VerticalAlignment="Top" Margin="11,292,16,0" Click="PauseButton_Click"/>
+
+        <Button x:Name="UndoButton" Grid.Row="1" Grid.Column="2"
+                Content="Đi lại"
+                Style="{StaticResource ButtonStyle1}"
+                Width="110"
+                Height="50"
+                VerticalAlignment="Top" Margin="0,10,5,0"/>
+
+        <local:PauseMenu x:Name="pauseMenu" Visibility="Collapsed" Grid.RowSpan="2" Grid.ColumnSpan="3"/>
+        <local:SettingsMenu x:Name="settingsMenu" Visibility="Collapsed" Grid.RowSpan="2" Grid.ColumnSpan="3"/>
+        <local:SelectGameModeMenu x:Name="selectGameModeMenu" Visibility="Collapsed" Grid.RowSpan="2" Grid.ColumnSpan="3"/>
+
     </Grid>
 </Window>

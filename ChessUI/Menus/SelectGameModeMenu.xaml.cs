@@ -20,39 +20,42 @@ namespace ChessUI.Menus
     /// </summary>
     public partial class SelectGameModeMenu : UserControl
     {
+        public event EventHandler BackButtonClicked;
         public SelectGameModeMenu()
         {
             InitializeComponent();
         }
 
-        private void HomeButton_Click(object sender, RoutedEventArgs e)
+        private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            var mainWindow = (MainWindow)Application.Current.MainWindow;
-            mainWindow.MainContentArea.Content = new MainMenu();
+            this.Visibility = Visibility.Collapsed;
+            BackButtonClicked?.Invoke(this, EventArgs.Empty);
         }
 
         private void PlayWithBotButton_Click(object sender, RoutedEventArgs e)
         {
-            var mainWindow = (MainWindow)Application.Current.MainWindow;
-            Game1pWindow game1pWindow = new Game1pWindow
+            var window = Application.Current.MainWindow;
+            GameWindow gameWindow = new GameWindow
             {
-                Left = mainWindow.Left,
-                Top = mainWindow.Top,
+                Left = window.Left,
+                Top = window.Top,
             };
-            game1pWindow.Show();
-            mainWindow.Close();
+            Application.Current.MainWindow = gameWindow;
+            gameWindow.Show();
+            window.Close();
         }
 
         private void TwoPlayerButton_Click(object sender, RoutedEventArgs e)
         {
-            var mainWindow = (MainWindow)Application.Current.MainWindow;
-            Game2pWindow game2pWindow = new Game2pWindow
+            var window = Application.Current.MainWindow;
+            GameWindow gameWindow = new GameWindow
             {
-                Left = mainWindow.Left,
-                Top = mainWindow.Top,
+                Left = window.Left,
+                Top = window.Top,
             };
-            game2pWindow.Show();
-            mainWindow.Close();
+            Application.Current.MainWindow = gameWindow;
+            gameWindow.Show();
+            window.Close();
         }
 
     }

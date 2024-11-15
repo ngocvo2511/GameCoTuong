@@ -5,10 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ChessUI.Menus"
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="1000">
+             d:DesignHeight="720" d:DesignWidth="1200">
     <Border Width="400"
             Height="400"
-            Style="{StaticResource BorderStyle1}" Opacity="0.75">
+            Style="{StaticResource BorderStyle1}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
@@ -19,14 +19,14 @@
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0"
-                   Text="Cài đặt"
-                   Style="{StaticResource TextStyle}"
-                   FontSize="35"/>
-            <Button x:Name="HomeButton" Grid.Row="4"
-                Content="Quay về"
-                Style="{StaticResource ButtonStyle1}"
-                Width="220"
-                Height="50" Click="HomeButton_Click"/>
+                       Text="Cài đặt"
+                       Style="{StaticResource TextStyle}"
+                       FontSize="35"/>
+            <Button x:Name="BackButton" Grid.Row="4"
+                    Content="Quay về"
+                    Style="{StaticResource ButtonStyle1}"
+                    Width="220" Height="50" 
+                    Click="BackButton_Click"/>
 
         </Grid>
     </Border>
