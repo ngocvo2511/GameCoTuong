@@ -1,4 +1,5 @@
 ﻿using ChessLogic;
+using ChessLogic.GameStates.GameState;
 using ChessUI.Menus;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,7 @@ namespace ChessUI
         {
             InitializeComponent();
             InitializeBoard();
-            gameState = new GameState(Player.Red, Board.Initial());
+            gameState = new GameState2P(Player.Red, Board.Initial());
             DrawBoard(gameState.Board);
 
             settingsMenu.BackButtonClicked += BackButtonClicked;
