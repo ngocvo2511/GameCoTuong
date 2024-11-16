@@ -12,9 +12,10 @@ namespace ChessLogic.GameStates.GameState
         public override void UndoMove()
         {
             if (!Moved.Any()) return;
-            Move move = Moved.Pop();
-            Move undoMove = new NormalMove(move.ToPos,move.FromPos);
+            var undo = Moved.Pop();
+            Move undoMove = new NormalMove(undo.Item1.ToPos, undo.Item1.FromPos);
             undoMove.Execute(Board);
+            Board[undo.Item1.ToPos] = undo.Item2;
             CurrentPlayer = CurrentPlayer.Opponent();
         }
     }

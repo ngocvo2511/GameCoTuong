@@ -9,13 +9,13 @@ namespace ChessLogic.GameStates.GameState
     public abstract class GameState
     {
         public Board Board { get; }
-        public Stack<Move> Moved { get; set; }
+        public Stack<Tuple<Move,Piece>> Moved { get; set; }
         public Player CurrentPlayer { get; protected set; }
         public GameState(Player player, Board board)
         {
             CurrentPlayer = player;
             Board = board;
-            Moved = new Stack<Move>();
+            Moved = new Stack<Tuple<Move, Piece>>();
         }
 
         public IEnumerable<Move> LegalMovesForPiece(Position pos)
@@ -31,8 +31,8 @@ namespace ChessLogic.GameStates.GameState
 
         public virtual void MakeMove(Move move)
         {
+            Moved.Push(Tuple.Create(move, Board[move.ToPos]));
             move.Execute(Board);
-            Moved.Push(move);
             CurrentPlayer = CurrentPlayer.Opponent();
         }
         public abstract void UndoMove();

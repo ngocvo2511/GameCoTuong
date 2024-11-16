@@ -29,9 +29,10 @@ namespace ChessLogic.GameStates.GameState
             if (Moved.Count<=1 || CurrentPlayer == Player.Black) return;
             for (int i = 0; i < 2; i++)
             {
-                Move move = Moved.Pop();
-                Move undoMove = new NormalMove(move.ToPos, move.FromPos);
+                var undo = Moved.Pop();
+                Move undoMove = new NormalMove(undo.Item1.ToPos, undo.Item1.FromPos);
                 undoMove.Execute(Board);
+                Board[undo.Item1.ToPos] = undo.Item2;
             }
             CurrentPlayer = Player.Red;
         }
@@ -41,7 +42,7 @@ namespace ChessLogic.GameStates.GameState
             {
                 for(int j = 0; j < 9; j++)
                 {
-                    if (Board[i, j].Color == player)
+                    if (Board[i,j]!=null && Board[i, j].Color == player)
                     {
                         foreach (var move in LegalMovesForPiece(new Position(i, j)))
                         {
@@ -54,9 +55,10 @@ namespace ChessLogic.GameStates.GameState
         private void UndoTestMove()
         { 
             if (!Moved.Any()) return;
-            Move move = Moved.Pop();
-            Move undoMove = new NormalMove(move.ToPos, move.FromPos);
+            var undo = Moved.Pop();
+            Move undoMove = new NormalMove(undo.Item1.ToPos,undo.Item1.FromPos);
             undoMove.Execute(Board);
+            Board[undo.Item1.ToPos] = undo.Item2;
             CurrentPlayer = CurrentPlayer.Opponent();
         }
         private void AiMove()
