@@ -159,5 +159,11 @@ namespace ChessUI
         {
             pauseMenu.Visibility = Visibility.Visible;
         }
+
+        private void UndoButton_Click(object sender, RoutedEventArgs e)
+        {
+            gameState.UndoMove();
+            DrawBoard(gameState.Board);
+        }
     }
 }
