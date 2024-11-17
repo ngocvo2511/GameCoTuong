@@ -142,7 +142,7 @@ namespace ChessUI
             selectedPos = null;
             HideHighlights();
 
-
+            if (pos == null) return;
             if (moveCache.TryGetValue(pos, out Move move))
             {
                 HandleMove(move);
