@@ -47,7 +47,7 @@ namespace ChessLogic
         {
             foreach (Position to in MovePositions(from, board))
             {
-                if(IsExposedToOpponentKing(to, board))
+                if (IsExposedToOpponentKing(to, board))
                 {
                     continue;
                 }
@@ -58,7 +58,7 @@ namespace ChessLogic
         private bool IsExposedToOpponentKing(Position to, Board board)
         {
             Position opponentKingPos = FindOpponentKing(board);
-            if (opponentKingPos.Column != to.Column)
+            if (opponentKingPos == null || opponentKingPos.Column != to.Column)
             {
                 return false;
             }
@@ -71,6 +71,7 @@ namespace ChessLogic
             }
             return true;
         }
+        
 
         private Position FindOpponentKing(Board board)
         {
