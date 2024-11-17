@@ -13,12 +13,6 @@ namespace ChessLogic.GameStates.GameState
         {
             this.depth = depth;
         }
-        public override void MakeMove(Move move)
-        {
-            base.MakeMove(move);
-            // Nếu chiếu bí??
-           
-        }
         public override void UndoMove()
         {
             if (Moved.Count<=1 || CurrentPlayer == Player.Black) return;

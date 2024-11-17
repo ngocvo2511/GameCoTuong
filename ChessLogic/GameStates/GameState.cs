@@ -89,7 +89,7 @@ namespace ChessLogic.GameStates.GameState
             if (depth == 0) return value.GetValueBoard(Board);
             if (CurrentPlayer == Player.Black)
             {
-                int bestValue = 9999;
+                int bestValue = -9999;
                 IEnumerable<Move> moves = GetAllMove(CurrentPlayer);
                 foreach (var move in moves)
                 {
@@ -103,7 +103,7 @@ namespace ChessLogic.GameStates.GameState
             }
             else if (CurrentPlayer == Player.Red)
             {
-                int bestValue = -9999;
+                int bestValue = 9999;
                 IEnumerable<Move> moves = GetAllMove(CurrentPlayer);
                 foreach (var move in moves)
                 {
