@@ -31,7 +31,7 @@ namespace ChessUI
         {
             InitializeComponent();
             InitializeBoard();
-            gameState = new GameStateAI(Player.Red, Board.Initial(), 3);
+            gameState = new GameStateAI(Player.Red, Board.Initial(), 4);
             DrawBoard(gameState.Board);
 
             settingsMenu.BackButtonClicked += BackButtonClicked;
@@ -146,11 +146,6 @@ namespace ChessUI
             if (moveCache.TryGetValue(pos, out Move move))
             {
                 HandleMove(move);
-                if (gameState is GameStateAI AI)
-                {
-                    AI.AiMove();
-                    DrawBoard(gameState.Board);
-                }
             }
         }
 
@@ -158,11 +153,12 @@ namespace ChessUI
         {
             gameState.MakeMove(move);
             DrawBoard(gameState.Board);
-            await Task.Delay(1000);
+           
 
-            if (gameState.CurrentPlayer == Player.Black)
+            if (gameState is GameStateAI AI)
             {
-                gameState.AiMove();
+                await Task.Delay(500);
+                AI.AiMove();
                 DrawBoard(gameState.Board);
             }
         }
