@@ -8,10 +8,12 @@ namespace ChessLogic.GameStates.GameState
 {
     public class GameStateAI:GameState
     {
-       
+        private int depth;
+        private ValuePiece value;
         public GameStateAI(Player player, Board board,int depth) : base(player, board)
         {
             this.depth = depth;
+            value = new ValuePiece();
         }
         public override void UndoMove()
         {

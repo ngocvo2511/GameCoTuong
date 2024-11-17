@@ -8,8 +8,6 @@ namespace ChessLogic.GameStates.GameState
 {
     public abstract class GameState
     {
-        protected int depth;
-        protected ValuePiece value;
         public Board Board { get; }
         public Stack<Tuple<Move, Piece>> Moved { get; set; }
         public Player CurrentPlayer { get; protected set; }
@@ -18,7 +16,6 @@ namespace ChessLogic.GameStates.GameState
             CurrentPlayer = player;
             Board = board;
             Moved = new Stack<Tuple<Move, Piece>>();
-            value = new ValuePiece();
         }
 
         public IEnumerable<Move> LegalMovesForPiece(Position pos)
