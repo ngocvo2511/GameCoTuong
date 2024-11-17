@@ -31,7 +31,7 @@ namespace ChessUI
         {
             InitializeComponent();
             InitializeBoard();
-            gameState = new GameState2P(Player.Red, Board.Initial());
+            gameState = new GameStateAI(Player.Red, Board.Initial(),5);
             DrawBoard(gameState.Board);
 
             settingsMenu.BackButtonClicked += BackButtonClicked;
@@ -146,6 +146,11 @@ namespace ChessUI
             if (moveCache.TryGetValue(pos, out Move move))
             {
                 HandleMove(move);
+                if (gameState is GameStateAI AI)
+                {
+                    AI.AiMove();
+                    DrawBoard(gameState.Board);
+                }
             }
         }
 
@@ -162,6 +167,7 @@ namespace ChessUI
 
         private void UndoButton_Click(object sender, RoutedEventArgs e)
         {
+            OnToPositionSelected(selectedPos);
             gameState.UndoMove();
             DrawBoard(gameState.Board);
         }

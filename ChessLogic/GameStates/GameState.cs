@@ -29,7 +29,7 @@ namespace ChessLogic.GameStates.GameState
             return piece.GetMoves(pos, Board);
         }
 
-        public virtual void MakeMove(Move move)
+        public void MakeMove(Move move)
         {
             Moved.Push(Tuple.Create(move, Board[move.ToPos]));
             move.Execute(Board);

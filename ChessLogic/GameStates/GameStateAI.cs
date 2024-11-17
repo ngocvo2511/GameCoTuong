@@ -15,15 +15,13 @@ namespace ChessLogic.GameStates.GameState
             this.depth = depth;
             value = new ValuePiece();
         }
-        public override void MakeMove(Move move)
-        {
-            base.MakeMove(move);
-            // Nếu chiếu bí??
-            if (CurrentPlayer == Player.Black)
-            {
-                AiMove();
-            }
-        }
+        //public override void MakeMove(Move move)
+        //{
+        //    base.MakeMove(move);
+        //    // Nếu chiếu bí??
+        //    AiMove();
+
+        //}
         public override void UndoMove()
         {
             if (Moved.Count<=1 || CurrentPlayer == Player.Black) return;
@@ -52,7 +50,7 @@ namespace ChessLogic.GameStates.GameState
                 }
             }
         }
-        private void UndoTestMove()
+        private void UndoTestMove() 
         { 
             if (!Moved.Any()) return;
             var undo = Moved.Pop();
@@ -61,7 +59,7 @@ namespace ChessLogic.GameStates.GameState
             Board[undo.Item1.ToPos] = undo.Item2;
             CurrentPlayer = CurrentPlayer.Opponent();
         }
-        private void AiMove()
+        public void AiMove()
         {
             IEnumerable<Move> moves = GetAllMove(CurrentPlayer);
             if (!moves.Any()) return;
@@ -69,8 +67,8 @@ namespace ChessLogic.GameStates.GameState
             int bestValue = -9999;
             foreach (var move in moves)
             {
-                base.MakeMove(move);
-                int value=AlphaBeta(depth);
+                MakeMove(move);
+                int value=AlphaBeta(depth-1);
                 UndoTestMove();
                 if(value > bestValue)
                 {
@@ -78,18 +76,18 @@ namespace ChessLogic.GameStates.GameState
                     bestMove = move;
                 }
             }
-            base.MakeMove(bestMove);
+            MakeMove(bestMove);
         }       
         private int AlphaBeta(int depth, int alpha= -9999, int beta = 9999) // giá trị nước đi
         {
-            if (depth == 0) return value.GetValueBoard(Board);
+            if (depth <= 0) return value.GetValueBoard(Board);
             if (CurrentPlayer == Player.Black)
             {
-                int bestValue = 9999;
+                int bestValue = -9999;
                 IEnumerable<Move> moves = GetAllMove(CurrentPlayer);
                 foreach(var move in moves)
                 {
-                    base.MakeMove(move);
+                    MakeMove(move);
                     bestValue = Math.Max(bestValue, AlphaBeta(depth-1,alpha,beta));
                     UndoTestMove();
                     beta = Math.Min(beta, bestValue);
@@ -99,11 +97,11 @@ namespace ChessLogic.GameStates.GameState
             }
             else if (CurrentPlayer == Player.Red)
             {
-                int bestValue = -9999;
+                int bestValue = 9999;
                 IEnumerable<Move > moves = GetAllMove(CurrentPlayer);
                 foreach (var move in moves)
                 {
-                    base.MakeMove(move);
+                    MakeMove(move);
                     bestValue = Math.Min(bestValue, AlphaBeta(depth - 1, alpha, beta));
                     UndoTestMove();
                     alpha = Math.Max(alpha, bestValue);
