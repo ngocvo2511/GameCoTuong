@@ -31,9 +31,8 @@ namespace ChessUI
         {
             InitializeComponent();
             InitializeBoard();
-            gameState = new GameStateAI(Player.Red, Board.Initial(), 4);
+            gameState = new GameStateAI(Player.Red, Board.Initial(), 6);
             DrawBoard(gameState.Board);
-
             settingsMenu.BackButtonClicked += BackButtonClicked;
             selectGameModeMenu.BackButtonClicked += BackButtonClicked;
         }
@@ -151,16 +150,18 @@ namespace ChessUI
 
         private async void HandleMove(Move move)
         {
+            MainGame.IsHitTestVisible = false;
+
             gameState.MakeMove(move);
             DrawBoard(gameState.Board);
-           
-
+            await Dispatcher.InvokeAsync(() => { }, System.Windows.Threading.DispatcherPriority.Render);
             if (gameState is GameStateAI AI)
             {
-                await Task.Delay(500);
-                AI.AiMove();
+                await Task.Run(() => AI.AiMove());
                 DrawBoard(gameState.Board);
             }
+
+            MainGame.IsHitTestVisible = true;
         }
 
         private void PauseButton_Click(object sender, RoutedEventArgs e)
