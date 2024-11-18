@@ -8,7 +8,7 @@
              d:DesignHeight="720" d:DesignWidth="1200">
     <Border Width="400"
             Height="400"
-            Style="{StaticResource BorderStyle1}" Opacity="0.75">
+            Style="{StaticResource BorderStyle1}" Opacity="0.85">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.2*"/>

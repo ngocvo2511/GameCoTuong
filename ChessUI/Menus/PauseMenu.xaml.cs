@@ -46,6 +46,7 @@ namespace ChessUI.Menus
                 Top = gameWindow.Top,
             };
             Application.Current.MainWindow = mainWindow;
+            mainWindow.WindowStartupLocation = WindowStartupLocation.Manual;
             mainWindow.Show();
             gameWindow.Close();
         }

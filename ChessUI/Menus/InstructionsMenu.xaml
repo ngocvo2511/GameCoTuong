@@ -20,14 +20,98 @@
             <TextBlock Grid.Row="0"
                        Text="LUẬT CHƠI"
                        Style="{StaticResource TextStyle}"
-                       FontSize="35"/>
+                       FontSize="40"/>
 
             <Button x:Name="BackButton" Grid.Row="2"
                     Content="Quay về"
                     Style="{StaticResource ButtonStyle1}"
                     Width="220"
-                    Height="60" Click="BackButton_Click"/>
+                    Height="50" Click="BackButton_Click"/>
+            
+            <ScrollViewer Grid.Row="1">
+                <StackPanel>
+                    <TextBlock TextWrapping="Wrap" FontSize="18" LineHeight="25" Margin="50,0,30,0">
+                        Bàn cờ gồm 9 đường dọc và 10 đường ngang, chia thành hai nửa bởi sông. Mỗi bên có 16 quân cờ
+                        gồm các loại: Tướng, Sĩ, Tượng, Xe, Mã, Pháo, và Tốt. Người chơi di chuyển các quân cờ của
+                        mình theo quy tắc của từng quân.
+                        <LineBreak/>
+                        <LineBreak/>
+                        <Run FontWeight="Bold">1. Tướng:</Run> Đi từng ô một theo chiều ngang hoặc dọc trong cung.
+                        <LineBreak/>
+                        <LineBreak/>
+                        <Run FontWeight="Bold">2. Sĩ:</Run> Đi chéo một ô mỗi lượt, chỉ được ở trong cung.
+                        <LineBreak/>
+                        <LineBreak/>
+                        <Run FontWeight="Bold">3. Tượng:</Run> Đi chéo hai ô mỗi lượt, không thể đi nếu đường đi 
+                        có một quân bất kì nằm trên trung điểm của đường chéo, không được vượt qua sông.
+                        <LineBreak/>
+                        <LineBreak/>
+                        <Run FontWeight="Bold">4. Xe:</Run> Đi ngang hoặc dọc, không giới hạn số ô, miễn không bị chặn.
+                        <LineBreak/>
+                        <LineBreak/>
+                        <Run FontWeight="Bold">5. Pháo:</Run> Đi như Xe nhưng để ăn quân, phải có một quân khác 
+                        nằm giữa đường thẳng nối liền Pháo và quân cần ăn.
+                        <LineBreak/>
+                        <LineBreak/>
+                        <Run FontWeight="Bold">6. Mã:</Run> Đi ngang 2 ô rồi dọc 1 ô (hoặc đi dọc 2 ô rồi ngang 1 ô)
+                        cho mỗi nước đi. Nếu có quân khác nằm cạnh Mã và cản đường ngang 2 hoặc đường dọc 2, thì Mã
+                        không được đi đường đó.
+                        <LineBreak/>
+                        <LineBreak/>
+                        <Run FontWeight="Bold">7. Tốt:</Run> Đi một ô mỗi lượt. Khi chưa qua sông, Tốt chỉ được đi thẳng
+                        tiến. Khi đã vượt qua sông có thể đi ngang hoặc dọc.
+                        <LineBreak/>
+                        <LineBreak/>
+                        Các quy tắc:
+                        <LineBreak/>
+                        <LineBreak/>
+                        <Run FontWeight="Bold">Ăn quân:</Run> Khi quân ta di chuyển đến vị trí đang đứng của quân đối 
+                        phương, quân đối phương bị ăn và bị loại khỏi bàn cờ.
+                        <LineBreak/>
+                        <LineBreak/>
+                        <Run FontWeight="Bold">Chiếu Tướng:</Run> Bất kỳ nước đi nào làm cho Tướng của đối phương bị ăn
+                        ở nước tiếp theo.
+                        <LineBreak/>
+                        <LineBreak/>
+                        <Run FontWeight="Bold">Chống Tướng:</Run> 2 Tướng không được nằm trên cùng một đường thẳng mà 
+                        không có quân nào khác chắn ở giữa.
+                        <LineBreak/>
+                        <LineBreak/>
+                        <Run FontWeight="Bold">Chiếu bí:</Run> Nếu đối phương không thể bảo vệ Tướng khi bị chiếu thì 
+                        được xem là bị chiếu bí.            
+                        <LineBreak/>
+                        <LineBreak/>
+                        <Run FontWeight="Bold">Hết nước đi:</Run> Nếu một bên tới lượt đi nhưng không có nước hợp lệ để đi,
+                        bên đó sẽ bị thua.        
+                        <LineBreak/>
+                        <LineBreak/>
+                        Các quân cờ:
+                    </TextBlock>
+                    
+                    <Image Source="pack://application:,,,/Assets/quanCo.png" 
+                           Margin="10" 
+                           Height="200" 
+                           HorizontalAlignment="Center"/>
 
+                    <TextBlock TextWrapping="Wrap" FontSize="18" LineHeight="25" Margin="50,20,30,0">
+                        Sắp xếp ban đầu của các quân cờ:
+                    </TextBlock>
+                    
+                    <Image Source="pack://application:,,,/Assets/sapxepquanco.png" 
+                           Margin="10" 
+                           Height="500" 
+                           HorizontalAlignment="Center"/>
+
+                    <TextBlock TextWrapping="Wrap" FontSize="18" LineHeight="25" Margin="50,20,30,0">
+                        Vị trí sông và cung:        
+                    </TextBlock>
+
+                    <Image Source="pack://application:,,,/Assets/cungVaSong.jpg" 
+                           Margin="10" 
+                           Height="550" 
+                           HorizontalAlignment="Center"/>
+                </StackPanel>
+            </ScrollViewer>
         </Grid>
     </Border>
 </UserControl>

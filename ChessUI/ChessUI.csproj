@@ -11,11 +11,14 @@
   <ItemGroup>
     <None Remove="Assets\background.jpg" />
     <None Remove="Assets\board.jpg" />
+    <None Remove="Assets\cungVaSong.jpg" />
     <None Remove="Assets\icon.png" />
     <None Remove="Assets\MaDo.png" />
     <None Remove="Assets\MaXanh.png" />
     <None Remove="Assets\PhaoDo.png" />
     <None Remove="Assets\PhaoXanh.png" />
+    <None Remove="Assets\quanCo.png" />
+    <None Remove="Assets\sapxepquanco.png" />
     <None Remove="Assets\SiDo.png" />
     <None Remove="Assets\SiXanh.png" />
     <None Remove="Assets\TinhDo.png" />
@@ -35,11 +38,14 @@
   <ItemGroup>
     <Resource Include="Assets\background.jpg" />
     <Resource Include="Assets\board.jpg" />
+    <Resource Include="Assets\cungVaSong.jpg" />
     <Resource Include="Assets\MaDo.png" />
     <Resource Include="Assets\MaXanh.png" />
     <Resource Include="Assets\PhaoDo.png" />
     <Resource Include="Assets\PhaoXanh.png" />
     <Resource Include="Assets\icon.png" />
+    <Resource Include="Assets\quanCo.png" />
+    <Resource Include="Assets\sapxepquanco.png" />
     <Resource Include="Assets\SiDo.png" />
     <Resource Include="Assets\SiXanh.png" />
     <Resource Include="Assets\TinhDo.png" />
