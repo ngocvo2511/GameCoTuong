@@ -8,58 +8,60 @@
         Title="Cờ Tướng" Height ="720"  Width="1200"
         Icon="Assets/icon.png" ResizeMode="CanMinimize">
     <Grid x:Name="MainGame">
-            <Grid.Background>
-                <ImageBrush ImageSource="Assets/background.jpg"/>
-            </Grid.Background>
+        <Grid.Background>
+            <ImageBrush ImageSource="Assets/background.jpg"/>
+        </Grid.Background>
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3.3*"/>
-                <ColumnDefinition Width="6*"/>
-                <ColumnDefinition Width="1.2*"/>
-            </Grid.ColumnDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3.3*"/>
+            <ColumnDefinition Width="6*"/>
+            <ColumnDefinition Width="1.2*"/>
+        </Grid.ColumnDefinitions>
 
-            <Viewbox Grid.Column="1" Grid.RowSpan="2">
-                <Grid x:Name="BoardGrid"
-              Width="720"
-              Height="720"
-              MouseDown="BoardGrid_MouseDown">
-                    <Grid.Background>
-                        <ImageBrush ImageSource="Assets/board.jpg"/>
-                    </Grid.Background>
+        <Viewbox Grid.Column="1" Grid.RowSpan="2">
+            <Grid x:Name="BoardGrid"
+                  Width="720"
+                  Height="720"
+                  MouseDown="BoardGrid_MouseDown">
+                <Grid.Background>
+                    <ImageBrush ImageSource="Assets/board.jpg"/>
+                </Grid.Background>
 
-                    <UniformGrid x:Name="HighlightGrid"
-                         Rows="10"
-                         Columns="9">
-                    </UniformGrid>
+                <UniformGrid x:Name="HighlightGrid"
+                             Rows="10"
+                             Columns="9">
+                </UniformGrid>
 
-                    <UniformGrid x:Name="PieceGrid"
-                         Rows="10"
-                         Columns="9"
-                         RenderOptions.BitmapScalingMode="HighQuality">
-                    </UniformGrid>
-                </Grid>
-            </Viewbox>
-            <Button x:Name="PauseButton" Grid.Row="0" Grid.Column="2"
-            Content="Tạm dừng"
-            Style="{StaticResource ButtonStyle1}"
-            Width="110"
-            Height="50"
-            VerticalAlignment="Bottom" Margin="0,0,5,10" Click="PauseButton_Click"/>
+                <UniformGrid x:Name="PieceGrid"
+                             Rows="10"
+                             Columns="9"
+                             RenderOptions.BitmapScalingMode="HighQuality">
+                </UniformGrid>
+            </Grid>
+        </Viewbox>
+        <Button x:Name="PauseButton" Grid.Row="0" Grid.Column="2"
+                Content="Tạm dừng"
+                Style="{StaticResource ButtonStyle1}"
+                Width="110"
+                Height="50"
+                VerticalAlignment="Bottom" Margin="0,0,5,10" Click="PauseButton_Click"/>
 
-            <Button x:Name="UndoButton" Grid.Row="1" Grid.Column="2"
-            Content="Đi lại"
-            Style="{StaticResource ButtonStyle1}"
-            Width="110"
-            Height="50"
-            VerticalAlignment="Top" Margin="0,10,5,0" Click="UndoButton_Click"/>
+        <Button x:Name="UndoButton" Grid.Row="1" Grid.Column="2"
+                Content="Đi lại"
+                Style="{StaticResource ButtonStyle1}"
+                Width="110"
+                Height="50"
+                VerticalAlignment="Top" Margin="0,10,5,0" Click="UndoButton_Click"/>
 
-            <local:PauseMenu x:Name="pauseMenu" Visibility="Collapsed" Grid.RowSpan="2" Grid.ColumnSpan="3"/>
-            <local:SettingsMenu x:Name="settingsMenu" Visibility="Collapsed" Grid.RowSpan="2" Grid.ColumnSpan="3"/>
-            <local:SelectGameModeMenu x:Name="selectGameModeMenu" Visibility="Collapsed" Grid.RowSpan="2" Grid.ColumnSpan="3"/>
+        <local:PauseMenu x:Name="pauseMenu" Visibility="Collapsed" Grid.RowSpan="2" Grid.ColumnSpan="3"/>
+        <local:SettingsMenu x:Name="settingsMenu" Visibility="Collapsed" Grid.RowSpan="2" Grid.ColumnSpan="3"/>
+        <local:SelectGameModeMenu x:Name="selectGameModeMenu" Visibility="Collapsed" Grid.RowSpan="2" Grid.ColumnSpan="3"/>
+        <local:GameOverMenu x:Name="gameOverMenu" Visibility="Collapsed" Grid.RowSpan="2" Grid.ColumnSpan="3"/>
+
     </Grid>
 </Window>

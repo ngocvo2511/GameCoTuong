@@ -22,7 +22,7 @@
 
             <TextBlock x:Name="GameTitle" Grid.Row="1"
                        Text="CỜ TƯỚNG"
-                       Style="{StaticResource TextStyle}"
+                       Style="{StaticResource TextStyle1}"
                        FontSize="55"/>
 
             <Button x:Name="PlayButton" Grid.Row="2"

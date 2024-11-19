@@ -19,7 +19,7 @@
 
             <TextBlock Grid.Row="0"
                        Text="LUẬT CHƠI"
-                       Style="{StaticResource TextStyle}"
+                       Style="{StaticResource TextStyle1}"
                        FontSize="40"/>
 
             <Button x:Name="BackButton" Grid.Row="2"

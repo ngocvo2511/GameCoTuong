@@ -20,7 +20,7 @@
 
             <TextBlock Grid.Row="0"
                        Text="Cài đặt"
-                       Style="{StaticResource TextStyle}"
+                       Style="{StaticResource TextStyle1}"
                        FontSize="35"/>
             <Button x:Name="BackButton" Grid.Row="4"
                     Content="Quay về"

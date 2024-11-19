@@ -21,7 +21,7 @@
 
             <TextBlock Grid.Row="0"
                        Text="Tạm dừng"
-                       Style="{StaticResource TextStyle}"
+                       Style="{StaticResource TextStyle1}"
                        FontSize="45"/>
 
             <Button x:Name="ContinueButton" Grid.Row="1"
