@@ -13,5 +13,9 @@ namespace ChessLogic
         public abstract Position ToPos { get; }
         public abstract void Execute(Board board);
 
+        public virtual bool IsLegal(Board board) // tra ve true neu viec thuc hien nuoc di nay khong lam cho vua bi chieu
+        {
+            
+        }
     }
 }

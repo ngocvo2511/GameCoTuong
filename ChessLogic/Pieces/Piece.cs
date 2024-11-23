@@ -15,6 +15,13 @@ namespace ChessLogic
 
         public abstract IEnumerable<Move> GetMoves(Position from, Board board);
 
-        
+        public virtual bool CanCaptureOpponentGeneral(Position from, Board board)
+        {
+            return GetMoves(from, board).Any(move =>
+            {
+                Piece piece = board[move.ToPos];
+                return piece != null && piece.Type == PieceType.General;
+            });
+        }
     }
 }

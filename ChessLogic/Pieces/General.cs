@@ -112,5 +112,10 @@ namespace ChessLogic
                 return null;
             }
         }
+
+        public override bool CanCaptureOpponentGeneral(Position from, Board board)
+        {
+            return IsExposedToOpponentKing(from, board);
+        }
     }
 }
