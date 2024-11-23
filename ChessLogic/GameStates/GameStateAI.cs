@@ -57,11 +57,12 @@ namespace ChessLogic.GameStates.GameState
             IEnumerable<Move> moves = GetAllMove(CurrentPlayer);
             if (!moves.Any()) return;
             Move bestMove = moves.ElementAt(0);
+            int value;
             int bestValue = -9999;
             foreach (var move in moves)
             {
                 MakeMove(move);
-                int value = AlphaBeta(depth);
+                value = AlphaBeta(depth-1);
                 UndoTestMove();
                 if (value > bestValue)
                 {

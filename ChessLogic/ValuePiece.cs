@@ -151,16 +151,16 @@ namespace ChessLogic
                                 totalvalue += (board[i, j].Color == Player.Red) ? -(40 + rHorse[i, j]) : (40 + bHorse[i, j]);
                                 break;
                             case PieceType.Elephant:
-                                totalvalue += (board[i, j].Color == Player.Red) ? -(20 + rCannon[i, j]) : (20 + bCannon[i, j]);
+                                totalvalue += (board[i, j].Color == Player.Red) ? -(20 + rElephant[i, j]) : (20 + bElephant[i, j]);
                                 break;
                             case PieceType.Chariot:
-                                totalvalue += (board[i, j].Color == Player.Red) ? -(90 + rChariot[i, j]) : (90 + bCannon[i, j]);
+                                totalvalue += (board[i, j].Color == Player.Red) ? -(90 + rChariot[i, j]) : (90 + bChariot[i, j]);
                                 break;
                             case PieceType.Soldier:
-                                totalvalue += (board[i, j].Color == Player.Red) ? -(15 + rCannon[i, j]) : (15 + bCannon[i, j]);
+                                totalvalue += (board[i, j].Color == Player.Red) ? -(15 + rSoldier[i, j]) : (15 + bSoldier[i, j]);
                                 break;
                             case PieceType.General:
-                                totalvalue += (board[i, j].Color == Player.Red) ? -(900 + rCannon[i, j]) : (900 + bCannon[i, j]);
+                                totalvalue += (board[i, j].Color == Player.Red) ? -(900 + rGeneral[i, j]) : (900 + bGeneral[i, j]);
                                 break;
                         }
                     }

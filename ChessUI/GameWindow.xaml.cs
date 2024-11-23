@@ -31,7 +31,7 @@ namespace ChessUI
         {
             InitializeComponent();
             InitializeBoard();
-            gameState = new GameStateAI(Player.Red, Board.Initial(), 6);
+            gameState = new GameStateAI(Player.Red, Board.Initial(), 4);
             DrawBoard(gameState.Board);
             settingsMenu.BackButtonClicked += BackButtonClicked;
             selectGameModeMenu.BackButtonClicked += BackButtonClicked;
