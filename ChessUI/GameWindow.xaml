@@ -62,6 +62,7 @@
         <local:SettingsMenu x:Name="settingsMenu" Visibility="Collapsed" Grid.RowSpan="2" Grid.ColumnSpan="3"/>
         <local:SelectGameModeMenu x:Name="selectGameModeMenu" Visibility="Collapsed" Grid.RowSpan="2" Grid.ColumnSpan="3"/>
         <local:GameOverMenu x:Name="gameOverMenu" Visibility="Collapsed" Grid.RowSpan="2" Grid.ColumnSpan="3"/>
+        <local:GameDifficultyMenu x:Name="gameDifficultyMenu" Visibility="Collapsed" Grid.RowSpan="2" Grid.ColumnSpan="3"/>
 
     </Grid>
 </Window>

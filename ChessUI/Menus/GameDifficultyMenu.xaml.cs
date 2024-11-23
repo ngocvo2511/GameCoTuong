@@ -16,30 +16,22 @@ using System.Windows.Shapes;
 namespace ChessUI.Menus
 {
     /// <summary>
-    /// Interaction logic for SelectGameModeMenu.xaml
+    /// Interaction logic for GameDifficultyMenu.xaml
     /// </summary>
-    public partial class SelectGameModeMenu : UserControl
+    public partial class GameDifficultyMenu : UserControl
     {
         public event EventHandler BackButtonClicked;
-        public event EventHandler PlayWithBotButtonClicked;
-        public SelectGameModeMenu()
+        public GameDifficultyMenu()
         {
             InitializeComponent();
         }
-
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             this.Visibility = Visibility.Collapsed;
             BackButtonClicked?.Invoke(this, EventArgs.Empty);
         }
 
-        private void PlayWithBotButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.Visibility= Visibility.Collapsed;
-            PlayWithBotButtonClicked?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void TwoPlayerButton_Click(object sender, RoutedEventArgs e)
+        private void EasyButton_Click(object sender, RoutedEventArgs e)
         {
             var window = Application.Current.MainWindow;
             GameWindow gameWindow = new GameWindow
@@ -52,5 +44,30 @@ namespace ChessUI.Menus
             window.Close();
         }
 
+        private void NormalButton_Click(object sender, RoutedEventArgs e)
+        {
+            var window = Application.Current.MainWindow;
+            GameWindow gameWindow = new GameWindow
+            {
+                Left = window.Left,
+                Top = window.Top,
+            };
+            Application.Current.MainWindow = gameWindow;
+            gameWindow.Show();
+            window.Close();
+        }
+
+        private void HardButton_Click(object sender, RoutedEventArgs e)
+        {
+            var window = Application.Current.MainWindow;
+            GameWindow gameWindow = new GameWindow
+            {
+                Left = window.Left,
+                Top = window.Top,
+            };
+            Application.Current.MainWindow = gameWindow;
+            gameWindow.Show();
+            window.Close();
+        }
     }
 }

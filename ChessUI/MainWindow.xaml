@@ -18,6 +18,7 @@
         <local:SelectGameModeMenu x:Name="selectGameModeMenu" Visibility="Collapsed"/>
         <local:InstructionsMenu x:Name="instructionMenu" Visibility="Collapsed"/>
         <local:SettingsMenu x:Name="settingsMenu" Visibility="Collapsed"/>
+        <local:GameDifficultyMenu x:Name="gameDifficultyMenu" Visibility="Collapsed"/>
 
     </Grid>
 </Window>

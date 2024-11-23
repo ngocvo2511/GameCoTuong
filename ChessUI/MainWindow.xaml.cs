@@ -25,10 +25,16 @@ namespace ChessUI
             selectGameModeMenu.BackButtonClicked += BackButtonClicked;
             instructionMenu.BackButtonClicked += BackButtonClicked;
             settingsMenu.BackButtonClicked += BackButtonClicked;
+            gameDifficultyMenu.BackButtonClicked += BackButtonClicked;
+            selectGameModeMenu.PlayWithBotButtonClicked += PlayWithBotButtonClicked;
         }
         private void BackButtonClicked(object sender, EventArgs e)
         {
             mainMenu.Visibility = Visibility.Visible;
+        }
+        private void PlayWithBotButtonClicked(object sender, EventArgs e)
+        {
+            gameDifficultyMenu.Visibility = Visibility.Visible;
         }
     }
 }
