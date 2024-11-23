@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ChessLogic
+﻿namespace ChessLogic
 {
     public abstract class Move
     {
@@ -15,7 +9,10 @@ namespace ChessLogic
 
         public virtual bool IsLegal(Board board) // tra ve true neu viec thuc hien nuoc di nay khong lam cho vua bi chieu
         {
-            
+            Player player = board[FromPos].Color;
+            Board boardCopy = board.Copy();
+            Execute(boardCopy);
+            return !boardCopy.IsInCheck(player);
         }
     }
 }
