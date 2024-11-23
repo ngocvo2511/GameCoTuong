@@ -10,7 +10,7 @@ namespace ChessLogic
     {
         public ValuePiece()
         {
-            rAdvisor = ReverseMatrix(bSoldier);
+            rAdvisor = ReverseMatrix(bAdvisor);
             rCannon = ReverseMatrix(bCannon);
             rChariot = ReverseMatrix(bChariot);
             rElephant = ReverseMatrix(bElephant);
