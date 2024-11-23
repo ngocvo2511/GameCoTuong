@@ -11,6 +11,8 @@ namespace ChessLogic.GameStates.GameState
         public Board Board { get; }
         public Stack<Tuple<Move, Piece>> Moved { get; set; }
         public Player CurrentPlayer { get; protected set; }
+
+        public Result Result { get; protected set; } = null;
         public GameState(Player player, Board board)
         {
             CurrentPlayer = player;
@@ -35,8 +37,38 @@ namespace ChessLogic.GameStates.GameState
             Moved.Push(Tuple.Create(move, Board[move.ToPos]));
             move.Execute(Board);
             CurrentPlayer = CurrentPlayer.Opponent();
+            CheckForGameOver();
         }
         public abstract void UndoMove();
 
-    }        
+        public IEnumerable<Move> AllLegalMovesFor(Player player)
+        {
+            IEnumerable<Move> moveCandidates = Board.PiecePositionFor(player).SelectMany(pos =>
+            {
+                Piece piece = Board[pos];
+                return piece.GetMoves(pos, Board);
+            });
+            return moveCandidates.Where(move => move.IsLegal(Board));
+        }
+
+        private void CheckForGameOver()
+        {
+            if (!AllLegalMovesFor(CurrentPlayer).Any())
+            {
+                if (Board.IsInCheck(CurrentPlayer))
+                {
+                    Result = Result.Win(CurrentPlayer.Opponent(), EndReason.Checkmate);
+                }
+                else
+                {
+                    Result = Result.Win(CurrentPlayer.Opponent(), EndReason.Stalemate);
+                }
+            }
+        }
+
+        public bool IsGameOver()
+        {
+            return Result != null;
+        }
+    }
 }
