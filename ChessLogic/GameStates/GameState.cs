@@ -41,7 +41,7 @@ namespace ChessLogic.GameStates.GameState
         }
         public abstract void UndoMove();
 
-        public IEnumerable<Move> AllLegalMovesFor(Player player)
+        public IEnumerable<Move> AllLegalMovesFor(Player player)  // nước đi khả thi của người chơi
         {
             IEnumerable<Move> moveCandidates = Board.PiecePositionFor(player).SelectMany(pos =>
             {

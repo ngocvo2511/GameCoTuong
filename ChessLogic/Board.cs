@@ -82,7 +82,7 @@ namespace ChessLogic
             else return false;
         }
 
-        public IEnumerable<Position> PiecePositions()
+        public IEnumerable<Position> PiecePositions() //lay vi tri tat ca quan co
         {
             for (int row = 0; row < 10; row++)
             {
@@ -98,12 +98,12 @@ namespace ChessLogic
             }
         }
 
-        public IEnumerable<Position> PiecePositionFor(Player player)
+        public IEnumerable<Position> PiecePositionFor(Player player) // lay vi tri tat ca quan co cua 1 nguoi choi
         {
             return PiecePositions().Where(pos => this[pos].Color == player);
         }
 
-        public bool IsInCheck(Player player)
+        public bool IsInCheck(Player player) // kiem tra xem co bi chieu hay khong
         {
             return PiecePositionFor(player.Opponent()).Any(pos =>
             {
