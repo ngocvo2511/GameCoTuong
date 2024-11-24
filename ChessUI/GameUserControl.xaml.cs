@@ -28,11 +28,12 @@ namespace ChessUI
         private Dictionary<Position, Move> moveCache = new Dictionary<Position, Move>();
         private GameState gameState;
         private Position selectedPos = null;
-        public GameUserControl()
+        public GameUserControl(bool isAI,int difficult=1)
         {
             InitializeComponent();
             InitializeBoard();
-            gameState = new GameStateAI(Player.Red, Board.Initial(), 4);
+            if (isAI == true) gameState = new GameStateAI(Player.Red, Board.Initial(), difficult);
+            else gameState = new GameState2P(Player.Red, Board.Initial());
             DrawBoard(gameState.Board);
             //settingsMenu.BackButtonClicked += BackButtonClicked;
             //selectGameModeMenu.BackButtonClicked += BackButtonClicked;
