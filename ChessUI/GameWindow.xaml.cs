@@ -35,10 +35,17 @@ namespace ChessUI
             DrawBoard(gameState.Board);
             settingsMenu.BackButtonClicked += BackButtonClicked;
             selectGameModeMenu.BackButtonClicked += BackButtonClicked;
+            gameDifficultyMenu.BackButtonClicked += BackButtonClicked;
+            selectGameModeMenu.PlayWithBotButtonClicked += PlayWithBotButtonClicked;
         }
         private void BackButtonClicked(object sender, EventArgs e)
         {
             pauseMenu.Visibility = Visibility.Visible;
+        }
+
+        private void PlayWithBotButtonClicked(object sender, EventArgs e)
+        {
+            gameDifficultyMenu.Visibility = Visibility.Visible;
         }
 
         private void InitializeBoard()
