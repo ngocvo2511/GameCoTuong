@@ -55,7 +55,7 @@ namespace ChessUI
 
         private void CreateViewGameAI()
         {
-            gameUserControl = new GameUserControl();
+            gameUserControl = new GameUserControl(true,4);
             gameUserControl.PauseButtonClicked += PauseButtonClicked;
             view.Content = gameUserControl;
         }
