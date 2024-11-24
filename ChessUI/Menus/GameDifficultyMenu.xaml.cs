@@ -33,41 +33,41 @@ namespace ChessUI.Menus
 
         private void EasyButton_Click(object sender, RoutedEventArgs e)
         {
-            var window = Application.Current.MainWindow;
-            GameWindow gameWindow = new GameWindow
-            {
-                Left = window.Left,
-                Top = window.Top,
-            };
-            Application.Current.MainWindow = gameWindow;
-            gameWindow.Show();
-            window.Close();
+            //var window = Application.Current.MainWindow;
+            //GameWindow gameWindow = new GameWindow
+            //{
+            //    Left = window.Left,
+            //    Top = window.Top,
+            //};
+            //Application.Current.MainWindow = gameWindow;
+            //gameWindow.Show();
+            //window.Close();
         }
 
         private void NormalButton_Click(object sender, RoutedEventArgs e)
         {
-            var window = Application.Current.MainWindow;
-            GameWindow gameWindow = new GameWindow
-            {
-                Left = window.Left,
-                Top = window.Top,
-            };
-            Application.Current.MainWindow = gameWindow;
-            gameWindow.Show();
-            window.Close();
+            //var window = Application.Current.MainWindow;
+            //GameWindow gameWindow = new GameWindow
+            //{
+            //    Left = window.Left,
+            //    Top = window.Top,
+            //};
+            //Application.Current.MainWindow = gameWindow;
+            //gameWindow.Show();
+            //window.Close();
         }
 
         private void HardButton_Click(object sender, RoutedEventArgs e)
         {
-            var window = Application.Current.MainWindow;
-            GameWindow gameWindow = new GameWindow
-            {
-                Left = window.Left,
-                Top = window.Top,
-            };
-            Application.Current.MainWindow = gameWindow;
-            gameWindow.Show();
-            window.Close();
+            //var window = Application.Current.MainWindow;
+            //GameWindow gameWindow = new GameWindow
+            //{
+            //    Left = window.Left,
+            //    Top = window.Top,
+            //};
+            //Application.Current.MainWindow = gameWindow;
+            //gameWindow.Show();
+            //window.Close();
         }
     }
 }

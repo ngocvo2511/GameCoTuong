@@ -27,23 +27,23 @@ namespace ChessUI.Menus
 
         private void NewButton_Click(object sender, RoutedEventArgs e)
         {
-            var gameWindow = (GameWindow)Application.Current.MainWindow;
-            gameWindow.selectGameModeMenu.Visibility = Visibility.Visible;
-            this.Visibility = Visibility.Collapsed;
+            //var gameWindow = (GameWindow)Application.Current.MainWindow;
+            //gameWindow.selectGameModeMenu.Visibility = Visibility.Visible;
+            //this.Visibility = Visibility.Collapsed;
         }
 
         private void HomeButton_Click(object sender, RoutedEventArgs e)
         {
-            var gameWindow = (GameWindow)Application.Current.MainWindow;
-            MainWindow mainWindow = new MainWindow
-            {
-                Left = gameWindow.Left,
-                Top = gameWindow.Top,
-            };
-            Application.Current.MainWindow = mainWindow;
-            mainWindow.WindowStartupLocation = WindowStartupLocation.Manual;
-            mainWindow.Show();
-            gameWindow.Close();
+            //var gameWindow = (GameWindow)Application.Current.MainWindow;
+            //MainWindow mainWindow = new MainWindow
+            //{
+            //    Left = gameWindow.Left,
+            //    Top = gameWindow.Top,
+            //};
+            //Application.Current.MainWindow = mainWindow;
+            //mainWindow.WindowStartupLocation = WindowStartupLocation.Manual;
+            //mainWindow.Show();
+            //gameWindow.Close();
         }
 
         private void ReviewButton_Click(object sender, RoutedEventArgs e)

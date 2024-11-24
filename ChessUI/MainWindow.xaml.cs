@@ -82,7 +82,7 @@ namespace ChessUI
 
         private void PauseMenu_NewButtonClicked(object sender, RoutedEventArgs e)
         {
-            CreateSelectGameModeMenu();
+            CreateViewGameAI();
         }
 
 
