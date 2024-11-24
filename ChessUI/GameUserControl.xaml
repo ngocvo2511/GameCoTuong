@@ -23,24 +23,30 @@
         </Grid.ColumnDefinitions>
 
         <Viewbox Grid.Column="1" Grid.RowSpan="2">
-            <Grid x:Name="BoardGrid"
-              Width="720"
-              Height="720"
-              MouseDown="BoardGrid_MouseDown">
-                <Grid.Background>
-                    <ImageBrush ImageSource="Assets/board.jpg"/>
-                </Grid.Background>
-
-                <UniformGrid x:Name="HighlightGrid"
-                         Rows="10"
-                         Columns="9">
-                </UniformGrid>
-
-                <UniformGrid x:Name="PieceGrid"
+            <Grid>
+                <Grid x:Name="BoardGrid"
+                      Width="720"
+                      Height="720"
+                      >
+                    <Grid.Background>
+                        <ImageBrush ImageSource="Assets/board.jpg"/>
+                    </Grid.Background>
+                </Grid>
+                <Grid x:Name="CellGrid"
+                      Width="710"
+                      Height="720"
+                      MouseDown="BoardGrid_MouseDown">
+                    <UniformGrid x:Name="PieceGrid"
                          Rows="10"
                          Columns="9"
-                         RenderOptions.BitmapScalingMode="HighQuality">
-                </UniformGrid>
+                         RenderOptions.BitmapScalingMode="HighQuality">     
+                    </UniformGrid>
+
+                    <UniformGrid x:Name="HighlightGrid"
+                         Rows="10"
+                         Columns="9">
+                    </UniformGrid>
+                </Grid>
             </Grid>
         </Viewbox>
         <Button x:Name="PauseButton" Grid.Row="0" Grid.Column="2"

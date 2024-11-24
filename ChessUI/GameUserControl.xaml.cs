@@ -24,7 +24,7 @@ namespace ChessUI
     public partial class GameUserControl : UserControl
     {
         private readonly Image[,] pieceImages = new Image[10, 9];
-        private readonly Rectangle[,] highlights = new Rectangle[10, 9];
+        private readonly Ellipse[,] highlights = new Ellipse[10, 9];
         private Dictionary<Position, Move> moveCache = new Dictionary<Position, Move>();
         private GameState gameState;
         private Position selectedPos = null;
@@ -53,7 +53,14 @@ namespace ChessUI
                     pieceImages[r, c] = image;
                     PieceGrid.Children.Add(image);
 
-                    Rectangle highlight = new Rectangle();
+                    Ellipse highlight = new Ellipse
+                    {
+                        Width = 40,
+                        Height = 40,
+                        VerticalAlignment = VerticalAlignment.Center,
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                    };
+
                     highlights[r, c] = highlight;
                     HighlightGrid.Children.Add(highlight);
                 }
@@ -87,7 +94,11 @@ namespace ChessUI
             Color color = Color.FromArgb(150, 25, 255, 125);
             foreach (Position to in moveCache.Keys)
             {
-                highlights[to.Row, to.Column].Fill = new SolidColorBrush(color);
+                if (gameState.Board[to] != null)
+                {
+                    highlights[to.Row, to.Column].Fill = new SolidColorBrush(Color.FromArgb(150, 255, 0, 0));
+                }
+                else highlights[to.Row, to.Column].Fill = new SolidColorBrush(color);
             }
         }
 
