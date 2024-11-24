@@ -73,7 +73,7 @@ namespace ChessLogic
         {
             if (color == Player.Red)
             {
-                return pos.Row >= 6 && pos.Row <= 9 && pos.Column >= 3 && pos.Column <= 5;
+                return pos.Row >= 7 && pos.Row <= 9 && pos.Column >= 3 && pos.Column <= 5;
             }
             else if (color == Player.Black)
             {
