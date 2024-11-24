@@ -25,37 +25,76 @@ namespace ChessUI.Menus
             InitializeComponent();
         }
 
+        public static readonly RoutedEvent ContinueButtonClickedEvent = EventManager.RegisterRoutedEvent(
+            "ContinueButtonClicked",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(PauseMenu)
+        );
+
+        public event RoutedEventHandler ContinueButtonClicked
+        {
+            add { AddHandler(ContinueButtonClickedEvent, value); }
+            remove { RemoveHandler(ContinueButtonClickedEvent, value); }
+        }
+
         private void ContinueButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Visibility = Visibility.Collapsed;
+            RaiseEvent(new RoutedEventArgs(ContinueButtonClickedEvent));
+        }
+
+        public static readonly RoutedEvent NewButtonClickedEvent = EventManager.RegisterRoutedEvent(
+            "NewButtonClicked",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(PauseMenu)
+        );
+
+        public event RoutedEventHandler NewButtonClicked
+        {
+            add { AddHandler(NewButtonClickedEvent, value); }
+            remove { RemoveHandler(NewButtonClickedEvent, value); }
         }
 
         private void NewButton_Click(object sender, RoutedEventArgs e)
         {
-            var gameWindow = (GameWindow)Application.Current.MainWindow;
-            gameWindow.selectGameModeMenu.Visibility = Visibility.Visible;
-            this.Visibility = Visibility.Collapsed;
+            RaiseEvent(new RoutedEventArgs(NewButtonClickedEvent));
+        }
+
+        public static readonly RoutedEvent HomeButtonClickedEvent = EventManager.RegisterRoutedEvent(
+            "HomeButtonClicked",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(PauseMenu)
+        );
+
+        public event RoutedEventHandler HomeButtonClicked
+        {
+            add { AddHandler(HomeButtonClickedEvent, value); }
+            remove { RemoveHandler(HomeButtonClickedEvent, value); }
         }
 
         private void HomeButton_Click(object sender, RoutedEventArgs e)
         {
-            var gameWindow = (GameWindow)Application.Current.MainWindow;
-            MainWindow mainWindow = new MainWindow
-            {
-                Left = gameWindow.Left,
-                Top = gameWindow.Top,
-            };
-            Application.Current.MainWindow = mainWindow;
-            mainWindow.WindowStartupLocation = WindowStartupLocation.Manual;
-            mainWindow.Show();
-            gameWindow.Close();
+            RaiseEvent(new RoutedEventArgs(HomeButtonClickedEvent));
+        }
+
+        public static readonly RoutedEvent SettingsButtonClickedEvent = EventManager.RegisterRoutedEvent(
+            "SettingsButtonClicked",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(PauseMenu)
+        );
+
+        public event RoutedEventHandler SettingsButtonClicked
+        {
+            add { AddHandler(SettingsButtonClickedEvent, value); }
+            remove { RemoveHandler(SettingsButtonClickedEvent, value); }
         }
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            var gameWindow = (GameWindow)Application.Current.MainWindow;
-            gameWindow.settingsMenu.Visibility = Visibility.Visible;
-            this.Visibility = Visibility.Collapsed;
+            RaiseEvent(new RoutedEventArgs(SettingsButtonClickedEvent));
         }
     }
 }

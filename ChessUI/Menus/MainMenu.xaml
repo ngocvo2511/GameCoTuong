@@ -29,7 +29,7 @@
                     Content="Chơi"
                     Style="{StaticResource ButtonStyle1}"
                     Width="220"
-                    Height="50" Click="PlayButton_Click"/>
+                    Height="50" Click="PlayButton_Click" Margin="89,11,89,0" VerticalAlignment="Top"/>
 
             <Button x:Name="InstructionsButton" Grid.Row="3"
                     Content="Hướng dẫn chơi"

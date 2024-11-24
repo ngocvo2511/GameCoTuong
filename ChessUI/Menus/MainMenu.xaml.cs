@@ -25,25 +25,58 @@ namespace ChessUI.Menus
             InitializeComponent();
         }
 
+        public event RoutedEventHandler PlayButtonClicked
+        {
+            add { AddHandler(PlayButtonClickedEvent, value); }
+            remove { RemoveHandler(PlayButtonClickedEvent, value); }
+        }
+
+        public static readonly RoutedEvent PlayButtonClickedEvent = EventManager.RegisterRoutedEvent(
+            "PlayButtonClicked",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(MainMenu)
+        );
+
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
-            var mainWindow = (MainWindow)Application.Current.MainWindow;
-            mainWindow.selectGameModeMenu.Visibility = Visibility.Visible;
-            this.Visibility = Visibility.Collapsed;
+            RaiseEvent(new RoutedEventArgs(PlayButtonClickedEvent));
         }
+
+        public event RoutedEventHandler InstructionsButtonClicked
+        {
+            add { AddHandler(InstructionsButtonClickedEvent, value); }
+            remove { RemoveHandler(InstructionsButtonClickedEvent, value); }
+        }
+
+        public static readonly RoutedEvent InstructionsButtonClickedEvent = EventManager.RegisterRoutedEvent(
+            "InstructionsButtonClicked",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(MainMenu)
+        );
 
         private void InstructionsButton_Click(object sender, RoutedEventArgs e)
         {
-            var mainWindow = (MainWindow)Application.Current.MainWindow;
-            mainWindow.instructionMenu.Visibility = Visibility.Visible;
-            this.Visibility = Visibility.Collapsed;
+            RaiseEvent(new RoutedEventArgs(InstructionsButtonClickedEvent));
         }
 
+
+        public event RoutedEventHandler SettingsButtonClicked
+        {
+            add { AddHandler(SettingsButtonClickedEvent, value); }
+            remove { RemoveHandler(SettingsButtonClickedEvent, value); }
+        }
+
+        public static readonly RoutedEvent SettingsButtonClickedEvent = EventManager.RegisterRoutedEvent(
+            "SettingsButtonClicked",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(MainMenu)
+        );
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            var mainWindow = (MainWindow)Application.Current.MainWindow;
-            mainWindow.settingsMenu.Visibility = Visibility.Visible;
-            this.Visibility = Visibility.Collapsed;
+            RaiseEvent(new RoutedEventArgs(SettingsButtonClickedEvent));
         }
 
         private void HistoryButton_Click(object sender, RoutedEventArgs e)

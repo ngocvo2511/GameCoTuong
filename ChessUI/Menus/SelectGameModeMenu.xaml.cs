@@ -20,42 +20,62 @@ namespace ChessUI.Menus
     /// </summary>
     public partial class SelectGameModeMenu : UserControl
     {
-        public event EventHandler BackButtonClicked;
         public SelectGameModeMenu()
         {
             InitializeComponent();
         }
 
+        public static readonly RoutedEvent BackButtonClickedEvent = EventManager.RegisterRoutedEvent(
+            "BackButtonClicked",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(SelectGameModeMenu)
+        );
+        public event RoutedEventHandler BackButtonClicked
+        {
+            add { AddHandler(BackButtonClickedEvent, value); }
+            remove { RemoveHandler(BackButtonClickedEvent, value); }
+        }
+
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Visibility = Visibility.Collapsed;
-            BackButtonClicked?.Invoke(this, EventArgs.Empty);
+            RaiseEvent(new RoutedEventArgs(BackButtonClickedEvent));
+        }
+
+        public static readonly RoutedEvent PlayWithBotButtonClickedEvent = EventManager.RegisterRoutedEvent(
+            "PlayWithBotButtonClicked",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(SelectGameModeMenu)
+        );
+
+        public event RoutedEventHandler PlayWithBotButtonClicked
+        {
+            add { AddHandler(PlayWithBotButtonClickedEvent, value); }
+            remove { RemoveHandler(PlayWithBotButtonClickedEvent, value); }
         }
 
         private void PlayWithBotButton_Click(object sender, RoutedEventArgs e)
         {
-            var window = Application.Current.MainWindow;
-            GameWindow gameWindow = new GameWindow
-            {
-                Left = window.Left,
-                Top = window.Top,
-            };
-            Application.Current.MainWindow = gameWindow;
-            gameWindow.Show();
-            window.Close();
+            RaiseEvent(new RoutedEventArgs(PlayWithBotButtonClickedEvent));
+        }
+
+        public static readonly RoutedEvent TwoPlayerButtonClickedEvent = EventManager.RegisterRoutedEvent(
+            "TwoPlayerButtonClicked",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(SelectGameModeMenu)
+        );
+
+        public event RoutedEventHandler TwoPlayerButtonClicked
+        {
+            add { AddHandler(TwoPlayerButtonClickedEvent, value); }
+            remove { RemoveHandler(TwoPlayerButtonClickedEvent, value); }
         }
 
         private void TwoPlayerButton_Click(object sender, RoutedEventArgs e)
         {
-            var window = Application.Current.MainWindow;
-            GameWindow gameWindow = new GameWindow
-            {
-                Left = window.Left,
-                Top = window.Top,
-            };
-            Application.Current.MainWindow = gameWindow;
-            gameWindow.Show();
-            window.Close();
+            RaiseEvent(new RoutedEventArgs(TwoPlayerButtonClickedEvent));
         }
 
     }

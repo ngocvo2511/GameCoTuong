@@ -13,11 +13,10 @@
         <Grid.Background>
             <ImageBrush ImageSource="Assets/background.jpg"/>
         </Grid.Background>
+        <Grid Grid.Row="1">
+            <ContentControl x:Name="view"/>
+        </Grid>
 
-        <local:MainMenu x:Name="mainMenu" Visibility="Visible"/>
-        <local:SelectGameModeMenu x:Name="selectGameModeMenu" Visibility="Collapsed"/>
-        <local:InstructionsMenu x:Name="instructionMenu" Visibility="Collapsed"/>
-        <local:SettingsMenu x:Name="settingsMenu" Visibility="Collapsed"/>
 
     </Grid>
 </Window>

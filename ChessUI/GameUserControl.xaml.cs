@@ -1,5 +1,5 @@
-﻿using ChessLogic;
-using ChessLogic.GameStates.GameState;
+﻿using ChessLogic.GameStates.GameState;
+using ChessLogic;
 using ChessUI.Menus;
 using System;
 using System.Collections.Generic;
@@ -13,33 +13,34 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace ChessUI
 {
     /// <summary>
-    /// Interaction logic for GameWindow.xaml
+    /// Interaction logic for GameUserControl.xaml
     /// </summary>
-    public partial class GameWindow : Window
+    public partial class GameUserControl : UserControl
     {
         private readonly Image[,] pieceImages = new Image[10, 9];
         private readonly Rectangle[,] highlights = new Rectangle[10, 9];
         private Dictionary<Position, Move> moveCache = new Dictionary<Position, Move>();
         private GameState gameState;
         private Position selectedPos = null;
-        public GameWindow()
+        public GameUserControl()
         {
             InitializeComponent();
             InitializeBoard();
             gameState = new GameStateAI(Player.Red, Board.Initial(), 4);
             DrawBoard(gameState.Board);
-            settingsMenu.BackButtonClicked += BackButtonClicked;
-            selectGameModeMenu.BackButtonClicked += BackButtonClicked;
+            //settingsMenu.BackButtonClicked += BackButtonClicked;
+            //selectGameModeMenu.BackButtonClicked += BackButtonClicked;
         }
-        private void BackButtonClicked(object sender, EventArgs e)
-        {
-            pauseMenu.Visibility = Visibility.Visible;
-        }
+        //private void BackButtonClicked(object sender, EventArgs e)
+        //{
+        //    pauseMenu.Visibility = Visibility.Visible;
+        //}
 
         private void InitializeBoard()
         {
@@ -164,10 +165,24 @@ namespace ChessUI
             MainGame.IsHitTestVisible = true;
         }
 
+
+        public event RoutedEventHandler PauseButtonClicked
+        {
+            add { AddHandler(PauseButtonClickedEvent, value); }
+            remove { RemoveHandler(PauseButtonClickedEvent, value); }
+        }
+        public static readonly RoutedEvent PauseButtonClickedEvent = EventManager.RegisterRoutedEvent(
+            "PauseButtonClicked",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(GameUserControl)
+        );
         private void PauseButton_Click(object sender, RoutedEventArgs e)
         {
-            pauseMenu.Visibility = Visibility.Visible;
+            RaiseEvent(new RoutedEventArgs(PauseButtonClickedEvent));
         }
+
+
 
         private void UndoButton_Click(object sender, RoutedEventArgs e)
         {

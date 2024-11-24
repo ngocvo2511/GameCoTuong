@@ -50,5 +50,10 @@ namespace ChessUI.Menus
         {
             this.Visibility = Visibility.Collapsed;
         }
+
+        private void Restart_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
