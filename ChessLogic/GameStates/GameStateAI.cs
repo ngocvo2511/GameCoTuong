@@ -66,7 +66,6 @@ namespace ChessLogic.GameStates.GameState
         {
             if (depth == 0) return value.GetValueBoard(Board);
             IEnumerable<Move> moves = AllLegalMovesFor(CurrentPlayer);
-            if(!moves.Any()) return value.GetValueBoard(Board);
             if (CurrentPlayer == Player.Black)
             {
                 int bestValue = -9999;                
