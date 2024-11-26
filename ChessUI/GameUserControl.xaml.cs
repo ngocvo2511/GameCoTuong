@@ -169,7 +169,7 @@ namespace ChessUI
                 HandleMove(move);
             }
         }
-        private void DrawArrows(Canvas canvas)
+        private void DrawNewPos(Canvas canvas)
         {
             Line topLeftArrow = new Line
             {
@@ -252,10 +252,93 @@ namespace ChessUI
             };
             canvas.Children.Add(sideBotRightArrow);
         }
+        private void DrawOldPos(Canvas canvas)
+        {
+            Line topLeftArrow = new Line
+            {
+                X1 = 20,
+                Y1 = 15,
+                X2 = 30,
+                Y2 = 15,
+                Stroke = Brushes.Red,
+                StrokeThickness = 2
+            };
+            canvas.Children.Add(topLeftArrow);
+            Line sideTopLeftArrow = new Line
+            {
+                X1 = 20,
+                Y1 = 15,
+                X2 = 20,
+                Y2 = 25,
+                Stroke = Brushes.Red,
+                StrokeThickness = 2
+            };
+            canvas.Children.Add(sideTopLeftArrow);
+            Line topRightArrow = new Line
+            {
+                X1 = 48,
+                Y1 = 15,
+                X2 = 58,
+                Y2 = 15,
+                Stroke = Brushes.Red,
+                StrokeThickness = 2
+            };
+            canvas.Children.Add(topRightArrow);
+            Line sideTopRightArrow = new Line
+            {
+                X1 = 58,
+                Y1 = 15,
+                X2 = 58,
+                Y2 = 25,
+                Stroke = Brushes.Red,
+                StrokeThickness = 2
+            };
+            canvas.Children.Add(sideTopRightArrow);
+            Line bottomLeftArrow = new Line
+            {
+                X1 = 20,
+                Y1 = 53,
+                X2 = 30,
+                Y2 = 53,
+                Stroke = Brushes.Red,
+                StrokeThickness = 2
+            };
+            canvas.Children.Add(bottomLeftArrow);
+            Line sideBotLeftArrow = new Line
+            {
+                X1 = 20,
+                Y1 = 53,
+                X2 = 20,
+                Y2 = 43,
+                Stroke = Brushes.Red,
+                StrokeThickness = 2
+            };
+            canvas.Children.Add(sideBotLeftArrow);
+            Line bottomRightArrow = new Line
+            {
+                X1 = 58,
+                Y1 = 53,
+                X2 = 48,
+                Y2 = 53,
+                Stroke = Brushes.Red,
+                StrokeThickness = 2
+            };
+            canvas.Children.Add(bottomRightArrow);
+            Line sideBotRightArrow = new Line
+            {
+                X1 = 58,
+                Y1 = 53,
+                X2 = 58,
+                Y2 = 43,
+                Stroke = Brushes.Red,
+                StrokeThickness = 2
+            };
+            canvas.Children.Add(sideBotRightArrow);
+        }
         private void ShowPrevMove(Move move)
         {
-            DrawArrows(posMoved[move.FromPos.Row,move.FromPos.Column]);
-            DrawArrows(posMoved[move.ToPos.Row,move.ToPos.Column]);
+            DrawOldPos(posMoved[move.FromPos.Row,move.FromPos.Column]);
+            DrawNewPos(posMoved[move.ToPos.Row,move.ToPos.Column]);
         }
         private void HidePrevMove(Move move)
         {
