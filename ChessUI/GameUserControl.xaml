@@ -41,7 +41,10 @@
                          Columns="9"
                          RenderOptions.BitmapScalingMode="HighQuality">     
                     </UniformGrid>
-
+                    <UniformGrid x:Name="PosMovedGrid"
+                         Rows="10"
+                         Columns="9">
+                    </UniformGrid>
                     <UniformGrid x:Name="HighlightGrid"
                          Rows="10"
                          Columns="9">

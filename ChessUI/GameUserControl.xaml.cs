@@ -25,6 +25,7 @@ namespace ChessUI
     {
         private readonly Image[,] pieceImages = new Image[10, 9];
         private readonly Ellipse[,] highlights = new Ellipse[10, 9];
+        private readonly Canvas[,] posMoved = new Canvas[10, 9];
         private Dictionary<Position, Move> moveCache = new Dictionary<Position, Move>();
         private GameState gameState;
         private Position selectedPos = null;
@@ -58,11 +59,19 @@ namespace ChessUI
                         Width = 40,
                         Height = 40,
                         VerticalAlignment = VerticalAlignment.Center,
-                        HorizontalAlignment = HorizontalAlignment.Center,
-                    };
-
-                    highlights[r, c] = highlight;
+                        HorizontalAlignment = HorizontalAlignment.Center
+                    };                    
+                    highlights[r, c] = highlight;                    
                     HighlightGrid.Children.Add(highlight);
+                    Canvas canvas = new Canvas()
+                    {
+                        //Width = 80,
+                        //Height = 80
+                        //VerticalAlignment = VerticalAlignment.Center,
+                        //HorizontalAlignment = HorizontalAlignment.Center
+                    };
+                    posMoved[r, c] = canvas;
+                    PosMovedGrid.Children.Add(canvas);
                 }
             }
         }
@@ -160,18 +169,114 @@ namespace ChessUI
                 HandleMove(move);
             }
         }
-
+        private void DrawArrows(Canvas canvas)
+        {
+            Line topLeftArrow = new Line
+            {
+                X1 = 5,
+                Y1 = 0,
+                X2 = 25,
+                Y2 = 0,
+                Stroke = Brushes.Red,
+                StrokeThickness = 2
+            };
+            canvas.Children.Add(topLeftArrow);
+            Line sideTopLeftArrow = new Line
+            {
+                X1 = 5,
+                Y1 = 0,
+                X2 = 5,
+                Y2 = 20,
+                Stroke = Brushes.Red,
+                StrokeThickness = 2
+            };
+            canvas.Children.Add(sideTopLeftArrow);
+            Line topRightArrow = new Line
+            {
+                X1 = 55,
+                Y1 = 0,
+                X2 = 75,
+                Y2 = 0,
+                Stroke = Brushes.Red,
+                StrokeThickness = 2
+            };
+            canvas.Children.Add(topRightArrow);
+            Line sideTopRightArrow = new Line
+            {
+                X1 = 75,
+                Y1 = 0,
+                X2 = 75,
+                Y2 = 20,
+                Stroke = Brushes.Red,
+                StrokeThickness = 2
+            };
+            canvas.Children.Add(sideTopRightArrow);
+            Line bottomLeftArrow = new Line
+            {
+                X1 = 5,
+                Y1 = 70,
+                X2 = 25,
+                Y2 = 70,
+                Stroke = Brushes.Red,
+                StrokeThickness = 2
+            };
+            canvas.Children.Add(bottomLeftArrow);
+            Line sideBotLeftArrow = new Line
+            {
+                X1 = 5,
+                Y1 = 70,
+                X2 = 5,
+                Y2 = 50,
+                Stroke = Brushes.Red,
+                StrokeThickness = 2
+            };
+            canvas.Children.Add(sideBotLeftArrow);
+            Line bottomRightArrow = new Line
+            {
+                X1 = 55,
+                Y1 = 70,
+                X2 = 75,
+                Y2 = 70,
+                Stroke = Brushes.Red,
+                StrokeThickness = 2
+            };
+            canvas.Children.Add(bottomRightArrow);
+            Line sideBotRightArrow = new Line
+            {
+                X1 = 75,
+                Y1 = 70,
+                X2 = 75,
+                Y2 = 50,
+                Stroke = Brushes.Red,
+                StrokeThickness = 2
+            };
+            canvas.Children.Add(sideBotRightArrow);
+        }
+        private void ShowPrevMove(Move move)
+        {
+            DrawArrows(posMoved[move.FromPos.Row,move.FromPos.Column]);
+            DrawArrows(posMoved[move.ToPos.Row,move.ToPos.Column]);
+        }
+        private void HidePrevMove(Move move)
+        {
+            posMoved[move.FromPos.Row, move.FromPos.Column].Children.Clear();
+            posMoved[move.ToPos.Row, move.ToPos.Column].Children.Clear();
+        }
         private async void HandleMove(Move move)
         {
             MainGame.IsHitTestVisible = false;
-
+            if (gameState.Moved.Any()) HidePrevMove(gameState.Moved.First().Item1);
             gameState.MakeMove(move);
             DrawBoard(gameState.Board);
+            ShowPrevMove(move);
             await Dispatcher.InvokeAsync(() => { }, System.Windows.Threading.DispatcherPriority.Render);
             if (gameState is GameStateAI AI)
             {
+                Move prevMove = gameState.Moved.First().Item1;
                 await Task.Run(() => AI.AiMove());
                 DrawBoard(gameState.Board);
+                HidePrevMove(prevMove);
+                ShowPrevMove(gameState.Moved.First().Item1);
             }
 
             MainGame.IsHitTestVisible = true;
