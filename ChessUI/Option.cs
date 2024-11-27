@@ -8,7 +8,7 @@ namespace ChessUI
 {
     public enum Option
     {
-        Restart,
+        New,
         Home,
         Review,
         Continue

@@ -27,7 +27,7 @@ namespace ChessUI
         private readonly Ellipse[,] highlights = new Ellipse[10, 9];
         private readonly Canvas[,] posMoved = new Canvas[10, 9];
         private Dictionary<Position, Move> moveCache = new Dictionary<Position, Move>();
-        private GameState gameState;
+        internal GameState gameState;
         private Position selectedPos = null;
         public GameUserControl(bool isAI,int difficult=1)
         {
@@ -365,7 +365,6 @@ namespace ChessUI
             MainGame.IsHitTestVisible = true;
         }
 
-
         public event RoutedEventHandler PauseButtonClicked
         {
             add { AddHandler(PauseButtonClickedEvent, value); }
@@ -381,8 +380,6 @@ namespace ChessUI
         {
             RaiseEvent(new RoutedEventArgs(PauseButtonClickedEvent));
         }
-
-
 
         private void UndoButton_Click(object sender, RoutedEventArgs e)
         {
