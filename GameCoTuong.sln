@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessLogic", "ChessLogic\Ch
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessUI", "ChessUI\ChessUI.csproj", "{F0DA5023-1B39-47D1-B25C-55863EA41821}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server", "..\Server\Server\Server\Server.csproj", "{D020E9E5-A09B-4B23-8627-EAF32D4A3DFF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{22BB8204-DE13-4435-AE8D-5CF1558BBD4B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{F0DA5023-1B39-47D1-B25C-55863EA41821}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F0DA5023-1B39-47D1-B25C-55863EA41821}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F0DA5023-1B39-47D1-B25C-55863EA41821}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D020E9E5-A09B-4B23-8627-EAF32D4A3DFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D020E9E5-A09B-4B23-8627-EAF32D4A3DFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D020E9E5-A09B-4B23-8627-EAF32D4A3DFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D020E9E5-A09B-4B23-8627-EAF32D4A3DFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22BB8204-DE13-4435-AE8D-5CF1558BBD4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22BB8204-DE13-4435-AE8D-5CF1558BBD4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22BB8204-DE13-4435-AE8D-5CF1558BBD4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22BB8204-DE13-4435-AE8D-5CF1558BBD4B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
