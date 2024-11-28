@@ -33,21 +33,6 @@ namespace ChessUI.Menus
             ReasonText.Text = GetReasonText(result.Reason, gameState.CurrentPlayer);
         }
 
-        private void NewButton_Click(object sender, RoutedEventArgs e)
-        {
-            OptionSelected?.Invoke(Option.New);
-        }
-
-        private void HomeButton_Click(object sender, RoutedEventArgs e)
-        {
-            OptionSelected?.Invoke(Option.Home);
-        }
-
-        private void ReviewButton_Click(object sender, RoutedEventArgs e)
-        {
-            OptionSelected?.Invoke(Option.Review);
-        }
-
         private static string GetWinnerText(Player winner)
         {
             return winner switch
@@ -76,6 +61,55 @@ namespace ChessUI.Menus
                 EndReason.Checkmate => $"{PlayerString(currentPlayer)} bị chiếu bí",
                 _ => ""
             };
+        }
+
+        public static readonly RoutedEvent NewButtonClickedEvent = EventManager.RegisterRoutedEvent(
+            "NewButtonClicked",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(GameOverMenu)
+        );
+        public event RoutedEventHandler NewButtonClicked
+        {
+            add { AddHandler(NewButtonClickedEvent, value); }
+            remove { RemoveHandler(NewButtonClickedEvent, value); }
+        }
+        private void NewButton_Click(object sender, RoutedEventArgs e)
+        {
+            RaiseEvent(new RoutedEventArgs(NewButtonClickedEvent));
+        }
+        public static readonly RoutedEvent HomeButtonClickedEvent = EventManager.RegisterRoutedEvent(
+            "HomeButtonClicked",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(GameOverMenu)
+        );
+
+        public event RoutedEventHandler HomeButtonClicked
+        {
+            add { AddHandler(HomeButtonClickedEvent, value); }
+            remove { RemoveHandler(HomeButtonClickedEvent, value); }
+        }
+        private void HomeButton_Click(object sender, RoutedEventArgs e)
+        {
+            RaiseEvent(new RoutedEventArgs(HomeButtonClickedEvent));
+        }
+
+        public static readonly RoutedEvent ReviewButtonClickedEvent = EventManager.RegisterRoutedEvent(
+            "ReviewButtonClicked",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(GameOverMenu)
+        );
+        public event RoutedEventHandler ReviewButtonClicked
+        {
+            add { AddHandler(ReviewButtonClickedEvent, value); }
+            remove { RemoveHandler(ReviewButtonClickedEvent, value); }
+        }
+
+        private void ReviewButton_Click(object sender, RoutedEventArgs e)
+        {
+            RaiseEvent(new RoutedEventArgs(ReviewButtonClickedEvent));
         }
 
     }

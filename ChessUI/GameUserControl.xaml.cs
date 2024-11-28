@@ -27,22 +27,18 @@ namespace ChessUI
         private readonly Ellipse[,] highlights = new Ellipse[10, 9];
         private readonly Canvas[,] posMoved = new Canvas[10, 9];
         private Dictionary<Position, Move> moveCache = new Dictionary<Position, Move>();
-        internal GameState gameState;
+        private GameState gameState;
         private Position selectedPos = null;
-        public GameUserControl(bool isAI, int difficult = 1)
+        private MainWindow _mainWindow;
+        public GameUserControl(MainWindow mainWindow, bool isAI, int difficult = 1)
         {
             InitializeComponent();
             InitializeBoard();
             if (isAI == true) gameState = new GameStateAI(Player.Red, Board.Initial(), difficult);
             else gameState = new GameState2P(Player.Red, Board.Initial());
             DrawBoard(gameState.Board);
-            //settingsMenu.BackButtonClicked += BackButtonClicked;
-            //selectGameModeMenu.BackButtonClicked += BackButtonClicked;
+            _mainWindow = mainWindow;
         }
-        //private void BackButtonClicked(object sender, EventArgs e)
-        //{
-        //    pauseMenu.Visibility = Visibility.Visible;
-        //}
 
         private void InitializeBoard()
         {
@@ -363,6 +359,11 @@ namespace ChessUI
             }
 
             MainGame.IsHitTestVisible = true;
+
+            if (gameState.IsGameOver())
+            {
+                _mainWindow.CreateGameOverMenu(gameState);
+            }
         }
 
         public event RoutedEventHandler PauseButtonClicked

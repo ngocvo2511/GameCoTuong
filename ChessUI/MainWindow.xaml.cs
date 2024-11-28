@@ -1,16 +1,6 @@
-﻿using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using ChessLogic;
-using ChessLogic.GameStates.GameState;
+﻿using ChessLogic.GameStates.GameState;
 using ChessUI.Menus;
+using System.Windows;
 
 namespace ChessUI
 {
@@ -32,7 +22,7 @@ namespace ChessUI
         public MainWindow()
         {
             InitializeComponent();
-            
+
             CreateMainMenu();
         }
 
@@ -73,7 +63,7 @@ namespace ChessUI
         private void CreatePauseMenu()
         {
             pauseMenu.ContinueButtonClicked += PauseMenu_ContinueButtonClicked;
-            pauseMenu.NewButtonClicked += PauseMenu_NewButtonClicked;
+            pauseMenu.NewButtonClicked += NewButtonClicked;
             pauseMenu.HomeButtonClicked += PauseMenu_HomeButtonClicked;
             pauseMenu.SettingsButtonClicked += SettingsButtonClicked;
 
@@ -88,9 +78,14 @@ namespace ChessUI
             view.Content = confirmMenu;
         }
 
-        private void CreateGameOverMenu()
+        internal void CreateGameOverMenu(GameState gameState)
         {
-            gameOverMenu = new GameOverMenu(gameUserControl.gameState);
+            gameOverMenu = new GameOverMenu(gameState);
+
+            gameOverMenu.NewButtonClicked += NewButtonClicked;
+            gameOverMenu.HomeButtonClicked += GameOverMenu_HomeButtonClicked;
+            gameOverMenu.ReviewButtonClicked += GameOverMenu_ReviewButtonClicked;
+
             view.Content = gameOverMenu;
         }
 
@@ -98,7 +93,7 @@ namespace ChessUI
         {
             onGame = true;
 
-            gameUserControl = new GameUserControl(true, 4);
+            gameUserControl = new GameUserControl(this, true, 4);
             gameUserControl.PauseButtonClicked += PauseButtonClicked;
 
             view.Content = gameUserControl;
@@ -108,7 +103,7 @@ namespace ChessUI
         {
             onGame = true;
 
-            gameUserControl = new GameUserControl(false);
+            gameUserControl = new GameUserControl(this, false);
             gameUserControl.PauseButtonClicked += PauseButtonClicked;
 
             view.Content = gameUserControl;
@@ -117,8 +112,8 @@ namespace ChessUI
         private void BackButtonClicked(object sender, RoutedEventArgs e)
         {
             if (!onGame)
-                CreateMainMenu();
-            else CreatePauseMenu();
+                view.Content = mainMenu;
+            else view.Content = pauseMenu;
         }
 
         private void MainMenu_PlayButtonClicked(object sender, RoutedEventArgs e)
@@ -157,7 +152,7 @@ namespace ChessUI
             view.Content = gameUserControl;
         }
 
-        private void PauseMenu_NewButtonClicked(object sender, RoutedEventArgs e)
+        private void NewButtonClicked(object sender, RoutedEventArgs e)
         {
             CreateSelectGameModeMenu();
         }
@@ -170,6 +165,15 @@ namespace ChessUI
         private void ConfirmMenu_YesButtonClicked(object sender, RoutedEventArgs e)
         {
             CreateMainMenu();
+        }
+
+        private void GameOverMenu_HomeButtonClicked(object sender, RoutedEventArgs e)
+        {
+            CreateMainMenu();
+        }
+        private void GameOverMenu_ReviewButtonClicked(object sender, RoutedEventArgs e)
+        {
+            view.Content = gameUserControl;
         }
 
     }
