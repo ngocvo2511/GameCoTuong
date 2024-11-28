@@ -29,20 +29,16 @@ namespace ChessUI
         private Dictionary<Position, Move> moveCache = new Dictionary<Position, Move>();
         private GameState gameState;
         private Position selectedPos = null;
-        public GameUserControl(bool isAI,int difficult=1)
+        private MainWindow _mainWindow;
+        public GameUserControl(MainWindow mainWindow, bool isAI, int difficult = 1)
         {
             InitializeComponent();
             InitializeBoard();
             if (isAI == true) gameState = new GameStateAI(Player.Red, Board.Initial(), difficult);
             else gameState = new GameState2P(Player.Red, Board.Initial());
             DrawBoard(gameState.Board);
-            //settingsMenu.BackButtonClicked += BackButtonClicked;
-            //selectGameModeMenu.BackButtonClicked += BackButtonClicked;
+            _mainWindow = mainWindow;
         }
-        //private void BackButtonClicked(object sender, EventArgs e)
-        //{
-        //    pauseMenu.Visibility = Visibility.Visible;
-        //}
 
         private void InitializeBoard()
         {
@@ -60,8 +56,8 @@ namespace ChessUI
                         Height = 40,
                         VerticalAlignment = VerticalAlignment.Center,
                         HorizontalAlignment = HorizontalAlignment.Center
-                    };                    
-                    highlights[r, c] = highlight;                    
+                    };
+                    highlights[r, c] = highlight;
                     HighlightGrid.Children.Add(highlight);
                     Canvas canvas = new Canvas()
                     {
@@ -337,8 +333,8 @@ namespace ChessUI
         }
         private void ShowPrevMove(Move move)
         {
-            DrawOldPos(posMoved[move.FromPos.Row,move.FromPos.Column]);
-            DrawNewPos(posMoved[move.ToPos.Row,move.ToPos.Column]);
+            DrawOldPos(posMoved[move.FromPos.Row, move.FromPos.Column]);
+            DrawNewPos(posMoved[move.ToPos.Row, move.ToPos.Column]);
         }
         private void HidePrevMove(Move move)
         {
@@ -363,8 +359,12 @@ namespace ChessUI
             }
 
             MainGame.IsHitTestVisible = true;
-        }
 
+            if (gameState.IsGameOver())
+            {
+                _mainWindow.CreateGameOverMenu(gameState);
+            }
+        }
 
         public event RoutedEventHandler PauseButtonClicked
         {
@@ -381,8 +381,6 @@ namespace ChessUI
         {
             RaiseEvent(new RoutedEventArgs(PauseButtonClickedEvent));
         }
-
-
 
         private void UndoButton_Click(object sender, RoutedEventArgs e)
         {

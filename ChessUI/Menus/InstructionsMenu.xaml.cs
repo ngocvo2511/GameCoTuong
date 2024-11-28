@@ -20,16 +20,26 @@ namespace ChessUI.Menus
     /// </summary>
     public partial class InstructionsMenu : UserControl
     {
-        public event EventHandler BackButtonClicked;
         public InstructionsMenu()
         {
             InitializeComponent();
         }
 
+        public static readonly RoutedEvent BackButtonClickedEvent = EventManager.RegisterRoutedEvent(
+            "BackButtonClicked",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(InstructionsMenu)
+        );
+        public event RoutedEventHandler BackButtonClicked
+        {
+            add { AddHandler(BackButtonClickedEvent, value); }
+            remove { RemoveHandler(BackButtonClickedEvent, value); }
+        }
+
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Visibility = Visibility.Collapsed;
-            BackButtonClicked?.Invoke(this, EventArgs.Empty);
+            RaiseEvent(new RoutedEventArgs(BackButtonClickedEvent));
         }
 
     }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ChessLogic;
+using ChessLogic.GameStates.GameState;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Schema;
 
 namespace ChessUI.Menus
 {
@@ -20,40 +23,94 @@ namespace ChessUI.Menus
     /// </summary>
     public partial class GameOverMenu : UserControl
     {
-        public GameOverMenu()
+        public event Action<Option> OptionSelected;
+        public GameOverMenu(GameState gameState)
         {
             InitializeComponent();
+
+            Result result = gameState.Result;
+            WinnerText.Text = GetWinnerText(result.Winner);
+            ReasonText.Text = GetReasonText(result.Reason, gameState.CurrentPlayer);
         }
 
+        private static string GetWinnerText(Player winner)
+        {
+            return winner switch
+            {
+                Player.Red => "ĐỎ THẮNG!",
+                Player.Black => "ĐEN THẮNG!",
+                _ => "HOÀ"
+            };
+        }
+
+        private static string PlayerString(Player player)
+        {
+            return player switch
+            {
+                Player.Red => "ĐỎ!",
+                Player.Black => "ĐEN",
+                _ => ""
+            };
+        }
+
+        private static string GetReasonText(EndReason reason, Player currentPlayer)
+        {
+            return reason switch
+            {
+                EndReason.Stalemate => $"{PlayerString(currentPlayer)} không thể di chuyển",
+                EndReason.Checkmate => $"{PlayerString(currentPlayer)} bị chiếu bí",
+                _ => ""
+            };
+        }
+
+        public static readonly RoutedEvent NewButtonClickedEvent = EventManager.RegisterRoutedEvent(
+            "NewButtonClicked",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(GameOverMenu)
+        );
+        public event RoutedEventHandler NewButtonClicked
+        {
+            add { AddHandler(NewButtonClickedEvent, value); }
+            remove { RemoveHandler(NewButtonClickedEvent, value); }
+        }
         private void NewButton_Click(object sender, RoutedEventArgs e)
         {
-            //var gameWindow = (GameWindow)Application.Current.MainWindow;
-            //gameWindow.selectGameModeMenu.Visibility = Visibility.Visible;
-            //this.Visibility = Visibility.Collapsed;
+            RaiseEvent(new RoutedEventArgs(NewButtonClickedEvent));
         }
+        public static readonly RoutedEvent HomeButtonClickedEvent = EventManager.RegisterRoutedEvent(
+            "HomeButtonClicked",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(GameOverMenu)
+        );
 
+        public event RoutedEventHandler HomeButtonClicked
+        {
+            add { AddHandler(HomeButtonClickedEvent, value); }
+            remove { RemoveHandler(HomeButtonClickedEvent, value); }
+        }
         private void HomeButton_Click(object sender, RoutedEventArgs e)
         {
-            //var gameWindow = (GameWindow)Application.Current.MainWindow;
-            //MainWindow mainWindow = new MainWindow
-            //{
-            //    Left = gameWindow.Left,
-            //    Top = gameWindow.Top,
-            //};
-            //Application.Current.MainWindow = mainWindow;
-            //mainWindow.WindowStartupLocation = WindowStartupLocation.Manual;
-            //mainWindow.Show();
-            //gameWindow.Close();
+            RaiseEvent(new RoutedEventArgs(HomeButtonClickedEvent));
+        }
+
+        public static readonly RoutedEvent ReviewButtonClickedEvent = EventManager.RegisterRoutedEvent(
+            "ReviewButtonClicked",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(GameOverMenu)
+        );
+        public event RoutedEventHandler ReviewButtonClicked
+        {
+            add { AddHandler(ReviewButtonClickedEvent, value); }
+            remove { RemoveHandler(ReviewButtonClickedEvent, value); }
         }
 
         private void ReviewButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Visibility = Visibility.Collapsed;
+            RaiseEvent(new RoutedEventArgs(ReviewButtonClickedEvent));
         }
 
-        private void Restart_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }
