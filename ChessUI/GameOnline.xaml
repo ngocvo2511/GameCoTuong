@@ -52,19 +52,14 @@
                 </Grid>
             </Grid>
         </Viewbox>
-        <Button x:Name="PauseButton" Grid.Row="0" Grid.Column="2"
-         Content="Tạm dừng"
+        <Button x:Name="SettingButton" Grid.Row="0" Grid.Column="2"
+         Content="Cài đặt"
          Style="{StaticResource ButtonStyle1}"
          Width="110"
          Height="50"
-         VerticalAlignment="Bottom" Margin="0,0,5,10" Click="PauseButton_Click"/>
+         VerticalAlignment="Bottom" Margin="0,0,5,10" Click="SettingButton_Click"/>
 
-        <Button x:Name="UndoButton" Grid.Row="1" Grid.Column="2"
-         Content="Đi lại"
-         Style="{StaticResource ButtonStyle1}"
-         Width="110"
-         Height="50"
-         VerticalAlignment="Top" Margin="0,10,5,0" Click="UndoButton_Click"/>
+        
 
 
     </Grid>

@@ -1,6 +1,7 @@
 ﻿using ChessLogic.GameStates.GameState;
 using ChessUI.Menus;
 using System.Windows;
+using System.Windows.Input;
 
 namespace ChessUI
 {
@@ -176,5 +177,21 @@ namespace ChessUI
             view.Content = gameUserControl;
         }
 
+        private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+
+                if (view.Content == pauseMenu)
+                {
+                    view.Content = gameUserControl;
+                }
+                else if (onGame)
+                {
+                    CreatePauseMenu();
+                }
+
+            }
+        }
     }
 }

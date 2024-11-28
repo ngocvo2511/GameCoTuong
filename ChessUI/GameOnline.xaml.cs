@@ -31,7 +31,7 @@ namespace ChessUI
         private GameState gameState;
         private Position selectedPos = null;
         private HubConnection connection;
-        public GameOnline(bool isAI, int difficult = 1)
+        public GameOnline()
         {
             InitializeComponent();
             InitializeBoard();
@@ -406,27 +406,21 @@ namespace ChessUI
         }
 
 
-        public event RoutedEventHandler PauseButtonClicked
+        public event RoutedEventHandler SettingButtonClicked
         {
-            add { AddHandler(PauseButtonClickedEvent, value); }
-            remove { RemoveHandler(PauseButtonClickedEvent, value); }
+            add { AddHandler(SettingButtonClickedEvent, value); }
+            remove { RemoveHandler(SettingButtonClickedEvent, value); }
         }
-        public static readonly RoutedEvent PauseButtonClickedEvent = EventManager.RegisterRoutedEvent(
-            "PauseButtonClicked",
+        public static readonly RoutedEvent SettingButtonClickedEvent = EventManager.RegisterRoutedEvent(
+            "SettingButtonClicked",
             RoutingStrategy.Bubble,
             typeof(RoutedEventHandler),
             typeof(GameUserControl)
         );
-        private void PauseButton_Click(object sender, RoutedEventArgs e)
+        private void SettingButton_Click(object sender, RoutedEventArgs e)
         {
-            RaiseEvent(new RoutedEventArgs(PauseButtonClickedEvent));
+            RaiseEvent(new RoutedEventArgs(SettingButtonClickedEvent));
         }
 
-        private void UndoButton_Click(object sender, RoutedEventArgs e)
-        {
-            OnToPositionSelected(selectedPos);
-            gameState.UndoMove();
-            DrawBoard(gameState.Board);
-        }
     }
 }
