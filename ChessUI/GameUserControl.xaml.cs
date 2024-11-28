@@ -165,15 +165,16 @@ namespace ChessUI
                 HandleMove(move);
             }
         }
-        private void DrawNewPos(Canvas canvas)
+        private void DrawNewPos(Canvas canvas,int row,int col)
         {
+            SolidColorBrush solidColorBrush = (gameState.Board[row, col].Color == Player.Black) ? Brushes.DarkBlue : Brushes.Red;
             Line topLeftArrow = new Line
             {
                 X1 = 5,
                 Y1 = 0,
                 X2 = 25,
                 Y2 = 0,
-                Stroke = Brushes.Red,
+                Stroke = solidColorBrush,
                 StrokeThickness = 2
             };
             canvas.Children.Add(topLeftArrow);
@@ -183,7 +184,7 @@ namespace ChessUI
                 Y1 = 0,
                 X2 = 5,
                 Y2 = 20,
-                Stroke = Brushes.Red,
+                Stroke = solidColorBrush,
                 StrokeThickness = 2
             };
             canvas.Children.Add(sideTopLeftArrow);
@@ -193,7 +194,7 @@ namespace ChessUI
                 Y1 = 0,
                 X2 = 75,
                 Y2 = 0,
-                Stroke = Brushes.Red,
+                Stroke = solidColorBrush,
                 StrokeThickness = 2
             };
             canvas.Children.Add(topRightArrow);
@@ -203,7 +204,7 @@ namespace ChessUI
                 Y1 = 0,
                 X2 = 75,
                 Y2 = 20,
-                Stroke = Brushes.Red,
+                Stroke = solidColorBrush,
                 StrokeThickness = 2
             };
             canvas.Children.Add(sideTopRightArrow);
@@ -213,7 +214,7 @@ namespace ChessUI
                 Y1 = 70,
                 X2 = 25,
                 Y2 = 70,
-                Stroke = Brushes.Red,
+                Stroke = solidColorBrush,
                 StrokeThickness = 2
             };
             canvas.Children.Add(bottomLeftArrow);
@@ -223,7 +224,7 @@ namespace ChessUI
                 Y1 = 70,
                 X2 = 5,
                 Y2 = 50,
-                Stroke = Brushes.Red,
+                Stroke = solidColorBrush,
                 StrokeThickness = 2
             };
             canvas.Children.Add(sideBotLeftArrow);
@@ -233,7 +234,7 @@ namespace ChessUI
                 Y1 = 70,
                 X2 = 75,
                 Y2 = 70,
-                Stroke = Brushes.Red,
+                Stroke = solidColorBrush,
                 StrokeThickness = 2
             };
             canvas.Children.Add(bottomRightArrow);
@@ -243,20 +244,21 @@ namespace ChessUI
                 Y1 = 70,
                 X2 = 75,
                 Y2 = 50,
-                Stroke = Brushes.Red,
+                Stroke = solidColorBrush,
                 StrokeThickness = 2
             };
             canvas.Children.Add(sideBotRightArrow);
         }
-        private void DrawOldPos(Canvas canvas)
+        private void DrawOldPos(Canvas canvas,int row,int col)
         {
+            SolidColorBrush solidColorBrush = (gameState.Board[row, col].Color == Player.Black) ? Brushes.DarkBlue : Brushes.Red;
             Line topLeftArrow = new Line
             {
                 X1 = 20,
                 Y1 = 15,
                 X2 = 30,
                 Y2 = 15,
-                Stroke = Brushes.Red,
+                Stroke = solidColorBrush,
                 StrokeThickness = 2
             };
             canvas.Children.Add(topLeftArrow);
@@ -266,7 +268,7 @@ namespace ChessUI
                 Y1 = 15,
                 X2 = 20,
                 Y2 = 25,
-                Stroke = Brushes.Red,
+                Stroke = solidColorBrush,
                 StrokeThickness = 2
             };
             canvas.Children.Add(sideTopLeftArrow);
@@ -276,7 +278,7 @@ namespace ChessUI
                 Y1 = 15,
                 X2 = 58,
                 Y2 = 15,
-                Stroke = Brushes.Red,
+                Stroke = solidColorBrush,
                 StrokeThickness = 2
             };
             canvas.Children.Add(topRightArrow);
@@ -286,7 +288,7 @@ namespace ChessUI
                 Y1 = 15,
                 X2 = 58,
                 Y2 = 25,
-                Stroke = Brushes.Red,
+                Stroke = solidColorBrush,
                 StrokeThickness = 2
             };
             canvas.Children.Add(sideTopRightArrow);
@@ -296,7 +298,7 @@ namespace ChessUI
                 Y1 = 53,
                 X2 = 30,
                 Y2 = 53,
-                Stroke = Brushes.Red,
+                Stroke = solidColorBrush,
                 StrokeThickness = 2
             };
             canvas.Children.Add(bottomLeftArrow);
@@ -306,7 +308,7 @@ namespace ChessUI
                 Y1 = 53,
                 X2 = 20,
                 Y2 = 43,
-                Stroke = Brushes.Red,
+                Stroke = solidColorBrush,
                 StrokeThickness = 2
             };
             canvas.Children.Add(sideBotLeftArrow);
@@ -316,7 +318,7 @@ namespace ChessUI
                 Y1 = 53,
                 X2 = 48,
                 Y2 = 53,
-                Stroke = Brushes.Red,
+                Stroke = solidColorBrush,
                 StrokeThickness = 2
             };
             canvas.Children.Add(bottomRightArrow);
@@ -326,15 +328,15 @@ namespace ChessUI
                 Y1 = 53,
                 X2 = 58,
                 Y2 = 43,
-                Stroke = Brushes.Red,
+                Stroke = solidColorBrush,
                 StrokeThickness = 2
             };
             canvas.Children.Add(sideBotRightArrow);
         }
         private void ShowPrevMove(Move move)
         {
-            DrawOldPos(posMoved[move.FromPos.Row, move.FromPos.Column]);
-            DrawNewPos(posMoved[move.ToPos.Row, move.ToPos.Column]);
+            DrawOldPos(posMoved[move.FromPos.Row, move.FromPos.Column],move.ToPos.Row,move.ToPos.Column);
+            DrawNewPos(posMoved[move.ToPos.Row, move.ToPos.Column],move.ToPos.Row,move.ToPos.Column);
         }
         private void HidePrevMove(Move move)
         {
@@ -384,9 +386,14 @@ namespace ChessUI
 
         private void UndoButton_Click(object sender, RoutedEventArgs e)
         {
+            if(gameState.Moved.Any()) HidePrevMove(gameState.Moved.First().Item1);
             OnToPositionSelected(selectedPos);
             gameState.UndoMove();
             DrawBoard(gameState.Board);
+            if (gameState.Moved.Any())
+            {
+                ShowPrevMove(gameState.Moved.First().Item1);
+            }
         }
     }
 }
