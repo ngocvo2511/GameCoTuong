@@ -8,7 +8,7 @@ namespace ChessLogic.GameStates.GameState
 {
     public class GameStateAI : GameState
     {
-        private int depth;
+        public int depth { get; set; }
         private ValuePiece value;
         public GameStateAI(Player player, Board board, int depth) : base(player, board)
         {
