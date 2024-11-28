@@ -29,7 +29,7 @@ namespace ChessUI
         private Dictionary<Position, Move> moveCache = new Dictionary<Position, Move>();
         internal GameState gameState;
         private Position selectedPos = null;
-        public GameUserControl(bool isAI,int difficult=1)
+        public GameUserControl(bool isAI, int difficult = 1)
         {
             InitializeComponent();
             InitializeBoard();
@@ -60,8 +60,8 @@ namespace ChessUI
                         Height = 40,
                         VerticalAlignment = VerticalAlignment.Center,
                         HorizontalAlignment = HorizontalAlignment.Center
-                    };                    
-                    highlights[r, c] = highlight;                    
+                    };
+                    highlights[r, c] = highlight;
                     HighlightGrid.Children.Add(highlight);
                     Canvas canvas = new Canvas()
                     {
@@ -337,8 +337,8 @@ namespace ChessUI
         }
         private void ShowPrevMove(Move move)
         {
-            DrawOldPos(posMoved[move.FromPos.Row,move.FromPos.Column]);
-            DrawNewPos(posMoved[move.ToPos.Row,move.ToPos.Column]);
+            DrawOldPos(posMoved[move.FromPos.Row, move.FromPos.Column]);
+            DrawNewPos(posMoved[move.ToPos.Row, move.ToPos.Column]);
         }
         private void HidePrevMove(Move move)
         {

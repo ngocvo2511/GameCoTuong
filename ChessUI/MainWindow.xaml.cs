@@ -104,6 +104,16 @@ namespace ChessUI
             view.Content = gameUserControl;
         }
 
+        private void CreateViewGame2P()
+        {
+            onGame = true;
+
+            gameUserControl = new GameUserControl(false);
+            gameUserControl.PauseButtonClicked += PauseButtonClicked;
+
+            view.Content = gameUserControl;
+        }
+
         private void BackButtonClicked(object sender, RoutedEventArgs e)
         {
             if (!onGame)
@@ -133,7 +143,7 @@ namespace ChessUI
 
         private void SelectGameMode_TwoPlayerButtonClicked(object sender, RoutedEventArgs e)
         {
-
+            CreateViewGame2P();
         }
 
         private void PauseButtonClicked(object sender, RoutedEventArgs e)
