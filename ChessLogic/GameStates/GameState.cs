@@ -13,6 +13,8 @@ namespace ChessLogic.GameStates.GameState
         public Player CurrentPlayer { get; protected set; }
 
         public Result Result { get; protected set; } = null;
+
+        private int noCapture = 0;
         public GameState(Player player, Board board)
         {
             CurrentPlayer = player;
@@ -35,7 +37,16 @@ namespace ChessLogic.GameStates.GameState
         public void MakeMove(Move move)
         {
             Moved.Push(Tuple.Create(move, Board[move.ToPos]));
-            move.Execute(Board);
+            bool capture = move.Execute(Board);
+
+            if (capture)
+            {
+                noCapture = 0;
+            }
+            else
+            {
+                noCapture++;
+            }
             CurrentPlayer = CurrentPlayer.Opponent();
             CheckForGameOver();
         }
@@ -68,11 +79,20 @@ namespace ChessLogic.GameStates.GameState
             {
                 Result = Result.Draw(EndReason.InsufficientMaterial);
             }
+            else if (FiftyMoveRule())
+            {
+                Result = Result.Draw(EndReason.FiftyMoveRule);
+            }
         }
 
         public bool IsGameOver()
         {
             return Result != null;
+        }
+
+        private bool FiftyMoveRule()
+        {
+            return noCapture >= 100;
         }
     }
 }
