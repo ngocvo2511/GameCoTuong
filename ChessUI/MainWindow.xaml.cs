@@ -110,6 +110,13 @@ namespace ChessUI
             view.Content = gameUserControl;
         }
 
+        private void CreateViewGameOnline()
+        {
+            onGame = true;
+            GameOnline gameOnline = new GameOnline();
+            view.Content = gameOnline;
+        }
+
         private void BackButtonClicked(object sender, RoutedEventArgs e)
         {
             if (!onGame)

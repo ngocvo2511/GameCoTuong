@@ -49,7 +49,7 @@ namespace ChessUI
 
         private async void ConnectHub()
         {
-            var hubUrl = "https://localhost:7013/chessHub";
+            var hubUrl = "https://server20241129155846.azurewebsites.net/chessHub";
 
             connection = new HubConnectionBuilder()
                 .WithUrl(hubUrl)
