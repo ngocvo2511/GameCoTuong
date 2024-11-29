@@ -122,5 +122,39 @@ namespace ChessLogic
             }
             return copy;
         }
+
+        public Counting CountPieces()
+        {
+            Counting counting = new Counting();
+            foreach (Position pos in PiecePositions())
+            {
+                Piece piece = this[pos];
+                counting.Increment(piece.Color, piece.Type);
+            }
+            return counting;
+        }
+
+        public bool InsufficientMaterial()
+        {
+            Counting counting = CountPieces();
+            return IsNoAttackPiece(counting) || IsKingHorseVKing(counting) || IsKingCannonVKing(counting);
+        }
+
+        private static bool IsNoAttackPiece(Counting counting)
+        {
+            return counting.CountingAttackPieces(Player.Red) == 0 || counting.CountingAttackPieces(Player.Black) == 0;
+        }
+
+        private static bool IsKingHorseVKing(Counting counting)
+        {
+            return counting.TotalCount == 3 && (counting.Red(PieceType.Horse) == 1 || counting.Black(PieceType.Horse) == 1);
+        }
+
+        private static bool IsKingCannonVKing(Counting counting)
+        {
+            return counting.TotalCount == 3 && (counting.Red(PieceType.Cannon) == 1 || counting.Black(PieceType.Cannon) == 1);
+        }
+
+        
     }
 }

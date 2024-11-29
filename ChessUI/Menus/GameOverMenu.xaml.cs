@@ -59,6 +59,7 @@ namespace ChessUI.Menus
             {
                 EndReason.Stalemate => $"{PlayerString(currentPlayer)} không thể di chuyển",
                 EndReason.Checkmate => $"{PlayerString(currentPlayer)} bị chiếu bí",
+                EndReason.InsufficientMaterial => "Hòa vì thiếu quân",
                 _ => ""
             };
         }
