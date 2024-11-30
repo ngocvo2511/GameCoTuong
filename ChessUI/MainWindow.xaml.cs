@@ -14,6 +14,7 @@ namespace ChessUI
         GameUserControl gameUserControl;
         MainMenu mainMenu = new MainMenu();
         SelectGameModeMenu selectGameModeMenu = new SelectGameModeMenu();
+        GameDifficultyMenu gameDifficultyMenu = new GameDifficultyMenu();
         InstructionsMenu instructionsMenu = new InstructionsMenu();
         SettingsMenu settingsMenu = new SettingsMenu();
         PauseMenu pauseMenu = new PauseMenu();
@@ -56,7 +57,14 @@ namespace ChessUI
 
             view.Content = selectGameModeMenu;
         }
-
+        private void CreateSelectDifficultMenu()
+        {
+            gameDifficultyMenu.BackButtonClicked += GameDifficultyMenu_BackButtonClicked;
+            gameDifficultyMenu.PlayEasyBotButtonClicked += GameDifficultyMenu_PlayEasyBotButtonClicked;
+            gameDifficultyMenu.PlayNormalBotButtonClicked += GameDifficultyMenu_PlayNormalBotButtonClicked;
+            gameDifficultyMenu.PlayHardBotButtonClicked += GameDifficultyMenu_PlayHardBotButtonClicked;
+            view.Content = gameDifficultyMenu;
+        }
         private void CreateInstructionMenu()
         {
             instructionsMenu.BackButtonClicked += BackButtonClicked;
@@ -101,11 +109,11 @@ namespace ChessUI
             view.Content = gameOverMenu;
         }
 
-        private void CreateViewGameAI()
+        private void CreateViewGameAI(int difficulty)
         {
             onGame = true;
 
-            gameUserControl = new GameUserControl(this, true, 4);
+            gameUserControl = new GameUserControl(this, true, difficulty);
             gameUserControl.PauseButtonClicked += PauseButtonClicked;
 
             view.Content = gameUserControl;
@@ -157,7 +165,23 @@ namespace ChessUI
         private void SelectGameMode_PlayWithBotButtonClicked(object sender, RoutedEventArgs e)
         {
             PlayButtonClickSound();
-            CreateViewGameAI();
+            CreateSelectDifficultMenu();
+        }
+        private void GameDifficultyMenu_BackButtonClicked(object sender, RoutedEventArgs e)
+        {
+            view.Content = selectGameModeMenu;
+        }
+        private void GameDifficultyMenu_PlayEasyBotButtonClicked(object sender, RoutedEventArgs e)
+        {
+            CreateViewGameAI(2);
+        }
+        private void GameDifficultyMenu_PlayNormalBotButtonClicked(object sender, RoutedEventArgs e)
+        {
+            CreateViewGameAI(3);
+        }
+        private void GameDifficultyMenu_PlayHardBotButtonClicked(object sender, RoutedEventArgs e)
+        {
+            CreateViewGameAI(4);
         }
 
         private void SelectGameMode_TwoPlayerButtonClicked(object sender, RoutedEventArgs e)
