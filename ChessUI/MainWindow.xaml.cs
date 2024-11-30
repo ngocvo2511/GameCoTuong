@@ -1,4 +1,5 @@
-﻿using ChessLogic.GameStates.GameState;
+﻿using ChessLogic;
+using ChessLogic.GameStates.GameState;
 using ChessUI.Menus;
 using System.Windows;
 using System.Windows.Input;
@@ -26,6 +27,7 @@ namespace ChessUI
         MediaPlayer moveSound = new MediaPlayer();
 
         bool onGame = false;
+        Player color = Player.Red;
 
         public MainWindow()
         {
@@ -74,8 +76,12 @@ namespace ChessUI
 
         private void CreateSettingsMenu()
         {
+            settingsMenu.Red.IsEnabled = !onGame;
+            settingsMenu.Black.IsEnabled = !onGame;
             settingsMenu.BackButtonClicked += BackButtonClicked;
-
+            settingsMenu.RedChecked += SettingsMenu_RedChecked;
+            settingsMenu.BlackChecked += SettingsMenu_BlackChecked;
+            
             view.Content = settingsMenu;
         }
 
@@ -113,7 +119,7 @@ namespace ChessUI
         {
             onGame = true;
 
-            gameUserControl = new GameUserControl(this, true, difficulty);
+            gameUserControl = new GameUserControl(this, color, true, difficulty);
             gameUserControl.PauseButtonClicked += PauseButtonClicked;
 
             view.Content = gameUserControl;
@@ -123,7 +129,7 @@ namespace ChessUI
         {
             onGame = true;
 
-            gameUserControl = new GameUserControl(this, false);
+            gameUserControl = new GameUserControl(this, color, false);
             gameUserControl.PauseButtonClicked += PauseButtonClicked;
 
             view.Content = gameUserControl;
@@ -188,6 +194,24 @@ namespace ChessUI
         {
             PlayButtonClickSound();
             CreateViewGame2P();
+        }
+
+        private void SettingsMenu_RedChecked(object sender, RoutedEventArgs e)
+        {
+            PlayButtonClickSound();
+            if (color == Player.Black)
+            {
+                color = Player.Red;
+            }    
+        }
+
+        private void SettingsMenu_BlackChecked(object sender, RoutedEventArgs e)
+        {
+            PlayButtonClickSound();
+            if (color == Player.Red)
+            {
+                color = Player.Black;
+            }
         }
 
         private void PauseButtonClicked(object sender, RoutedEventArgs e)

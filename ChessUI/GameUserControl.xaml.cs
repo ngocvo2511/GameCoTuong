@@ -30,12 +30,12 @@ namespace ChessUI
         private GameState gameState;
         private Position selectedPos = null;
         private MainWindow _mainWindow;
-        public GameUserControl(MainWindow mainWindow, bool isAI, int difficult = 1)
+        public GameUserControl(MainWindow mainWindow, Player color, bool isAI, int difficult = 1)
         {
             InitializeComponent();
             InitializeBoard();
-            if (isAI == true) gameState = new GameStateAI(Player.Red, Board.Initial(), difficult);
-            else gameState = new GameState2P(Player.Red, Board.Initial());
+            if (isAI == true) gameState = new GameStateAI(color, Board.Initial(), difficult);
+            else gameState = new GameState2P(color, Board.Initial());
             DrawBoard(gameState.Board);
             _mainWindow = mainWindow;
         }

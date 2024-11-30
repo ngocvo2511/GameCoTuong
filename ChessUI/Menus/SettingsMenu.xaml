@@ -6,15 +6,13 @@
              xmlns:local="clr-namespace:ChessUI.Menus"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="1200">
-    <Border Width="400"
-            Height="400"
+    <Border Width="500"
+            Height="500"
             Style="{StaticResource BorderStyle1}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="4*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
@@ -22,11 +20,43 @@
                        Text="Cài đặt"
                        Style="{StaticResource TextStyle1}"
                        FontSize="35"/>
-            <Button x:Name="BackButton" Grid.Row="4"
+            <Button x:Name="BackButton" Grid.Row="2"
                     Content="Quay về"
                     Style="{StaticResource ButtonStyle1}"
                     Width="220" Height="50" 
                     Click="BackButton_Click"/>
+
+            <StackPanel Grid.Row="1" Orientation="Vertical">
+                <StackPanel Orientation="Horizontal" Margin="50,10,50,0" >
+                    <TextBlock Text = "Màu quân cờ của bạn:"
+                               FontSize="18" Margin="0,0,40,0" 
+                               VerticalAlignment="Center"/>
+                    <RadioButton x:Name="Red" GroupName="colorGroup" 
+                                 IsChecked="True" Checked="Red_Checked">
+                        <Image Source="/Assets/Images/TuongDo.png" Width="70" Height="70" />
+                    </RadioButton>
+                    <RadioButton x:Name="Black" GroupName="colorGroup"
+                                 Checked="Black_Checked">
+                        <Image Source="/Assets/Images/TuongXanh.png" Width="70" Height="70" />
+                    </RadioButton>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="50,30,50,0">
+                    <TextBlock Text = "Âm lượng:"
+                               FontSize="18" Margin="0,0,30,0" 
+                               VerticalAlignment="Center"/>
+                    <Slider x:Name="VolumeSlider" 
+                            Width="220"
+                            VerticalAlignment="Center"
+                            Minimum="0" Maximum="100" 
+                            Value="50" 
+                            Margin="0,0,30,0"/>
+                    <TextBlock x:Name="VolumeValue"
+                               Text="50"
+                               FontSize="18" Margin="0,0,40,0" 
+                               VerticalAlignment="Center"/>
+
+                </StackPanel>
+            </StackPanel>
 
         </Grid>
     </Border>

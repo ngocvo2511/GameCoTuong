@@ -88,7 +88,7 @@
                         Các quân cờ:
                     </TextBlock>
 
-                    <Image Source="pack://application:,,,/Assets/Images/quanCo.png" 
+                    <Image Source="/Assets/Images/quanCo.png" 
                            Margin="10" 
                            Height="200" 
                            HorizontalAlignment="Center"/>
@@ -97,7 +97,7 @@
                         Sắp xếp ban đầu của các quân cờ:
                     </TextBlock>
 
-                    <Image Source="pack://application:,,,/Assets/Images/sapxepquanco.png" 
+                    <Image Source="/Assets/Images/sapxepquanco.png" 
                            Margin="10" 
                            Height="500" 
                            HorizontalAlignment="Center"/>
@@ -106,7 +106,7 @@
                         Vị trí sông và cung:        
                     </TextBlock>
 
-                    <Image Source="pack://application:,,,/Assets/Images/cungVaSong.jpg" 
+                    <Image Source="/Assets/Images/cungVaSong.jpg" 
                            Margin="10" 
                            Height="550" 
                            HorizontalAlignment="Center"/>
