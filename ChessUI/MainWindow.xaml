@@ -6,13 +6,13 @@
         xmlns:local="clr-namespace:ChessUI.Menus"
         mc:Ignorable="d"
         Title="Cờ Tướng" Height ="720"  Width="1200"
-        Icon="Assets/icon.png"
+        Icon="Assets/Images/icon.png"
         WindowStartupLocation="CenterScreen" ResizeMode="CanResize"
         KeyDown="Window_KeyDown">
 
     <Grid>
         <Grid.Background>
-            <ImageBrush ImageSource="Assets/background.jpg"/>
+            <ImageBrush ImageSource="Assets/Images/background.jpg"/>
         </Grid.Background>
         <Grid Grid.Row="1">
             <ContentControl x:Name="view"/>

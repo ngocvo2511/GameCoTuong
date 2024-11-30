@@ -345,6 +345,7 @@ namespace ChessUI
         }
         private async void HandleMove(Move move)
         {
+            _mainWindow.PlayMoveSound();
             MainGame.IsHitTestVisible = false;
             if (gameState.Moved.Any()) HidePrevMove(gameState.Moved.First().Item1);
             gameState.MakeMove(move);
@@ -358,6 +359,7 @@ namespace ChessUI
                 DrawBoard(gameState.Board);
                 HidePrevMove(prevMove);
                 ShowPrevMove(gameState.Moved.First().Item1);
+                _mainWindow.PlayMoveSound();
             }
 
             MainGame.IsHitTestVisible = true;
@@ -386,6 +388,7 @@ namespace ChessUI
 
         private void UndoButton_Click(object sender, RoutedEventArgs e)
         {
+            _mainWindow.PlayButtonClickSound();
             if(gameState.Moved.Any()) HidePrevMove(gameState.Moved.First().Item1);
             OnToPositionSelected(selectedPos);
             gameState.UndoMove();

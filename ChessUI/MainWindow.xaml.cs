@@ -2,6 +2,7 @@
 using ChessUI.Menus;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace ChessUI
 {
@@ -18,6 +19,11 @@ namespace ChessUI
         PauseMenu pauseMenu = new PauseMenu();
         ConfirmMenu confirmMenu = new ConfirmMenu();
         GameOverMenu gameOverMenu;
+
+        MediaPlayer buttonClickSound = new MediaPlayer();
+        MediaPlayer gameOverSound = new MediaPlayer();
+        MediaPlayer moveSound = new MediaPlayer();
+
         bool onGame = false;
 
         public MainWindow()
@@ -25,6 +31,10 @@ namespace ChessUI
             InitializeComponent();
 
             CreateMainMenu();
+
+            buttonClickSound.Open(new Uri("Assets/Sounds/buttonClickSound.mp3", UriKind.Relative));
+            gameOverSound.Open(new Uri("Assets/Sounds/gameOverSound.mp3", UriKind.Relative));
+            moveSound.Open(new Uri("Assets/Sounds/moveSound.mp3", UriKind.Relative));
         }
 
         private void CreateMainMenu()
@@ -81,6 +91,7 @@ namespace ChessUI
 
         internal void CreateGameOverMenu(GameState gameState)
         {
+            PlayGameOverSound();
             gameOverMenu = new GameOverMenu(gameState);
 
             gameOverMenu.NewButtonClicked += NewButtonClicked;
@@ -119,6 +130,7 @@ namespace ChessUI
 
         private void BackButtonClicked(object sender, RoutedEventArgs e)
         {
+            PlayButtonClickSound();
             if (!onGame)
                 view.Content = mainMenu;
             else view.Content = pauseMenu;
@@ -126,61 +138,73 @@ namespace ChessUI
 
         private void MainMenu_PlayButtonClicked(object sender, RoutedEventArgs e)
         {
+            PlayButtonClickSound();
             CreateSelectGameModeMenu();
         }
 
         private void MainMenu_InstructionsButtonClicked(object sender, RoutedEventArgs e)
         {
+            PlayButtonClickSound();
             CreateInstructionMenu();
         }
 
         private void SettingsButtonClicked(object sender, RoutedEventArgs e)
         {
+            PlayButtonClickSound();
             CreateSettingsMenu();
         }
 
         private void SelectGameMode_PlayWithBotButtonClicked(object sender, RoutedEventArgs e)
         {
+            PlayButtonClickSound();
             CreateViewGameAI();
         }
 
         private void SelectGameMode_TwoPlayerButtonClicked(object sender, RoutedEventArgs e)
         {
+            PlayButtonClickSound();
             CreateViewGame2P();
         }
 
         private void PauseButtonClicked(object sender, RoutedEventArgs e)
         {
+            PlayButtonClickSound();
             CreatePauseMenu();
 
         }
 
         private void PauseMenu_ContinueButtonClicked(object sender, RoutedEventArgs e)
         {
+            PlayButtonClickSound();
             view.Content = gameUserControl;
         }
 
         private void NewButtonClicked(object sender, RoutedEventArgs e)
         {
+            PlayButtonClickSound();
             CreateSelectGameModeMenu();
         }
 
         private void PauseMenu_HomeButtonClicked(object sender, RoutedEventArgs e)
         {
+            PlayButtonClickSound();
             CreateConfirmMenu();
         }
 
         private void ConfirmMenu_YesButtonClicked(object sender, RoutedEventArgs e)
         {
+            PlayButtonClickSound();
             CreateMainMenu();
         }
 
         private void GameOverMenu_HomeButtonClicked(object sender, RoutedEventArgs e)
         {
+            PlayButtonClickSound();
             CreateMainMenu();
         }
         private void GameOverMenu_ReviewButtonClicked(object sender, RoutedEventArgs e)
         {
+            PlayButtonClickSound();
             view.Content = gameUserControl;
         }
 
@@ -199,6 +223,21 @@ namespace ChessUI
                 }
 
             }
+        }
+        internal void PlayButtonClickSound()
+        {
+            buttonClickSound.Position = TimeSpan.Zero;
+            buttonClickSound.Play();
+        }
+        internal void PlayGameOverSound()
+        {
+            gameOverSound.Position = TimeSpan.Zero;
+            gameOverSound.Play();
+        }
+        internal void PlayMoveSound()
+        {
+            moveSound.Position = TimeSpan.Zero;
+            moveSound.Play();
         }
     }
 }

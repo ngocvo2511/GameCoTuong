@@ -8,24 +8,24 @@ namespace ChessUI
     {
         private static readonly Dictionary<PieceType, ImageSource> redSources = new()
         {
-            {PieceType.Cannon, LoadImage("Assets/PhaoDo.png") },
-            {PieceType.Chariot, LoadImage("Assets/XeDo.png") },
-            {PieceType.General, LoadImage("Assets/TuongDo.png") },
-            {PieceType.Advisor, LoadImage("Assets/SiDo.png") },
-            {PieceType.Elephant, LoadImage("Assets/TinhDo.png") },
-            {PieceType.Soldier, LoadImage("Assets/TotDo.png") },
-            {PieceType.Horse, LoadImage("Assets/MaDo.png") },
+            {PieceType.Cannon, LoadImage("Assets/Images/PhaoDo.png") },
+            {PieceType.Chariot, LoadImage("Assets/Images/XeDo.png") },
+            {PieceType.General, LoadImage("Assets/Images/TuongDo.png") },
+            {PieceType.Advisor, LoadImage("Assets/Images/SiDo.png") },
+            {PieceType.Elephant, LoadImage("Assets/Images/TinhDo.png") },
+            {PieceType.Soldier, LoadImage("Assets/Images/TotDo.png") },
+            {PieceType.Horse, LoadImage("Assets/Images/MaDo.png") },
         };
 
         private static readonly Dictionary<PieceType, ImageSource> blackSources = new()
         {
-            {PieceType.Cannon, LoadImage("Assets/PhaoXanh.png") },
-            {PieceType.Chariot, LoadImage("Assets/XeXanh.png") },
-            {PieceType.General, LoadImage("Assets/TuongXanh.png") },
-            {PieceType.Advisor, LoadImage("Assets/SiXanh.png") },
-            {PieceType.Elephant, LoadImage("Assets/TinhXanh.png") },
-            {PieceType.Soldier, LoadImage("Assets/TotXanh.png") },
-            {PieceType.Horse, LoadImage("Assets/MaXanh.png") },
+            {PieceType.Cannon, LoadImage("Assets/Images/PhaoXanh.png") },
+            {PieceType.Chariot, LoadImage("Assets/Images/XeXanh.png") },
+            {PieceType.General, LoadImage("Assets/Images/TuongXanh.png") },
+            {PieceType.Advisor, LoadImage("Assets/Images/SiXanh.png") },
+            {PieceType.Elephant, LoadImage("Assets/Images/TinhXanh.png") },
+            {PieceType.Soldier, LoadImage("Assets/Images/TotXanh.png") },
+            {PieceType.Horse, LoadImage("Assets/Images/MaXanh.png") },
         };
         private static ImageSource LoadImage(string filePath)
         {

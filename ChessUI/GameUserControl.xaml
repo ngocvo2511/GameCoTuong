@@ -8,7 +8,7 @@
              d:DesignHeight="720" d:DesignWidth="1200">
     <Grid x:Name="MainGame">
         <Grid.Background>
-            <ImageBrush ImageSource="Assets/background.jpg"/>
+            <ImageBrush ImageSource="Assets/Images/background.jpg"/>
         </Grid.Background>
 
         <Grid.RowDefinitions>
@@ -29,7 +29,7 @@
                       Height="720"
                       >
                     <Grid.Background>
-                        <ImageBrush ImageSource="Assets/board.jpg"/>
+                        <ImageBrush ImageSource="Assets/Images/board.jpg"/>
                     </Grid.Background>
                 </Grid>
                 <Grid x:Name="CellGrid"
