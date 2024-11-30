@@ -39,7 +39,7 @@ namespace ChessUI.Menus
             {
                 Player.Red => "ĐỎ THẮNG!",
                 Player.Black => "ĐEN THẮNG!",
-                _ => "HOÀ"
+                _ => "HÒA"
             };
         }
 
@@ -61,6 +61,7 @@ namespace ChessUI.Menus
                 EndReason.Checkmate => $"{PlayerString(currentPlayer)} bị chiếu bí",
                 EndReason.InsufficientMaterial => "Hòa vì thiếu quân",
                 EndReason.FiftyMoveRule => "Hòa vì 50 nước không ăn quân",
+                EndReason.ThreefoldRepetition => "Hòa vì lặp lại nước đi 3 lần",
                 _ => ""
             };
         }
