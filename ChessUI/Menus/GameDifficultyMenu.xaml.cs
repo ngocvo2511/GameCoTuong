@@ -20,54 +20,75 @@ namespace ChessUI.Menus
     /// </summary>
     public partial class GameDifficultyMenu : UserControl
     {
-        public event EventHandler BackButtonClicked;
         public GameDifficultyMenu()
         {
             InitializeComponent();
         }
+        public static readonly RoutedEvent BackButtonClickedEvent = EventManager.RegisterRoutedEvent(
+            "BackButtonClicked",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(GameDifficultyMenu)
+        );
+        public event RoutedEventHandler BackButtonClicked
+        {
+            add { AddHandler(BackButtonClickedEvent, value); }
+            remove { RemoveHandler(BackButtonClickedEvent, value); }
+        }
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Visibility = Visibility.Collapsed;
-            BackButtonClicked?.Invoke(this, EventArgs.Empty);
+            RaiseEvent(new RoutedEventArgs(BackButtonClickedEvent));
         }
 
+        public static readonly RoutedEvent PlayEasyBot = EventManager.RegisterRoutedEvent(
+           "PlayEasyBotButtonClicked",
+           RoutingStrategy.Bubble,
+           typeof(RoutedEventHandler),
+           typeof(SelectGameModeMenu)
+        );
+
+        public event RoutedEventHandler PlayEasyBotButtonClicked
+        {
+            add { AddHandler(PlayEasyBot, value); }
+            remove { RemoveHandler(PlayEasyBot, value); }
+        }
         private void EasyButton_Click(object sender, RoutedEventArgs e)
         {
-            //var window = Application.Current.MainWindow;
-            //GameWindow gameWindow = new GameWindow
-            //{
-            //    Left = window.Left,
-            //    Top = window.Top,
-            //};
-            //Application.Current.MainWindow = gameWindow;
-            //gameWindow.Show();
-            //window.Close();
+            RaiseEvent(new RoutedEventArgs(PlayEasyBot));
         }
 
+        public static readonly RoutedEvent PlayNormalBot = EventManager.RegisterRoutedEvent(
+           "PlayNormalBotButtonClicked",
+           RoutingStrategy.Bubble,
+           typeof(RoutedEventHandler),
+           typeof(SelectGameModeMenu)
+       );
+
+        public event RoutedEventHandler PlayNormalBotButtonClicked
+        {
+            add { AddHandler(PlayNormalBot, value); }
+            remove { RemoveHandler(PlayNormalBot, value); }
+        }
         private void NormalButton_Click(object sender, RoutedEventArgs e)
         {
-            //var window = Application.Current.MainWindow;
-            //GameWindow gameWindow = new GameWindow
-            //{
-            //    Left = window.Left,
-            //    Top = window.Top,
-            //};
-            //Application.Current.MainWindow = gameWindow;
-            //gameWindow.Show();
-            //window.Close();
+            RaiseEvent(new RoutedEventArgs(PlayNormalBot));
         }
 
+        public static readonly RoutedEvent PlayHardBot = EventManager.RegisterRoutedEvent(
+           "PlayHardBotButtonClicked",
+           RoutingStrategy.Bubble,
+           typeof(RoutedEventHandler),
+           typeof(SelectGameModeMenu)
+       );
+
+        public event RoutedEventHandler PlayHardBotButtonClicked
+        {
+            add { AddHandler(PlayHardBot, value); }
+            remove { RemoveHandler(PlayHardBot, value); }
+        }
         private void HardButton_Click(object sender, RoutedEventArgs e)
         {
-            //var window = Application.Current.MainWindow;
-            //GameWindow gameWindow = new GameWindow
-            //{
-            //    Left = window.Left,
-            //    Top = window.Top,
-            //};
-            //Application.Current.MainWindow = gameWindow;
-            //gameWindow.Show();
-            //window.Close();
+            RaiseEvent(new RoutedEventArgs(PlayHardBot));
         }
     }
 }
