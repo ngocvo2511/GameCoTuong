@@ -48,7 +48,9 @@
                             Width="220"
                             VerticalAlignment="Center"
                             Minimum="0" Maximum="100" 
-                            Value="50" 
+                            Value="50" ValueChanged="VolumeSlider_ValueChanged"
+                            TickFrequency="1"
+                            IsSnapToTickEnabled="true"
                             Margin="0,0,30,0"/>
                     <TextBlock x:Name="VolumeValue"
                                Text="50"

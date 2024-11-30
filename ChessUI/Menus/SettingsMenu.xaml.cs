@@ -78,5 +78,26 @@ namespace ChessUI.Menus
             RaiseEvent(new RoutedEventArgs(BlackCheckedEvent));
         }
 
+
+        public static readonly RoutedEvent VolumeSliderValueChangedEvent = EventManager.RegisterRoutedEvent(
+            "VolumeSliderValueChanged",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(SettingsMenu)
+        );
+
+        public event RoutedEventHandler VolumeSliderValueChanged
+        {
+            add { AddHandler(VolumeSliderValueChangedEvent, value); }
+            remove { RemoveHandler(VolumeSliderValueChangedEvent, value); }
+        }
+
+        private void VolumeSlider_ValueChanged(object sender, RoutedEventArgs e)
+        {
+            if (VolumeValue != null)
+                VolumeValue.Text = VolumeSlider.Value.ToString();
+            RaiseEvent(new RoutedEventArgs(VolumeSliderValueChangedEvent));
+        }
+
     }
 }

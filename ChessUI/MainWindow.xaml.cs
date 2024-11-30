@@ -28,6 +28,7 @@ namespace ChessUI
 
         bool onGame = false;
         Player color = Player.Red;
+        int volume = 50;
 
         public MainWindow()
         {
@@ -78,9 +79,11 @@ namespace ChessUI
         {
             settingsMenu.Red.IsEnabled = !onGame;
             settingsMenu.Black.IsEnabled = !onGame;
+
             settingsMenu.BackButtonClicked += BackButtonClicked;
             settingsMenu.RedChecked += SettingsMenu_RedChecked;
             settingsMenu.BlackChecked += SettingsMenu_BlackChecked;
+            settingsMenu.VolumeSliderValueChanged += SettingsMenu_VolumeSliderValueChanged;
             
             view.Content = settingsMenu;
         }
@@ -214,6 +217,11 @@ namespace ChessUI
             }
         }
 
+        private void SettingsMenu_VolumeSliderValueChanged(object sender, RoutedEventArgs e)
+        {
+            volume = (int)settingsMenu.VolumeSlider.Value;
+        }
+
         private void PauseButtonClicked(object sender, RoutedEventArgs e)
         {
             PlayButtonClickSound();
@@ -274,16 +282,19 @@ namespace ChessUI
         }
         internal void PlayButtonClickSound()
         {
+            buttonClickSound.Volume = volume / 100.0;
             buttonClickSound.Position = TimeSpan.Zero;
             buttonClickSound.Play();
         }
         internal void PlayGameOverSound()
         {
+            gameOverSound.Volume = volume /100.0;
             gameOverSound.Position = TimeSpan.Zero;
             gameOverSound.Play();
         }
         internal void PlayMoveSound()
         {
+            moveSound.Volume = volume / 100.0;
             moveSound.Position = TimeSpan.Zero;
             moveSound.Play();
         }
