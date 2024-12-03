@@ -38,8 +38,24 @@ namespace ChessUI
             else gameState = new GameState2P(color, Board.Initial());
             DrawBoard(gameState.Board);
             _mainWindow = mainWindow;
+            if(gameState is GameStateAI && color==Player.Black)
+            {
+                StartAIMoveWithDelay();
+            }
         }
-
+        private async void StartAIMoveWithDelay()
+        {
+            MainGame.IsHitTestVisible = false;
+            await Task.Delay(1000);
+            if (gameState is GameStateAI AI)
+            {
+                await Task.Run(() => AI.AiMove());
+                DrawBoard(gameState.Board);
+                ShowPrevMove(gameState.Moved.First().Item1);
+                _mainWindow.PlayMoveSound();
+            }
+            MainGame.IsHitTestVisible = true;
+        }
         private void InitializeBoard()
         {
             for (int r = 0; r < 10; r++)
