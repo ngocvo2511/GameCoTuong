@@ -1,5 +1,6 @@
 ﻿using ChessLogic.GameStates.GameState;
 using ChessUI.Menus;
+using Microsoft.AspNetCore.SignalR.Client;
 using System.Windows;
 using System.Windows.Input;
 
@@ -109,12 +110,28 @@ namespace ChessUI
 
             view.Content = gameUserControl;
         }
-
+         
         private void CreateViewGameOnline()
         {
             onGame = true;
-            GameOnline gameOnline = new GameOnline();
-            view.Content = gameOnline;
+            RoomControl roomControl = new RoomControl();
+            roomControl.NavigateToGameOnline += RoomControl_NavigateToGameOnline;
+            view.Content = roomControl;
+        }
+
+        private void RoomControl_NavigateToGameOnline(object sender, RoutedEventArgs e)
+        {
+            if (e is NavigateToGameOnlineEventArgs args)
+            {
+
+                string roomName = args.RoomName;
+                if(roomName == null)
+                {
+                    return;
+                }
+                GameOnline gameOnline = new GameOnline(roomName);
+                view.Content = gameOnline;
+            }
         }
 
         private void BackButtonClicked(object sender, RoutedEventArgs e)
@@ -146,7 +163,7 @@ namespace ChessUI
 
         private void SelectGameMode_TwoPlayerButtonClicked(object sender, RoutedEventArgs e)
         {
-            CreateViewGame2P();
+            CreateViewGameOnline();
         }
 
         private void PauseButtonClicked(object sender, RoutedEventArgs e)

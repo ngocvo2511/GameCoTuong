@@ -26,8 +26,7 @@
             <Grid>
                 <Grid x:Name="BoardGrid"
                    Width="720"
-                   Height="720"
-                   >
+                   Height="720">
                     <Grid.Background>
                         <ImageBrush ImageSource="Assets/board.jpg"/>
                     </Grid.Background>
@@ -52,15 +51,19 @@
                 </Grid>
             </Grid>
         </Viewbox>
+
         <Button x:Name="SettingButton" Grid.Row="0" Grid.Column="2"
          Content="Cài đặt"
          Style="{StaticResource ButtonStyle1}"
          Width="110"
          Height="50"
          VerticalAlignment="Bottom" Margin="0,0,5,10" Click="SettingButton_Click"/>
-
-        
-
+        <Button x:Name="LeaveButton" Grid.Row="1" Grid.Column="2"
+ Content="Thoát phòng"
+ Style="{StaticResource ButtonStyle1}"
+ Width="110"
+ Height="50"
+ VerticalAlignment="Bottom" Margin="0,0,-19,175" Click="LeaveRoomButton_Click"/>
 
     </Grid>
 </UserControl>

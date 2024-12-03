@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.AspNetCore.SignalR.Client;
+using System.Data.Common;
 
 namespace ChessUI
 {
@@ -31,13 +32,15 @@ namespace ChessUI
         private GameState gameState;
         private Position selectedPos = null;
         private HubConnection connection;
-        public GameOnline()
+        private string roomName;
+        public GameOnline(string roomName)
         {
             InitializeComponent();
             InitializeBoard();
             gameState = new GameState2P(Player.Red, Board.Initial());
-
+            this.roomName = roomName;
             DrawBoard(gameState.Board);
+
             ConnectHub();
             //settingsMenu.BackButtonClicked += BackButtonClicked;
             //selectGameModeMenu.BackButtonClicked += BackButtonClicked;
@@ -49,11 +52,8 @@ namespace ChessUI
 
         private async void ConnectHub()
         {
-            var hubUrl = "https://server20241129155846.azurewebsites.net/chessHub";
-
-            connection = new HubConnectionBuilder()
-                .WithUrl(hubUrl)
-                .Build();
+            var connectionManager = SignalRConnectionManager.Instance;
+            connection = connectionManager.Connection;
 
             connection.On<int, int, int, int>("ClickAtPoint", (x1, y1, x2, y2) =>
             {
@@ -66,7 +66,23 @@ namespace ChessUI
                 });
             });
 
-            await connection.StartAsync();
+            connection.On<string>("PlayerLeft", (connectionId) =>
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    MessageBox.Show($"Player {connectionId} has left the room.");
+                });
+            });
+
+            connection.On<string>("Error", (message) =>
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    MessageBox.Show(message);
+                });
+            });
+
+            await connectionManager.StartConnectionAsync();
 
         }
 
@@ -422,5 +438,16 @@ namespace ChessUI
             RaiseEvent(new RoutedEventArgs(SettingButtonClickedEvent));
         }
 
+        private async void LeaveRoomButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (connection != null && connection.State == HubConnectionState.Connected)
+            {
+                await connection.InvokeAsync("LeaveRoom", roomName);
+            }
+            else
+            {
+                MessageBox.Show("Not connected to the server.");
+            }
+        }
     }
 }
