@@ -30,16 +30,32 @@ namespace ChessUI
         private GameState gameState;
         private Position selectedPos = null;
         private MainWindow _mainWindow;
-        public GameUserControl(MainWindow mainWindow, bool isAI, int difficult = 1)
+        public GameUserControl(MainWindow mainWindow, Player color, bool isAI, int difficult = 1)
         {
             InitializeComponent();
             InitializeBoard();
-            if (isAI == true) gameState = new GameStateAI(Player.Red, Board.Initial(), difficult);
-            else gameState = new GameState2P(Player.Red, Board.Initial());
+            if (isAI == true) gameState = new GameStateAI(color, Board.Initial(), difficult);
+            else gameState = new GameState2P(color, Board.Initial());
             DrawBoard(gameState.Board);
             _mainWindow = mainWindow;
+            if(gameState is GameStateAI && color==Player.Black)
+            {
+                StartAIMoveWithDelay();
+            }
         }
-
+        private async void StartAIMoveWithDelay()
+        {
+            MainGame.IsHitTestVisible = false;
+            await Task.Delay(1000);
+            if (gameState is GameStateAI AI)
+            {
+                await Task.Run(() => AI.AiMove());
+                DrawBoard(gameState.Board);
+                ShowPrevMove(gameState.Moved.First().Item1);
+                _mainWindow.PlayMoveSound();
+            }
+            MainGame.IsHitTestVisible = true;
+        }
         private void InitializeBoard()
         {
             for (int r = 0; r < 10; r++)
@@ -345,6 +361,7 @@ namespace ChessUI
         }
         private async void HandleMove(Move move)
         {
+            _mainWindow.PlayMoveSound();
             MainGame.IsHitTestVisible = false;
             if (gameState.Moved.Any()) HidePrevMove(gameState.Moved.First().Item1);
             gameState.MakeMove(move);
@@ -358,6 +375,7 @@ namespace ChessUI
                 DrawBoard(gameState.Board);
                 HidePrevMove(prevMove);
                 ShowPrevMove(gameState.Moved.First().Item1);
+                _mainWindow.PlayMoveSound();
             }
 
             MainGame.IsHitTestVisible = true;
@@ -386,6 +404,7 @@ namespace ChessUI
 
         private void UndoButton_Click(object sender, RoutedEventArgs e)
         {
+            _mainWindow.PlayButtonClickSound();
             if(gameState.Moved.Any()) HidePrevMove(gameState.Moved.First().Item1);
             OnToPositionSelected(selectedPos);
             gameState.UndoMove();

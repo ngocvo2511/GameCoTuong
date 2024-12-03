@@ -9,26 +9,29 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Assets\background.jpg" />
-    <None Remove="Assets\board.jpg" />
-    <None Remove="Assets\cungVaSong.jpg" />
-    <None Remove="Assets\icon.png" />
-    <None Remove="Assets\MaDo.png" />
-    <None Remove="Assets\MaXanh.png" />
-    <None Remove="Assets\PhaoDo.png" />
-    <None Remove="Assets\PhaoXanh.png" />
-    <None Remove="Assets\quanCo.png" />
-    <None Remove="Assets\sapxepquanco.png" />
-    <None Remove="Assets\SiDo.png" />
-    <None Remove="Assets\SiXanh.png" />
-    <None Remove="Assets\TinhDo.png" />
-    <None Remove="Assets\TinhXanh.png" />
-    <None Remove="Assets\TotDo.png" />
-    <None Remove="Assets\TotXanh.png" />
-    <None Remove="Assets\TuongDo.png" />
-    <None Remove="Assets\TuongXanh.png" />
-    <None Remove="Assets\XeDo.png" />
-    <None Remove="Assets\XeXanh.png" />
+	  <None Remove="Assets\Images\background.jpg" />
+	  <None Remove="Assets\Images\board.jpg" />
+	  <None Remove="Assets\Images\cungVaSong.jpg" />
+	  <None Remove="Assets\Images\icon.png" />
+	  <None Remove="Assets\Images\MaDo.png" />
+	  <None Remove="Assets\Images\MaXanh.png" />
+	  <None Remove="Assets\Images\PhaoDo.png" />
+	  <None Remove="Assets\Images\PhaoXanh.png" />
+	  <None Remove="Assets\Images\quanCo.png" />
+	  <None Remove="Assets\Images\sapxepquanco.png" />
+	  <None Remove="Assets\Images\SiDo.png" />
+	  <None Remove="Assets\Images\SiXanh.png" />
+	  <None Remove="Assets\Images\TinhDo.png" />
+	  <None Remove="Assets\Images\TinhXanh.png" />
+	  <None Remove="Assets\Images\TotDo.png" />
+	  <None Remove="Assets\Images\TotXanh.png" />
+	  <None Remove="Assets\Images\TuongDo.png" />
+	  <None Remove="Assets\Images\TuongXanh.png" />
+	  <None Remove="Assets\Images\XeDo.png" />
+	  <None Remove="Assets\Images\XeXanh.png" />
+	  <None Remove="Assets\Sounds\buttonClickSound.mp3" />
+	  <None Remove="Assets\Sounds\gameOverSound.mp3" />
+	  <None Remove="Assets\Sounds\moveSound.mp3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,26 +43,35 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Assets\background.jpg" />
-    <Resource Include="Assets\board.jpg" />
-    <Resource Include="Assets\cungVaSong.jpg" />
-    <Resource Include="Assets\MaDo.png" />
-    <Resource Include="Assets\MaXanh.png" />
-    <Resource Include="Assets\PhaoDo.png" />
-    <Resource Include="Assets\PhaoXanh.png" />
-    <Resource Include="Assets\icon.png" />
-    <Resource Include="Assets\quanCo.png" />
-    <Resource Include="Assets\sapxepquanco.png" />
-    <Resource Include="Assets\SiDo.png" />
-    <Resource Include="Assets\SiXanh.png" />
-    <Resource Include="Assets\TinhDo.png" />
-    <Resource Include="Assets\TinhXanh.png" />
-    <Resource Include="Assets\TotDo.png" />
-    <Resource Include="Assets\TotXanh.png" />
-    <Resource Include="Assets\TuongDo.png" />
-    <Resource Include="Assets\TuongXanh.png" />
-    <Resource Include="Assets\XeDo.png" />
-    <Resource Include="Assets\XeXanh.png" />
+	  <Resource Include="Assets\Images\background.jpg" />
+	  <Resource Include="Assets\Images\board.jpg" />
+	  <Resource Include="Assets\Images\cungVaSong.jpg" />
+	  <Resource Include="Assets\Images\MaDo.png" />
+	  <Resource Include="Assets\Images\MaXanh.png" />
+	  <Resource Include="Assets\Images\PhaoDo.png" />
+	  <Resource Include="Assets\Images\PhaoXanh.png" />
+	  <Resource Include="Assets\Images\icon.png" />
+	  <Resource Include="Assets\Images\quanCo.png" />
+	  <Resource Include="Assets\Images\sapxepquanco.png" />
+	  <Resource Include="Assets\Images\SiDo.png" />
+	  <Resource Include="Assets\Images\SiXanh.png" />
+	  <Resource Include="Assets\Images\TinhDo.png" />
+	  <Resource Include="Assets\Images\TinhXanh.png" />
+	  <Resource Include="Assets\Images\TotDo.png" />
+	  <Resource Include="Assets\Images\TotXanh.png" />
+	  <Resource Include="Assets\Images\TuongDo.png" />
+	  <Resource Include="Assets\Images\TuongXanh.png" />
+	  <Resource Include="Assets\Images\XeDo.png" />
+	  <Resource Include="Assets\Images\XeXanh.png" />
+	  <Content Include="Assets\Sounds\buttonClickSound.mp3">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	  <Content Include="Assets\Sounds\gameOverSound.mp3">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	  <Content Include="Assets\Sounds\moveSound.mp3">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
   </ItemGroup>
 
 </Project>
