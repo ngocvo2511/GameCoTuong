@@ -42,40 +42,40 @@ namespace ChessUI.Menus
             RaiseEvent(new RoutedEventArgs(BackButtonClickedEvent));
         }
 
-        public static readonly RoutedEvent RedCheckedEvent = EventManager.RegisterRoutedEvent(
-            "RedChecked",
+        public static readonly RoutedEvent humanFirstCheckedEvent = EventManager.RegisterRoutedEvent(
+            "humanFirstChecked",
             RoutingStrategy.Bubble,
             typeof(RoutedEventHandler),
             typeof(SettingsMenu)
         );
 
-        public event RoutedEventHandler RedChecked
+        public event RoutedEventHandler humanFirstChecked
         {
-            add { AddHandler(RedCheckedEvent, value); }
-            remove { RemoveHandler(RedCheckedEvent, value); }
+            add { AddHandler(humanFirstCheckedEvent, value); }
+            remove { RemoveHandler(humanFirstCheckedEvent, value); }
         }
 
-        private void Red_Checked(object sender, RoutedEventArgs e)
+        private void humanFirst_Checked(object sender, RoutedEventArgs e)
         {
-            RaiseEvent(new RoutedEventArgs(RedCheckedEvent));
+            RaiseEvent(new RoutedEventArgs(humanFirstCheckedEvent));
         }
 
-        public static readonly RoutedEvent BlackCheckedEvent = EventManager.RegisterRoutedEvent(
-            "BlackChecked",
+        public static readonly RoutedEvent botFirstCheckedEvent = EventManager.RegisterRoutedEvent(
+            "botFirstChecked",
             RoutingStrategy.Bubble,
             typeof(RoutedEventHandler),
             typeof(SettingsMenu)
         );
 
-        public event RoutedEventHandler BlackChecked
+        public event RoutedEventHandler botFirstChecked
         {
-            add { AddHandler(BlackCheckedEvent, value); }
-            remove { RemoveHandler(BlackCheckedEvent, value); }
+            add { AddHandler(botFirstCheckedEvent, value); }
+            remove { RemoveHandler(botFirstCheckedEvent, value); }
         }
 
-        private void Black_Checked(object sender, RoutedEventArgs e)
+        private void botFirst_Checked(object sender, RoutedEventArgs e)
         {
-            RaiseEvent(new RoutedEventArgs(BlackCheckedEvent));
+            RaiseEvent(new RoutedEventArgs(botFirstCheckedEvent));
         }
 
 
@@ -99,5 +99,58 @@ namespace ChessUI.Menus
             RaiseEvent(new RoutedEventArgs(VolumeSliderValueChangedEvent));
         }
 
+        public static readonly RoutedEvent isTimeLimitCheckedEvent = EventManager.RegisterRoutedEvent(
+            "isTimeLimitChecked",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(SettingsMenu)
+        );
+
+        public event RoutedEventHandler isTimeLimitChecked
+        {
+            add { AddHandler(isTimeLimitCheckedEvent, value); }
+            remove { RemoveHandler(isTimeLimitCheckedEvent, value); }
+        }
+
+        private void isTimeLimit_Checked(object sender, RoutedEventArgs e)
+        {
+            RaiseEvent(new RoutedEventArgs(isTimeLimitCheckedEvent));
+        }
+        public static readonly RoutedEvent isTimeLimitUncheckedEvent = EventManager.RegisterRoutedEvent(
+            "isTimeLimitUnchecked",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(SettingsMenu)
+        );
+
+        public event RoutedEventHandler isTimeLimitUnchecked
+        {
+            add { AddHandler(isTimeLimitUncheckedEvent, value); }
+            remove { RemoveHandler(isTimeLimitUncheckedEvent, value); }
+        }
+
+        private void isTimeLimit_Unchecked(object sender, RoutedEventArgs e)
+        {
+            RaiseEvent(new RoutedEventArgs(isTimeLimitUncheckedEvent));
+        }
+
+        public static readonly RoutedEvent TimeLimitTextBoxChangedEvent = EventManager.RegisterRoutedEvent(
+            "TimeLimitTextBoxChanged",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(SettingsMenu)
+            );
+
+        public event RoutedEventHandler TimeLimitTextBoxChanged
+        {
+            add { AddHandler(TimeLimitTextBoxChangedEvent, value); }
+            remove { RemoveHandler(TimeLimitTextBoxChangedEvent, value); }
+        }
+
+        private void TimeLimitTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+            RaiseEvent(new RoutedEventArgs(TimeLimitTextBoxChangedEvent));
+        }
     }
 }

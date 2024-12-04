@@ -4,7 +4,7 @@
              xmlns:local="clr-namespace:ChessUI"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <SolidColorBrush x:Key="StrokeColor1">#ff781e</SolidColorBrush>
+        <SolidColorBrush x:Key="StrokeColor1">#ff3cafa7</SolidColorBrush>
         <SolidColorBrush x:Key="StrokeColor2">#5b7b57</SolidColorBrush>
         <SolidColorBrush x:Key="FillColor">#f9f9f9</SolidColorBrush>
         <SolidColorBrush x:Key="TextColor">#ff781e</SolidColorBrush>
@@ -12,16 +12,29 @@
 
         <Style TargetType="Border" x:Key="BorderStyle1">
             <Setter Property="Opacity" Value="1"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="BorderBrush" Value="{StaticResource StrokeColor1}"/>
+            <Setter Property="BorderThickness" Value="15"/>
+            <Setter Property="CornerRadius" Value="10"/>
             <Setter Property="Background" Value="{StaticResource FillColor}"/>
+            <Setter Property="BorderBrush">
+                <Setter.Value>
+                    <VisualBrush>
+                        <VisualBrush.Visual>
+                            <Rectangle 
+                                Height="100" Width="100"                                
+                                StrokeThickness="1"
+                                Stroke="{StaticResource StrokeColor1}"  
+                                StrokeDashArray="4,4"/>
+                        </VisualBrush.Visual>
+                    </VisualBrush>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <Style TargetType="Border" x:Key="BorderStyle2">
-            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="BorderBrush" Value="{StaticResource StrokeColor2}"/>
             <Setter Property="Background" Value="{StaticResource FillColor}"/>
-            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="CornerRadius" Value="25"/>
         </Style>
 
         <Style TargetType="TextBlock" x:Key="TextStyle1">
@@ -33,10 +46,10 @@
 
 
         <Style TargetType="TextBlock" x:Key="TextStyle2">
-            <Setter Property="FontFamily" Value="Segoe UI Light"/>
+            <Setter Property="FontFamily" Value="Cascadia Mono SemiBold"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+            <Setter Property="Foreground" Value="Black"/>
         </Style>
         
         <Style TargetType="Button" x:Key="ButtonStyle1">

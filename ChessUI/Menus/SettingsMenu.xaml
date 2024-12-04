@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:ChessUI.Menus"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="1200">
-    <Border Width="500"
+    <Border Width="550"
             Height="500"
             Style="{StaticResource BorderStyle1}">
         <Grid>
@@ -27,22 +27,26 @@
                     Click="BackButton_Click"/>
 
             <StackPanel Grid.Row="1" Orientation="Vertical">
-                <StackPanel Orientation="Horizontal" Margin="50,10,50,0" >
-                    <TextBlock Text = "Màu quân cờ của bạn:"
-                               FontSize="18" Margin="0,0,40,0" 
-                               VerticalAlignment="Center"/>
-                    <RadioButton x:Name="Red" GroupName="colorGroup" 
-                                 IsChecked="True" Checked="Red_Checked">
-                        <Image Source="/Assets/Images/TuongDo.png" Width="70" Height="70" />
+                <StackPanel Orientation="Horizontal" Margin="50,0,50,0"
+                            TextBlock.FontSize="20">
+                    <RadioButton x:Name="humanFirst" Margin="0,0,100,0"
+                                 Content="Người đi trước"
+                                 Padding="10"
+                                 VerticalContentAlignment="Center"
+                                 IsChecked="True"
+                                 Checked="humanFirst_Checked">
                     </RadioButton>
-                    <RadioButton x:Name="Black" GroupName="colorGroup"
-                                 Checked="Black_Checked">
-                        <Image Source="/Assets/Images/TuongXanh.png" Width="70" Height="70" />
+                    <RadioButton x:Name="botFirst"
+                                 Content="Máy đi trước"
+                                 Padding="10"
+                                 VerticalContentAlignment="Center"
+                                 Checked="botFirst_Checked">
                     </RadioButton>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="50,30,50,0">
+                <StackPanel Orientation="Horizontal" Margin="50,30,50,0"
+                            TextBlock.FontSize="20">
                     <TextBlock Text = "Âm lượng:"
-                               FontSize="18" Margin="0,0,30,0" 
+                               Margin="0,0,35,0" 
                                VerticalAlignment="Center"/>
                     <Slider x:Name="VolumeSlider" 
                             Width="220"
@@ -54,8 +58,24 @@
                             Margin="0,0,30,0"/>
                     <TextBlock x:Name="VolumeValue"
                                Text="50"
-                               FontSize="18" Margin="0,0,40,0" 
                                VerticalAlignment="Center"/>
+                </StackPanel>
+                <CheckBox x:Name="isTimeLimit" IsChecked="True"
+                          Content="Giới hạn thời gian"
+                          Padding="10" FontSize="20"
+                          Margin="50,30,50,0"
+                          VerticalContentAlignment="Center"
+                          Checked="isTimeLimit_Checked"
+                          Unchecked="isTimeLimit_Unchecked"/>
+                <StackPanel Orientation="Horizontal" Margin="50,30,50,0"
+                            TextBlock.FontSize="20">
+                    <TextBlock Text = "Thời gian mỗi lượt: "
+                               Margin="0,0,150,0" 
+                               VerticalAlignment="Center"/>
+                    <TextBox x:Name="TimeLimitTextBox" Width="80"
+                             Text="60"
+                             TextAlignment="Right"
+                             TextChanged="TimeLimitTextBox_TextChanged"/>
 
                 </StackPanel>
             </StackPanel>

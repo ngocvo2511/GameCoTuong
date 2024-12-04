@@ -30,6 +30,7 @@ namespace ChessUI
         bool onGame = false;
         Player color = Player.Red;
         int volume = 50;
+        int time = 60;
 
         public MainWindow()
         {
@@ -78,19 +79,26 @@ namespace ChessUI
 
         private void CreateSettingsMenu()
         {
-            settingsMenu.Red.IsEnabled = !onGame;
-            settingsMenu.Black.IsEnabled = !onGame;
+            settingsMenu.humanFirst.IsEnabled = !onGame;
+            settingsMenu.botFirst.IsEnabled = !onGame;
+            settingsMenu.isTimeLimit.IsEnabled = !onGame;
+            settingsMenu.TimeLimitTextBox.IsEnabled = !onGame;
 
             settingsMenu.BackButtonClicked += BackButtonClicked;
-            settingsMenu.RedChecked += SettingsMenu_RedChecked;
-            settingsMenu.BlackChecked += SettingsMenu_BlackChecked;
+            settingsMenu.humanFirstChecked += SettingsMenu_humanFirstChecked;
+            settingsMenu.botFirstChecked += SettingsMenu_botFirstChecked;
             settingsMenu.VolumeSliderValueChanged += SettingsMenu_VolumeSliderValueChanged;
-            
+            settingsMenu.isTimeLimitChecked += SettingsMenu_isTimeLimitChecked;
+            settingsMenu.isTimeLimitUnchecked += SettingsMenu_isTimeLimitUnchecked;
+            settingsMenu.TimeLimitTextBoxChanged += SettingsMenu_TimeLimitTextBoxChanged;
+
             view.Content = settingsMenu;
         }
 
         private void CreatePauseMenu()
         {
+            gameUserControl.StopTimer();
+
             pauseMenu.ContinueButtonClicked += PauseMenu_ContinueButtonClicked;
             pauseMenu.NewButtonClicked += NewButtonClicked;
             pauseMenu.HomeButtonClicked += PauseMenu_HomeButtonClicked;
@@ -123,7 +131,7 @@ namespace ChessUI
         {
             onGame = true;
 
-            gameUserControl = new GameUserControl(this, color, true, difficulty);
+            gameUserControl = new GameUserControl(this, color, time, true, difficulty);
             gameUserControl.PauseButtonClicked += PauseButtonClicked;
 
             view.Content = gameUserControl;
@@ -133,7 +141,7 @@ namespace ChessUI
         {
             onGame = true;
 
-            gameUserControl = new GameUserControl(this, color, false);
+            gameUserControl = new GameUserControl(this, color, time, false);
             gameUserControl.PauseButtonClicked += PauseButtonClicked;
 
             view.Content = gameUserControl;
@@ -216,7 +224,7 @@ namespace ChessUI
             CreateViewGame2P();
         }
 
-        private void SettingsMenu_RedChecked(object sender, RoutedEventArgs e)
+        private void SettingsMenu_humanFirstChecked(object sender, RoutedEventArgs e)
         {
             PlayButtonClickSound();
             if (color == Player.Black)
@@ -225,7 +233,7 @@ namespace ChessUI
             }    
         }
 
-        private void SettingsMenu_BlackChecked(object sender, RoutedEventArgs e)
+        private void SettingsMenu_botFirstChecked(object sender, RoutedEventArgs e)
         {
             PlayButtonClickSound();
             if (color == Player.Red)
@@ -239,6 +247,24 @@ namespace ChessUI
             volume = (int)settingsMenu.VolumeSlider.Value;
         }
 
+        private void SettingsMenu_isTimeLimitChecked(object sender, RoutedEventArgs e)
+        {
+            PlayButtonClickSound();
+            settingsMenu.TimeLimitTextBox.IsEnabled = true;
+            this.time = Convert.ToInt16(settingsMenu.TimeLimitTextBox.Text);
+        }
+
+        private void SettingsMenu_isTimeLimitUnchecked(object sender, RoutedEventArgs e)
+        {
+            PlayButtonClickSound();
+            settingsMenu.TimeLimitTextBox.IsEnabled = false;
+            this.time = 0;
+        }
+        private void SettingsMenu_TimeLimitTextBoxChanged(object sender, RoutedEventArgs e)
+        {
+            this.time = Convert.ToInt16(settingsMenu.TimeLimitTextBox.Text);
+        }
+
         private void PauseButtonClicked(object sender, RoutedEventArgs e)
         {
             PlayButtonClickSound();
@@ -249,6 +275,7 @@ namespace ChessUI
         private void PauseMenu_ContinueButtonClicked(object sender, RoutedEventArgs e)
         {
             PlayButtonClickSound();
+            gameUserControl.ContinueTimer();
             view.Content = gameUserControl;
         }
 

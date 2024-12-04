@@ -13,6 +13,7 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="0.4*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -22,7 +23,7 @@
             <ColumnDefinition Width="1.2*"/>
         </Grid.ColumnDefinitions>
 
-        <Viewbox Grid.Column="1" Grid.RowSpan="2">
+        <Viewbox Grid.Column="1" Grid.RowSpan="3">
             <Grid>
                 <Grid x:Name="BoardGrid"
                       Width="720"
@@ -43,7 +44,7 @@
                     </UniformGrid>
                     <UniformGrid x:Name="PosMovedGrid"
                          Rows="10"
-                         Columns="9">
+                         Columns="9">                        
                     </UniformGrid>
                     <UniformGrid x:Name="HighlightGrid"
                          Rows="10"
@@ -52,20 +53,53 @@
                 </Grid>
             </Grid>
         </Viewbox>
-        <Button x:Name="PauseButton" Grid.Row="0" Grid.Column="2"
-            Content="Tạm dừng"
-            Style="{StaticResource ButtonStyle1}"
-            Width="110"
-            Height="50"
-            VerticalAlignment="Bottom" Margin="0,0,5,10" Click="PauseButton_Click"/>
+        <StackPanel Grid.Column="2" Grid.RowSpan="3"
+                    VerticalAlignment="Center">
+            <Button x:Name="PauseButton"
+                    Content="Tạm dừng"
+                    Style="{StaticResource ButtonStyle1}"
+                    Width="110"
+                    Height="50"
+                    Margin="0,0,5,10" Click="PauseButton_Click"/>
 
-        <Button x:Name="UndoButton" Grid.Row="1" Grid.Column="2"
-            Content="Đi lại"
-            Style="{StaticResource ButtonStyle1}"
-            Width="110"
-            Height="50"
-            VerticalAlignment="Top" Margin="0,10,5,0" Click="UndoButton_Click"/>
+            <Button x:Name="UndoButton"
+                    Content="Đi lại"
+                    Style="{StaticResource ButtonStyle1}"
+                    Width="110"
+                    Height="50"
+                    Margin="0,0,5,10" Click="UndoButton_Click"/>
 
+            <TextBlock Text="Lượt của:"
+                       Style="{StaticResource TextStyle2}"
+                       Foreground="Black"
+                       FontSize="20"
+                       Margin="0,5,5,5"
+                       />
+            <TextBlock x:Name="TurnTextBlock"
+                       Style="{StaticResource TextStyle2}"
+                       Foreground="Red"
+                       FontSize="20"
+                       Margin="0,0,5,10"
+                       />
+            <Border Width="110" Height="50"      
+                    Style="{StaticResource BorderStyle2}"
+                    Margin="0,0,5,0">
+                <TextBlock x:Name="Clock" 
+                           Foreground="Black"
+                           Style="{StaticResource TextStyle2}"
+                           FontSize="20"/>
+            </Border>
+        </StackPanel>
+        <Border Grid.Row="1" Margin="5,10,5,10"
+                Style="{StaticResource BorderStyle2}"
+                Opacity="0.5"/>
+        <StackPanel x:Name="GameInformationStackPanel" VerticalAlignment="Center"
+                    Grid.Row="1" Margin="5,10,5,10">
+            <TextBlock x:Name="GameInformationTextBlock"
+                       Style="{StaticResource TextStyle2}"
+                       FontSize="20"
+                       Text="Chế độ chơi: "/>
+        </StackPanel>
     </Grid>
 </UserControl>
 

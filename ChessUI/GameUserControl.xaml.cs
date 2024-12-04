@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace ChessUI
 {
@@ -30,18 +31,100 @@ namespace ChessUI
         private GameState gameState;
         private Position selectedPos = null;
         private MainWindow _mainWindow;
-        public GameUserControl(MainWindow mainWindow, Player color, bool isAI, int difficult = 1)
+        private DispatcherTimer timer = new DispatcherTimer();
+        private int _timeLimit = 60;
+        private int timeRemaining = 60;
+        private Brush redBrush = new SolidColorBrush(Colors.Red);
+        private Brush blackBrush = new SolidColorBrush(Colors.Black);
+        public GameUserControl(MainWindow mainWindow, Player color, int timeLimit, bool isAI, int difficult = 1)
         {
             InitializeComponent();
             InitializeBoard();
+            _timeLimit = timeLimit;
+            if (timeLimit != 0) InitializeTimer();
             if (isAI == true) gameState = new GameStateAI(color, Board.Initial(), difficult);
-            else gameState = new GameState2P(color, Board.Initial());
+            else gameState = new GameState2P(Player.Red, Board.Initial());
+            ShowGameInformation(difficult);
             DrawBoard(gameState.Board);
             _mainWindow = mainWindow;
             if(gameState is GameStateAI && color==Player.Black)
             {
                 StartAIMoveWithDelay();
             }
+        }
+        private void InitializeTimer()
+        {
+            // Tạo mới DispatcherTimer
+            timeRemaining = _timeLimit;
+            Clock.Text = $"{timeRemaining}";
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Tick += Timer_Tick;
+            timer.Start();
+        }
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            timeRemaining--;
+            Clock.Text = $"{timeRemaining}";
+
+            if (timeRemaining <= 0)
+            {
+                SwitchTurn();
+            }
+            else if (timeRemaining < 10)
+            {
+                Clock.Foreground = redBrush;
+            }    
+        }
+        internal void StopTimer()
+        {
+            timer.Stop();
+        }
+        internal void ContinueTimer()
+        {
+            timer.Start();
+        }
+        private void SwitchTurn()
+        {
+            timeRemaining = _timeLimit;
+
+            gameState.SwitchTurn();
+            TurnTextBlock.Text = gameState.CurrentPlayer == Player.Red ? "Đỏ" : "Đen";
+
+            if (_timeLimit != 0) Clock.Text = $"{timeRemaining}";
+            Clock.Foreground = blackBrush;
+        }
+        private void ShowGameInformation(int difficult)
+        {
+            Run run1 = new Run((difficult != 1) ? "Chơi với máy" : "2 người chơi");
+            run1.Foreground = redBrush;
+            GameInformationTextBlock.Inlines.Add(run1);
+
+            if (difficult != 1)
+            {
+                TextBlock newTextBlock = new TextBlock();
+                newTextBlock.Style = GameInformationTextBlock.Style;
+                newTextBlock.FontSize = 20;
+                Run run2 = new Run("Độ khó: ");
+                run2.Foreground = blackBrush;
+                Run run3 = new Run();
+                run3.Foreground = redBrush;
+                switch (difficult)
+                {
+                    case 2:
+                        run3.Text = "Dễ";
+                        break;
+                    case 3:
+                        run3.Text = "Thường";
+                        break;
+                    case 4:
+                        run3.Text = "Khó";
+                        break;
+                }
+                newTextBlock.Inlines.Add(run2);
+                newTextBlock.Inlines.Add(run3);
+                GameInformationStackPanel.Children.Add(newTextBlock);
+            }
+            TurnTextBlock.Text = gameState.CurrentPlayer == Player.Red ? "Đỏ" : "Đen";
         }
         private async void StartAIMoveWithDelay()
         {
@@ -367,6 +450,7 @@ namespace ChessUI
             gameState.MakeMove(move);
             DrawBoard(gameState.Board);
             ShowPrevMove(move);
+            SwitchTurn();
             await Dispatcher.InvokeAsync(() => { }, System.Windows.Threading.DispatcherPriority.Render);
             if (gameState is GameStateAI AI)
             {
@@ -376,6 +460,7 @@ namespace ChessUI
                 HidePrevMove(prevMove);
                 ShowPrevMove(gameState.Moved.First().Item1);
                 _mainWindow.PlayMoveSound();
+                SwitchTurn();
             }
 
             MainGame.IsHitTestVisible = true;

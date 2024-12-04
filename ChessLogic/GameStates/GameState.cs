@@ -53,6 +53,9 @@ namespace ChessLogic.GameStates.GameState
             {
                 noCapture++;
             }
+        }
+        public void SwitchTurn()
+        {
             CurrentPlayer = CurrentPlayer.Opponent();
             UpdateStateString();
             CheckForGameOver();
