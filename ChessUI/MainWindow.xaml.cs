@@ -97,7 +97,7 @@ namespace ChessUI
 
         private void CreatePauseMenu()
         {
-            gameUserControl.StopTimer();
+            if (time != 0) gameUserControl.StopTimer();
 
             pauseMenu.ContinueButtonClicked += PauseMenu_ContinueButtonClicked;
             pauseMenu.NewButtonClicked += NewButtonClicked;
@@ -275,7 +275,7 @@ namespace ChessUI
         private void PauseMenu_ContinueButtonClicked(object sender, RoutedEventArgs e)
         {
             PlayButtonClickSound();
-            gameUserControl.ContinueTimer();
+            if (time != 0) gameUserControl.ContinueTimer();
             view.Content = gameUserControl;
         }
 

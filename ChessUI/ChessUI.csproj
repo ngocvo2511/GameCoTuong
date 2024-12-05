@@ -27,6 +27,7 @@
 	  <None Remove="Assets\Images\TotXanh.png" />
 	  <None Remove="Assets\Images\TuongDo.png" />
 	  <None Remove="Assets\Images\TuongXanh.png" />
+	  <None Remove="Assets\Images\userImage.jpg" />
 	  <None Remove="Assets\Images\XeDo.png" />
 	  <None Remove="Assets\Images\XeXanh.png" />
 	  <None Remove="Assets\Sounds\buttonClickSound.mp3" />
@@ -61,6 +62,7 @@
 	  <Resource Include="Assets\Images\TotXanh.png" />
 	  <Resource Include="Assets\Images\TuongDo.png" />
 	  <Resource Include="Assets\Images\TuongXanh.png" />
+	  <Resource Include="Assets\Images\userImage.jpg" />
 	  <Resource Include="Assets\Images\XeDo.png" />
 	  <Resource Include="Assets\Images\XeXanh.png" />
 	  <Content Include="Assets\Sounds\buttonClickSound.mp3">

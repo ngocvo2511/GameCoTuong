@@ -14,6 +14,8 @@ namespace ChessLogic.GameStates.GameState
 
         public Result Result { get; protected set; } = null;
 
+        public Piece CapturedPiece { get; protected set; }
+
         private int noCapture = 0;
 
         private string stateString;
@@ -42,6 +44,7 @@ namespace ChessLogic.GameStates.GameState
         public void MakeMove(Move move)
         {
             Moved.Push(Tuple.Create(move, Board[move.ToPos]));
+            CapturedPiece = Board[move.ToPos];
             bool capture = move.Execute(Board);
 
             if (capture)
@@ -53,9 +56,6 @@ namespace ChessLogic.GameStates.GameState
             {
                 noCapture++;
             }
-        }
-        public void SwitchTurn()
-        {
             CurrentPlayer = CurrentPlayer.Opponent();
             UpdateStateString();
             CheckForGameOver();
@@ -126,6 +126,10 @@ namespace ChessLogic.GameStates.GameState
         private bool ThreefoldRepetition()
         {
             return stateHistory[stateString] == 3;
+        }
+        public void TimeForfeit()
+        {
+            Result = Result.Win(CurrentPlayer.Opponent(), EndReason.TimeForfeit);
         }
     }
 }

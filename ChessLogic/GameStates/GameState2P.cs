@@ -17,6 +17,7 @@ namespace ChessLogic.GameStates.GameState
             undoMove.Execute(Board);
             Board[undo.Item1.ToPos] = undo.Item2;
             CurrentPlayer = CurrentPlayer.Opponent();
+            CapturedPiece = undo.Item2;
         }
     }
 }

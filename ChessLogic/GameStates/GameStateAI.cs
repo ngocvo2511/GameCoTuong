@@ -10,6 +10,7 @@ namespace ChessLogic.GameStates.GameState
     {
         public int depth { get; set; }
         private ValuePiece value;
+        public Piece AiCapturedPiece { get; protected set; }
         public GameStateAI(Player player, Board board, int depth) : base(player, board)
         {
             this.depth = depth;
@@ -24,6 +25,8 @@ namespace ChessLogic.GameStates.GameState
                 Move undoMove = new NormalMove(undo.Item1.ToPos, undo.Item1.FromPos);
                 undoMove.Execute(Board);
                 Board[undo.Item1.ToPos] = undo.Item2;
+                if (i == 0) AiCapturedPiece = undo.Item2;
+                else CapturedPiece = undo.Item2;
             }
             CurrentPlayer = Player.Red;
         }

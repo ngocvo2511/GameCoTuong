@@ -47,8 +47,8 @@ namespace ChessUI.Menus
         {
             return player switch
             {
-                Player.Red => "ĐỎ!",
-                Player.Black => "ĐEN",
+                Player.Red => "Đỏ",
+                Player.Black => "Đen",
                 _ => ""
             };
         }
@@ -62,6 +62,7 @@ namespace ChessUI.Menus
                 EndReason.InsufficientMaterial => "Hòa vì thiếu quân",
                 EndReason.FiftyMoveRule => "Hòa vì 50 nước không ăn quân",
                 EndReason.ThreefoldRepetition => "Hòa vì lặp lại nước đi 3 lần",
+                EndReason.TimeForfeit => $"{PlayerString(currentPlayer)} hết thời gian",
                 _ => ""
             };
         }

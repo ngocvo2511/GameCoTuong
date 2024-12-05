@@ -31,98 +31,126 @@ namespace ChessUI
         private GameState gameState;
         private Position selectedPos = null;
         private MainWindow _mainWindow;
-        private DispatcherTimer timer = new DispatcherTimer();
-        private int _timeLimit = 60;
-        private int timeRemaining = 60;
+        private DispatcherTimer redTimer;
+        private DispatcherTimer blackTimer;
+        private int timeRemainingRed = 60;
+        private int timeRemainingBlack = 60;
+        private bool isRedTurn = true;
         private Brush redBrush = new SolidColorBrush(Colors.Red);
         private Brush blackBrush = new SolidColorBrush(Colors.Black);
         public GameUserControl(MainWindow mainWindow, Player color, int timeLimit, bool isAI, int difficult = 1)
         {
             InitializeComponent();
             InitializeBoard();
-            _timeLimit = timeLimit;
-            if (timeLimit != 0) InitializeTimer();
             if (isAI == true) gameState = new GameStateAI(color, Board.Initial(), difficult);
             else gameState = new GameState2P(Player.Red, Board.Initial());
             ShowGameInformation(difficult);
             DrawBoard(gameState.Board);
             _mainWindow = mainWindow;
+            timeRemainingRed = timeLimit;
+            timeRemainingBlack = timeLimit;
+            if (timeLimit != 0)
+            {
+                InitializeTimer();
+                SwitchTurn();
+            }
             if(gameState is GameStateAI && color==Player.Black)
             {
+                isRedTurn = false;
                 StartAIMoveWithDelay();
             }
         }
         private void InitializeTimer()
         {
-            // Tạo mới DispatcherTimer
-            timeRemaining = _timeLimit;
-            Clock.Text = $"{timeRemaining}";
-            timer.Interval = TimeSpan.FromSeconds(1);
-            timer.Tick += Timer_Tick;
-            timer.Start();
-        }
-        private void Timer_Tick(object sender, EventArgs e)
-        {
-            timeRemaining--;
-            Clock.Text = $"{timeRemaining}";
+            redClock.Text = $"Còn lại: {timeRemainingRed} giây";
+            blackClock.Text = $"Còn lại: {timeRemainingBlack} giây";
 
-            if (timeRemaining <= 0)
+            redTimer = new DispatcherTimer();
+            redTimer.Interval = TimeSpan.FromSeconds(1);
+            redTimer.Tick += RedTimer_Tick;
+            blackTimer = new DispatcherTimer();
+            blackTimer.Interval = TimeSpan.FromSeconds(1);
+            blackTimer.Tick += BlackTimer_Tick;
+        }
+        private void RedTimer_Tick(object sender, EventArgs e)
+        {
+            timeRemainingRed--;
+            redClock.Text = $"Còn lại: {timeRemainingRed} giây";
+            if (timeRemainingRed <= 0)
             {
-                SwitchTurn();
+                StopTimer();
+                HideHighlights();
+                CellGrid.IsEnabled = false;
+                gameState.TimeForfeit();
+                _mainWindow.CreateGameOverMenu(gameState);
+                return;
             }
-            else if (timeRemaining < 10)
+            if (timeRemainingRed < 10)
             {
-                Clock.Foreground = redBrush;
-            }    
+                redClock.Foreground = redBrush;
+            }
+        }
+        private void BlackTimer_Tick(object sender, EventArgs e)
+        {
+            timeRemainingBlack--;
+            blackClock.Text = $"Còn lại: {timeRemainingBlack} giây";
+            if (timeRemainingBlack <= 0)
+            {
+                StopTimer();
+                HideHighlights();
+                CellGrid.IsEnabled = false;
+                gameState.TimeForfeit();
+                _mainWindow.CreateGameOverMenu(gameState);
+                return;
+            }
+            if (timeRemainingBlack < 10)
+            {
+                blackClock.Foreground = redBrush;
+            }
         }
         internal void StopTimer()
         {
-            timer.Stop();
+            redTimer.Stop();
+            blackTimer.Stop();
         }
         internal void ContinueTimer()
         {
-            timer.Start();
+            if (!gameState.IsGameOver())
+            {
+                redTimer.Start();
+                blackTimer.Start();
+            }    
         }
         private void SwitchTurn()
         {
-            timeRemaining = _timeLimit;
+            redTimer.Stop();
+            blackTimer.Stop();
 
-            gameState.SwitchTurn();
-            TurnTextBlock.Text = gameState.CurrentPlayer == Player.Red ? "Đỏ" : "Đen";
-
-            if (_timeLimit != 0) Clock.Text = $"{timeRemaining}";
-            Clock.Foreground = blackBrush;
+            if (isRedTurn)
+            {
+                redTimer.Start();
+            }
+            else
+            {
+                blackTimer.Start();
+            }
         }
         private void ShowGameInformation(int difficult)
         {
-            Run run1 = new Run((difficult != 1) ? "Chơi với máy" : "2 người chơi");
-            run1.Foreground = redBrush;
-            GameInformationTextBlock.Inlines.Add(run1);
-
-            if (difficult != 1)
+            switch (difficult)
             {
-                TextBlock newTextBlock = new TextBlock();
-                newTextBlock.Style = GameInformationTextBlock.Style;
-                newTextBlock.FontSize = 20;
-                Run run2 = new Run("Độ khó: ");
-                run2.Foreground = blackBrush;
-                Run run3 = new Run();
-                run3.Foreground = redBrush;
-                switch (difficult)
-                {
-                    case 2:
-                        run3.Text = "Dễ";
-                        break;
-                    case 3:
-                        run3.Text = "Thường";
-                        break;
-                    case 4:
-                        run3.Text = "Khó";
-                        break;
-                }
-                newTextBlock.Inlines.Add(run2);
-                newTextBlock.Inlines.Add(run3);
-                GameInformationStackPanel.Children.Add(newTextBlock);
+                case 2:
+                    blackInfo.Text = "Máy (Độ khó: Dễ)";
+                    break;
+                case 3:
+                    blackInfo.Text = "Máy (Độ khó: Thường)";
+                    break;
+                case 4:
+                    blackInfo.Text = "Máy (Độ khó: Khó)";
+                    break;
+                case 1:
+                    blackInfo.Text = "Người chơi 2";
+                    break;
             }
             TurnTextBlock.Text = gameState.CurrentPlayer == Player.Red ? "Đỏ" : "Đen";
         }
@@ -168,7 +196,7 @@ namespace ChessUI
                     posMoved[r, c] = canvas;
                     PosMovedGrid.Children.Add(canvas);
                 }
-            }
+            }  
         }
 
         private void DrawBoard(Board board)
@@ -182,7 +210,7 @@ namespace ChessUI
                 }
             }
         }
-
+        
 
         private void CacheMoves(IEnumerable<Move> moves)
         {
@@ -263,6 +291,43 @@ namespace ChessUI
             {
                 HandleMove(move);
             }
+        }
+        private void DrawCapturedGrid(Piece piece)
+        {
+            if (piece == null) return;
+            Image image = new Image();
+            image.Source = Images.GetImage(piece);
+            if (gameState.CurrentPlayer == Player.Red)
+            {
+                BlackCapturedGrid.Children.Add(image);
+            }
+            else
+            {
+                RedCapturedGrid.Children.Add(image);
+            }
+        }
+        private void UndoCapturedGrid(Piece piece)
+        {
+            if (piece == null) return;
+            if (gameState.CurrentPlayer == Player.Black)
+            {
+                int count = BlackCapturedGrid.Children.Count;
+                if (count > 0)
+                    BlackCapturedGrid.Children.RemoveAt(count - 1);
+            }
+            else
+            {
+                int count = RedCapturedGrid.Children.Count;
+                if (count > 0)
+                    RedCapturedGrid.Children.RemoveAt(count - 1);
+            }         
+        }
+        private void UndoAiCapturedGrid(Piece piece)
+        {
+            if (piece == null) return;
+            int count = BlackCapturedGrid.Children.Count;
+            if (count > 0)
+                BlackCapturedGrid.Children.RemoveAt(count - 1);
         }
         private void DrawNewPos(Canvas canvas,int row,int col)
         {
@@ -444,29 +509,38 @@ namespace ChessUI
         }
         private async void HandleMove(Move move)
         {
+            isRedTurn = !isRedTurn;
+            if (redTimer != null) SwitchTurn();
             _mainWindow.PlayMoveSound();
             MainGame.IsHitTestVisible = false;
-            if (gameState.Moved.Any()) HidePrevMove(gameState.Moved.First().Item1);
+            if (gameState.Moved.Any()) HidePrevMove(gameState.Moved.First().Item1);            
             gameState.MakeMove(move);
             DrawBoard(gameState.Board);
             ShowPrevMove(move);
-            SwitchTurn();
+            DrawCapturedGrid(gameState.CapturedPiece);
+            TurnTextBlock.Text = gameState.CurrentPlayer == Player.Red ? "Đỏ" : "Đen";
             await Dispatcher.InvokeAsync(() => { }, System.Windows.Threading.DispatcherPriority.Render);
             if (gameState is GameStateAI AI)
             {
                 Move prevMove = gameState.Moved.First().Item1;
                 await Task.Run(() => AI.AiMove());
+                isRedTurn = !isRedTurn;
+                SwitchTurn();
+                TurnTextBlock.Text = gameState.CurrentPlayer == Player.Red ? "Đỏ" : "Đen";
+                DrawCapturedGrid(gameState.CapturedPiece);
                 DrawBoard(gameState.Board);
                 HidePrevMove(prevMove);
                 ShowPrevMove(gameState.Moved.First().Item1);
                 _mainWindow.PlayMoveSound();
-                SwitchTurn();
             }
 
             MainGame.IsHitTestVisible = true;
 
             if (gameState.IsGameOver())
             {
+                HideHighlights();
+                CellGrid.IsEnabled = false;
+                StopTimer();
                 _mainWindow.CreateGameOverMenu(gameState);
             }
         }
@@ -498,6 +572,10 @@ namespace ChessUI
             {
                 ShowPrevMove(gameState.Moved.First().Item1);
             }
+            TurnTextBlock.Text = gameState.CurrentPlayer == Player.Red ? "Đỏ" : "Đen";
+            UndoCapturedGrid(gameState.CapturedPiece);
+            if (gameState is GameStateAI AI)
+                UndoAiCapturedGrid(AI.AiCapturedPiece);
         }
     }
 }
