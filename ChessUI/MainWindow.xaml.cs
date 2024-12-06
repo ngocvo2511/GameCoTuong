@@ -30,7 +30,7 @@ namespace ChessUI
         bool onGame = false;
         Player color = Player.Red;
         int volume = 50;
-        int time = 60;
+        int time = 600;
 
         public MainWindow()
         {
@@ -269,7 +269,7 @@ namespace ChessUI
         }
         private void SettingsMenu_TimeLimitTextBoxChanged(object sender, RoutedEventArgs e)
         {
-            this.time = Convert.ToInt16(settingsMenu.TimeLimitTextBox.Text);
+            this.time = Convert.ToInt16(settingsMenu.TimeLimitTextBox.Text) * 60;
         }
 
         private void PauseButtonClicked(object sender, RoutedEventArgs e)

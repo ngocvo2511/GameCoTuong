@@ -33,8 +33,8 @@ namespace ChessUI
         private MainWindow _mainWindow;
         private DispatcherTimer redTimer;
         private DispatcherTimer blackTimer;
-        private int timeRemainingRed = 60;
-        private int timeRemainingBlack = 60;
+        private int timeRemainingRed = 600;
+        private int timeRemainingBlack = 600;
         private bool isRedTurn = true;
         private Brush redBrush = new SolidColorBrush(Colors.Red);
         private Brush blackBrush = new SolidColorBrush(Colors.Black);
@@ -62,8 +62,10 @@ namespace ChessUI
         }
         private void InitializeTimer()
         {
-            redClock.Text = $"Còn lại: {timeRemainingRed} giây";
-            blackClock.Text = $"Còn lại: {timeRemainingBlack} giây";
+            int minutes = timeRemainingRed / 60;
+            int seconds = timeRemainingRed % 60;
+            redClock.Text = $"{minutes:D2}:{seconds:D2}";
+            blackClock.Text = $"{minutes:D2}:{seconds:D2}";
 
             redTimer = new DispatcherTimer();
             redTimer.Interval = TimeSpan.FromSeconds(1);
@@ -75,7 +77,9 @@ namespace ChessUI
         private void RedTimer_Tick(object sender, EventArgs e)
         {
             timeRemainingRed--;
-            redClock.Text = $"Còn lại: {timeRemainingRed} giây";
+            int minutes = timeRemainingRed / 60;
+            int seconds = timeRemainingRed % 60;
+            redClock.Text = $"{minutes:D2}:{seconds:D2}";
             if (timeRemainingRed <= 0)
             {
                 StopTimer();
@@ -85,7 +89,7 @@ namespace ChessUI
                 _mainWindow.CreateGameOverMenu(gameState);
                 return;
             }
-            if (timeRemainingRed < 10)
+            if (timeRemainingRed < 60)
             {
                 redClock.Foreground = redBrush;
             }
@@ -93,7 +97,9 @@ namespace ChessUI
         private void BlackTimer_Tick(object sender, EventArgs e)
         {
             timeRemainingBlack--;
-            blackClock.Text = $"Còn lại: {timeRemainingBlack} giây";
+            int minutes = timeRemainingBlack / 60;
+            int seconds = timeRemainingBlack % 60;
+            blackClock.Text = $"{minutes:D2}:{seconds:D2}";
             if (timeRemainingBlack <= 0)
             {
                 StopTimer();
@@ -103,7 +109,7 @@ namespace ChessUI
                 _mainWindow.CreateGameOverMenu(gameState);
                 return;
             }
-            if (timeRemainingBlack < 10)
+            if (timeRemainingBlack < 60)
             {
                 blackClock.Foreground = redBrush;
             }

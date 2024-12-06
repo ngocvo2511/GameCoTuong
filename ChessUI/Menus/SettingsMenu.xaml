@@ -70,13 +70,15 @@
                 <StackPanel Orientation="Horizontal" Margin="50,30,50,0"
                             TextBlock.FontSize="20">
                     <TextBlock Text = "Tổng thời gian mỗi bên: "
-                               Margin="0,0,100,0" 
+                               Margin="0,0,40,0" 
                                VerticalAlignment="Center"/>
-                    <TextBox x:Name="TimeLimitTextBox" Width="80"
-                             Text="60"
+                    <TextBox x:Name="TimeLimitTextBox" Width="66"
+                             Text="10"
                              TextAlignment="Right"
                              TextChanged="TimeLimitTextBox_TextChanged"/>
-
+                    <TextBlock Text = "phút"
+                               Margin="15,0,0,0" 
+                               VerticalAlignment="Center"/>
                 </StackPanel>
             </StackPanel>
 
