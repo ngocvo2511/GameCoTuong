@@ -147,7 +147,7 @@ namespace ChessUI
 
             view.Content = gameUserControl;
         }
-         
+
         private void CreateViewGameOnline()
         {
             onGame = true;
@@ -162,7 +162,7 @@ namespace ChessUI
             {
 
                 string roomName = args.RoomName;
-                if(roomName == null)
+                if (roomName == null)
                 {
                     return;
                 }
@@ -237,7 +237,7 @@ namespace ChessUI
             if (color == Player.Black)
             {
                 color = Player.Red;
-            }    
+            }
         }
 
         private void SettingsMenu_botFirstChecked(object sender, RoutedEventArgs e)
@@ -339,7 +339,7 @@ namespace ChessUI
         }
         internal void PlayGameOverSound()
         {
-            gameOverSound.Volume = volume /100.0;
+            gameOverSound.Volume = volume / 100.0;
             gameOverSound.Position = TimeSpan.Zero;
             gameOverSound.Play();
         }

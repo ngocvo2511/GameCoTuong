@@ -51,12 +51,32 @@ namespace ChessUI
 
         private async void CreateRoomButton_Click(object sender, RoutedEventArgs e)
         {
+            if(string.IsNullOrEmpty(RoomNameTextBox.Text))
+            {
+                MessageBox.Show("Vui lòng nhập tên phòng");
+                return;
+            }
+            else if(_connection.State != HubConnectionState.Connected)
+            {
+                MessageBox.Show("Không thể kết nối đến server, vui lòng kiểm tra kết nối mạng.", "Connection Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             string roomName = RoomNameTextBox.Text;
             await _connection.InvokeAsync("CreateRoom", roomName);
         }
 
         private async void JoinRoomButton_Click(object sender, RoutedEventArgs e)
         {
+            if (string.IsNullOrEmpty(RoomNameTextBox.Text))
+            {
+                MessageBox.Show("Vui lòng nhập tên phòng");
+                return;
+            }
+            else if (_connection.State != HubConnectionState.Connected)
+            {
+                MessageBox.Show("Không thể kết nối đến server, vui lòng kiểm tra kết nối mạng.", "Connection Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             string roomName = RoomNameTextBox.Text;
             await _connection.InvokeAsync("JoinRoom", roomName);
         }

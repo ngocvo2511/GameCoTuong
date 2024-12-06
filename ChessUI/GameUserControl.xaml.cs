@@ -117,8 +117,14 @@ namespace ChessUI
         {
             if (!gameState.IsGameOver())
             {
-                redTimer.Start();
-                blackTimer.Start();
+                if(isRedTurn)
+                {
+                    redTimer.Start();
+                }
+                else
+                {
+                    blackTimer.Start();
+                }
             }    
         }
         private void SwitchTurn()

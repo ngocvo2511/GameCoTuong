@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace ChessUI
 {
@@ -37,9 +39,13 @@ namespace ChessUI
 
         public async Task StartConnectionAsync()
         {
-            if (Connection.State == HubConnectionState.Disconnected)
+            try
             {
                 await Connection.StartAsync();
+            }
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show("Không thể kết nối đến server, vui lòng kiểm tra kết nối mạng.", "Connection Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }
