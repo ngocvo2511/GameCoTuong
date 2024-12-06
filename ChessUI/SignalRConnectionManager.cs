@@ -39,6 +39,10 @@ namespace ChessUI
 
         public async Task StartConnectionAsync()
         {
+            if(Connection.State == HubConnectionState.Connected)
+            {
+                return;
+            }
             try
             {
                 await Connection.StartAsync();
