@@ -59,6 +59,7 @@ namespace ChessUI
             selectGameModeMenu.BackButtonClicked += BackButtonClicked;
             selectGameModeMenu.PlayWithBotButtonClicked += SelectGameMode_PlayWithBotButtonClicked;
             selectGameModeMenu.TwoPlayerButtonClicked += SelectGameMode_TwoPlayerButtonClicked;
+            selectGameModeMenu.PlayOnlineButtonClicked += SelectGameMode_PlayOnlineButtonClicked;
 
             view.Content = selectGameModeMenu;
         }
@@ -222,6 +223,12 @@ namespace ChessUI
         {
             PlayButtonClickSound();
             CreateViewGame2P();
+        }
+
+        private void SelectGameMode_PlayOnlineButtonClicked(object sender, RoutedEventArgs e)
+        {
+            PlayButtonClickSound();
+            CreateViewGameOnline();
         }
 
         private void SettingsMenu_humanFirstChecked(object sender, RoutedEventArgs e)
