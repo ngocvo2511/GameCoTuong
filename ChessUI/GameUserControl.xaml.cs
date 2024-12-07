@@ -166,6 +166,21 @@ namespace ChessUI
             }
             TurnTextBlock.Text = gameState.CurrentPlayer == Player.Red ? "Đỏ" : "Đen";
         }
+        public void ResetTimer()
+        {
+            if (redTimer != null)
+            {
+                redTimer.Stop();
+                redTimer.Tick -= RedTimer_Tick;
+                redTimer = null;
+            }
+            if (blackTimer != null)
+            {
+                blackTimer.Stop();
+                blackTimer.Tick -= BlackTimer_Tick;
+                blackTimer = null;
+            }
+        }
         private async void StartAIMoveWithDelay()
         {
             MainGame.IsHitTestVisible = false;

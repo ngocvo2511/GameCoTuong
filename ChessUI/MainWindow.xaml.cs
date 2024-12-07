@@ -132,7 +132,7 @@ namespace ChessUI
         private void CreateViewGameAI(int difficulty)
         {
             onGame = true;
-
+            if (gameUserControl != null) gameUserControl.ResetTimer();
             gameUserControl = new GameUserControl(this, color, time, true, difficulty);
             gameUserControl.PauseButtonClicked += PauseButtonClicked;
             gameUserControl.SaveButtonClicked += SaveButtonClicked;
@@ -142,7 +142,7 @@ namespace ChessUI
         private void CreateViewGame2P()
         {
             onGame = true;
-
+            if(gameUserControl!=null) gameUserControl.ResetTimer();
             gameUserControl = new GameUserControl(this, color, time, false);
             gameUserControl.PauseButtonClicked += PauseButtonClicked;
             gameUserControl.SaveButtonClicked += SaveButtonClicked;
