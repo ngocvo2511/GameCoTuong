@@ -70,7 +70,7 @@
 
         <Style TargetType="Button" x:Key="ButtonStyle2">
             <Setter Property="FontFamily" Value="Cascadia Mono SemiBold"/>
-            <Setter Property="BorderThickness" Value="0"/>            
+            <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
             <Style.Resources>

@@ -3,44 +3,37 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:local="clr-namespace:ChessUI.Menus"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="1200">
     <Border Width="560"
             Height="300"
             Style="{StaticResource BorderStyle1}">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="2*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <TextBlock Grid.ColumnSpan="3"
-                       TextAlignment="Center"
+        <StackPanel>
+            <TextBlock TextAlignment="Center"
                        TextWrapping="Wrap"
                        Text="Bạn có chắc chắn muốn thoát ván chơi này?"
                        Style="{StaticResource TextStyle1}"
-                       FontSize="40" Width="500"/>
+                       FontSize="40" Width="500"
+                       Margin="0,40,0,30"
+                       />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button x:Name="YesButton"
+                        Style="{StaticResource ButtonStyle2}"
+                        Width="70" Height="70" 
+                        Margin="0,0,100,0" 
+                        Click="YesButton_Click">
+                    <iconPacks:Material Kind="CheckCircle" Height="50" Width="50"/>
+                </Button>
 
-            <Button x:Name="YesButton" Grid.Column="0" Grid.Row="2"
-                    Content="Có"
-                    Style="{StaticResource ButtonStyle1}"
-                    Width="150" Height="55" Margin="0,0,20,0" 
-                    VerticalAlignment="Top" HorizontalAlignment="Right"
-                    Click="YesButton_Click"  />
-
-            <Button x:Name="NoButton" Grid.Column="1" Grid.Row="2"
-                    Content="Không"
-                    Style="{StaticResource ButtonStyle1}"
-                    Width="150" Height="55" Margin="20,0,0,0" 
-                    VerticalAlignment="Top" HorizontalAlignment="Left"
-                    Click="NoButton_Click" />
-
-        </Grid>
+                <Button x:Name="NoButton"
+                        Style="{StaticResource ButtonStyle2}"
+                        Width="70" Height="70"
+                        Click="NoButton_Click">
+                    <iconPacks:Material Kind="CloseCircle" Height="50" Width="50"/>                    
+                </Button>
+            </StackPanel>
+        </StackPanel>
     </Border>
 </UserControl>

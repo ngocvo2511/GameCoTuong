@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:local="clr-namespace:ChessUI"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="1200">
@@ -35,9 +36,11 @@
                     Click="PlayOnlineButton_Click"/>
 
             <Button x:Name="BackButton" Grid.Row="4"
-                    Content="Quay về"
-                    Style="{StaticResource ButtonStyle1}"
-                    Click="BackButton_Click"/>
+                    Style="{StaticResource ButtonStyle2}"
+                    Width="70" Height="70"
+                    Click="BackButton_Click">
+                <iconPacks:PackIconMaterial Kind="ArrowLeft" Height="50" Width="50"/>
+            </Button>
         </Grid>
     </Border>
 </UserControl>

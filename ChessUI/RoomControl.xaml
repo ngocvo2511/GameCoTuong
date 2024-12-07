@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:local="clr-namespace:ChessUI.Menus"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="1200">
@@ -31,11 +32,13 @@
                 <Button x:Name="JoinRoomButton" 
                         Content="Join Room"
                         Style="{StaticResource ButtonStyle1}"
-                        Margin="0,0,0,10" Click="JoinRoomButton_Click"/>
+                        Margin="0,0,0,20" Click="JoinRoomButton_Click"/>
                 <Button x:Name="BackButton"
-                        Content="Quay về"
-                        Style="{StaticResource ButtonStyle1}"
-                        Click="BackButton_Click"/>
+                        Style="{StaticResource ButtonStyle2}"
+                        Click="BackButton_Click"
+                        Width="70" Height="70">
+                    <iconPacks:PackIconMaterial Kind="ArrowLeft" Height="50" Width="50"/>
+                </Button>
             </StackPanel>
         </Border>
         <local:NotificationMenu x:Name="NotificationMenu" Visibility="Collapsed" />
