@@ -290,12 +290,6 @@ namespace ChessUI
             PlayButtonClickSound();
             CreateSaveMenu();
         }
-        private void Save_BackButtonClicked(object sender, RoutedEventArgs e)
-        {
-            PlayButtonClickSound();
-            if (time != 0) gameUserControl.ContinueTimer();
-            view.Content = gameUserControl;
-        }
         private void PauseButtonClicked(object sender, RoutedEventArgs e)
         {
             PlayButtonClickSound();
