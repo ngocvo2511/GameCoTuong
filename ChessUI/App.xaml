@@ -20,9 +20,9 @@
                     <VisualBrush>
                         <VisualBrush.Visual>
                             <Rectangle 
-                                Height="100" Width="100"                                
+                                Height="100" Width="100"
                                 StrokeThickness="1"
-                                Stroke="{StaticResource StrokeColor1}"  
+                                Stroke="{StaticResource StrokeColor1}"
                                 StrokeDashArray="4,4"/>
                         </VisualBrush.Visual>
                     </VisualBrush>

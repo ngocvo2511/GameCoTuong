@@ -3,17 +3,42 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:ChessUI"
+             xmlns:local="clr-namespace:ChessUI.Menus"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="720" d:DesignWidth="1200">
     <Grid>
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Grid Width="200" Margin="0,0,0,10">
-                <TextBox x:Name="RoomNameTextBox" Width="200" Tag="Enter Room Name" GotFocus="RemovePlaceholderText" LostFocus="ShowPlaceholderText"/>
-                <TextBlock x:Name="PlaceholderTextBlock" Text="Enter Room Name" Foreground="Gray" IsHitTestVisible="False" VerticalAlignment="Center" Margin="5,0,0,0"/>
-            </Grid>
-            <Button x:Name="CreateRoomButton" Content="Create Room" Width="200" Margin="0,0,0,10" Click="CreateRoomButton_Click"/>
-            <Button x:Name="JoinRoomButton" Content="Join Room" Width="200" Click="JoinRoomButton_Click"/>
-        </StackPanel>
+        <Border Width="450"
+                Height="400"
+                Style="{StaticResource BorderStyle1}">  
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Grid Width="250" Height="60" Margin="0,0,0,20">
+                    <TextBox x:Name="RoomNameTextBox"
+                             Tag="Enter Room Name"
+                             FontSize="20" 
+                             VerticalContentAlignment="Center"
+                             HorizontalContentAlignment="Center"
+                             GotFocus="RemovePlaceholderText" LostFocus="ShowPlaceholderText"/>
+                    <TextBlock x:Name="PlaceholderTextBlock" 
+                               Text="Enter Room Name" Foreground="Gray"
+                               FontSize="20"
+                               IsHitTestVisible="False" 
+                               VerticalAlignment="Center" Margin="10"/>
+                </Grid>
+                <Button x:Name="CreateRoomButton" 
+                        Content="Create Room" 
+                        Style="{StaticResource ButtonStyle1}"
+                        Margin="0,0,0,10" Click="CreateRoomButton_Click"/>
+                <Button x:Name="JoinRoomButton" 
+                        Content="Join Room"
+                        Style="{StaticResource ButtonStyle1}"
+                        Margin="0,0,0,10" Click="JoinRoomButton_Click"/>
+                <Button x:Name="BackButton"
+                        Content="Quay về"
+                        Style="{StaticResource ButtonStyle1}"
+                        Click="BackButton_Click"/>
+            </StackPanel>
+        </Border>
+        <local:NotificationMenu x:Name="NotificationMenu" Visibility="Collapsed" />
     </Grid>
+    
 </UserControl>

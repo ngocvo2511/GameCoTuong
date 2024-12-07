@@ -619,6 +619,8 @@ namespace ChessUI
             UndoCapturedGrid(gameState.CapturedPiece);
             if (gameState is GameStateAI AI)
                 UndoAiCapturedGrid(AI.AiCapturedPiece);
+            isRedTurn = gameState.CurrentPlayer == Player.Red;
+            if (redTimer != null) SwitchTurn();
         }
     }
 }

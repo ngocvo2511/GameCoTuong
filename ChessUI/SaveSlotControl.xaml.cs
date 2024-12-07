@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Collections.ObjectModel;
+using ChessUI.Menus;
 
 namespace ChessUI
 {
@@ -42,6 +43,23 @@ namespace ChessUI
                 int index = SaveSlots.IndexOf(slot);
                 SaveSlotSelected?.Invoke(index);
             }
+        }
+        
+        public static readonly RoutedEvent BackButtonClickedEvent = EventManager.RegisterRoutedEvent(
+            "BackButtonClicked",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(SaveSlotControl)
+            );
+        public event RoutedEventHandler BackButtonClicked
+        {
+            add { AddHandler(BackButtonClickedEvent, value); }
+            remove { RemoveHandler(BackButtonClickedEvent, value); }
+        }
+
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            RaiseEvent(new RoutedEventArgs(BackButtonClickedEvent));
         }
     }
 }
