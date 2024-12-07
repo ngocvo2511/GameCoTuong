@@ -174,7 +174,7 @@ namespace ChessUI
                     return;
                 }
                 onGame = true;
-                GameOnline gameOnline = new GameOnline(roomName);
+                GameOnline gameOnline = new GameOnline(roomName, this);
                 view.Content = gameOnline;
             }
         }

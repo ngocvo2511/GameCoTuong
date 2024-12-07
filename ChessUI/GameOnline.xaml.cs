@@ -33,13 +33,16 @@ namespace ChessUI
         private Position selectedPos = null;
         private HubConnection connection;
         private string roomName;
-        public GameOnline(string roomName)
+        private MainWindow _mainWindow;
+        public GameOnline(string roomName, MainWindow mainWindow)
         {
             InitializeComponent();
             InitializeBoard();
             gameState = new GameState2P(Player.Red, Board.Initial());
             this.roomName = roomName;
+            ShowGameInformation();
             DrawBoard(gameState.Board);
+            _mainWindow = mainWindow;
 
             ConnectHub();
             //settingsMenu.BackButtonClicked += BackButtonClicked;
@@ -49,7 +52,10 @@ namespace ChessUI
         //{
         //    pauseMenu.Visibility = Visibility.Visible;
         //}
-
+        private void ShowGameInformation()
+        {
+            TurnTextBlock.Text = gameState.CurrentPlayer == Player.Red ? "Đỏ" : "Đen";
+        }
         private async void ConnectHub()
         {
             var connectionManager = SignalRConnectionManager.Instance;
@@ -213,6 +219,20 @@ namespace ChessUI
                 {
                     await connection.SendAsync("Click", move.FromPos.Row, move.FromPos.Column, move.ToPos.Row, move.ToPos.Column);
                 });
+            }
+        }
+        private void DrawCapturedGrid(Piece piece)
+        {
+            if (piece == null) return;
+            Image image = new Image();
+            image.Source = Images.GetImage(piece);
+            if (gameState.CurrentPlayer == Player.Red)
+            {
+                BlackCapturedGrid.Children.Add(image);
+            }
+            else
+            {
+                RedCapturedGrid.Children.Add(image);
             }
         }
         private void DrawNewPos(Canvas canvas)
@@ -411,14 +431,24 @@ namespace ChessUI
             // Cập nhật giao diện trên luồng chính
             await Dispatcher.InvokeAsync(() =>
             {
+                _mainWindow.PlayMoveSound();
                 DrawBoard(gameState.Board);
                 ShowPrevMove(move);
+                DrawCapturedGrid(gameState.CapturedPiece);
+                WarningTextBlock.Text = gameState.Board.IsInCheck(gameState.CurrentPlayer) ? "Chiếu tướng!" : null;
+                TurnTextBlock.Text = gameState.CurrentPlayer == Player.Red ? "Đỏ" : "Đen";
             });
            
 
             // Mở khóa giao diện
             await Dispatcher.InvokeAsync(() => MainGame.IsHitTestVisible = true);
 
+            if (gameState.IsGameOver())
+            {
+                HideHighlights();
+                CellGrid.IsEnabled = false;
+                _mainWindow.CreateGameOverMenu(gameState);
+            }
         }
 
 
