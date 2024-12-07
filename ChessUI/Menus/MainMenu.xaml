@@ -3,51 +3,64 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:local="clr-namespace:ChessUI"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="1200">
-    <Border Width="400"
-            Height="400"
+    <Border Width="500"
+            Height="500"
             Style="{StaticResource BorderStyle1}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.2*"/>
+                <RowDefinition Height="1.5*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="0.25*"/>
+                <RowDefinition Height="0.5*"/>
             </Grid.RowDefinitions>
 
             <TextBlock x:Name="GameTitle" Grid.Row="1"
                        Text="CỜ TƯỚNG"
                        Style="{StaticResource TextStyle1}"
-                       FontSize="55"/>
+                       FontSize="65"/>
 
             <Button x:Name="PlayButton" Grid.Row="2"
-                    Content="Chơi"
                     Style="{StaticResource ButtonStyle1}"
-                    Width="220"
-                    Height="50" Click="PlayButton_Click"/>
+                    Click="PlayButton_Click">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconFontAwesome Kind="PlaySolid" Width="30" Height="30" Margin="0,0,20,0" />
+                    <TextBlock Text="Chơi" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
 
             <Button x:Name="InstructionsButton" Grid.Row="3"
-                    Content="Hướng dẫn chơi"
                     Style="{StaticResource ButtonStyle1}"
-                    Width="220"
-                    Height="50" Click="InstructionsButton_Click"/>
+                    Click="InstructionsButton_Click">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterial Kind="BookOpenVariant" Width="30" Height="30" Margin="0,0,20,0" />
+                    <TextBlock Text="Hướng dẫn chơi" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
 
             <Button x:Name="SettingsButton" Grid.Row="4"
-                    Content="Cài đặt"
                     Style="{StaticResource ButtonStyle1}"
-                    Width="220"
-                    Height="50" Click="SettingsButton_Click"/>
+                    Click="SettingsButton_Click">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconFontAwesome Kind="GearSolid" Width="30" Height="30" Margin="0,0,20,0" />
+                    <TextBlock Text="Cài đặt" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
 
             <Button x:Name="HistoryButton" Grid.Row="5"
-                    Content="Lịch sử chơi"
                     Style="{StaticResource ButtonStyle1}"
-                    Width="220"
-                    Height="50" Click="HistoryButton_Click"/>
+                    Click="HistoryButton_Click">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterial Kind="History" Width="30" Height="30" Margin="0,0,20,0" />
+                    <TextBlock Text="Lịch sử chơi" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
 
         </Grid>
     </Border>

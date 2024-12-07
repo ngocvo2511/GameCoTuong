@@ -545,6 +545,7 @@ namespace ChessUI
             DrawBoard(gameState.Board);
             ShowPrevMove(move);
             DrawCapturedGrid(gameState.CapturedPiece);
+            WarningTextBlock.Text = gameState.Board.IsInCheck(gameState.CurrentPlayer) ? "Chiếu tướng!" : null;
             TurnTextBlock.Text = gameState.CurrentPlayer == Player.Red ? "Đỏ" : "Đen";
             await Dispatcher.InvokeAsync(() => { }, System.Windows.Threading.DispatcherPriority.Render);
             if (gameState is GameStateAI AI)
@@ -552,7 +553,8 @@ namespace ChessUI
                 Move prevMove = gameState.Moved.First().Item1;
                 await Task.Run(() => AI.AiMove());
                 isRedTurn = !isRedTurn;
-                SwitchTurn();
+                if (redTimer != null) SwitchTurn();
+                WarningTextBlock.Text = gameState.Board.IsInCheck(gameState.CurrentPlayer)? "Chiếu tướng!" : null;
                 TurnTextBlock.Text = gameState.CurrentPlayer == Player.Red ? "Đỏ" : "Đen";
                 DrawCapturedGrid(gameState.CapturedPiece);
                 DrawBoard(gameState.Board);
@@ -567,7 +569,7 @@ namespace ChessUI
             {
                 HideHighlights();
                 CellGrid.IsEnabled = false;
-                StopTimer();
+                if (redTimer != null) StopTimer();
                 _mainWindow.CreateGameOverMenu(gameState);
             }
         }

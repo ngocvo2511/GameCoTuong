@@ -22,25 +22,21 @@
             <Button x:Name="PlayWithBotButton" Grid.Row="1"
                     Content="Chơi với máy"
                     Style="{StaticResource ButtonStyle1}"
-                    Width="220" Height="60" 
                     Click="PlayWithBotButton_Click"/>
 
             <Button x:Name="TwoPlayerButton" Grid.Row="2"
                     Content="2 người chơi"
                     Style="{StaticResource ButtonStyle1}"
-                    Width="220" Height="60"
                     Click="TwoPlayerButton_Click"/>
 
             <Button x:Name="PlayOnlineButton" Grid.Row="3"
-                Content="Chơi trực tuyến"
-                Style="{StaticResource ButtonStyle1}"
-                Width="220" Height="60"
-                Click="PlayOnlineButton_Click"/>
+                    Content="Chơi trực tuyến"
+                    Style="{StaticResource ButtonStyle1}"
+                    Click="PlayOnlineButton_Click"/>
 
             <Button x:Name="BackButton" Grid.Row="4"
                     Content="Quay về"
                     Style="{StaticResource ButtonStyle1}"
-                    Width="220" Height="60"
                     Click="BackButton_Click"/>
         </Grid>
     </Border>

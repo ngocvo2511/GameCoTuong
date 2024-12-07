@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:ChessUI.Menus"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="1200">
-    <Border Width="300"
+    <Border Width="400"
         Height="400"
         Style="{StaticResource BorderStyle1}">
         <Grid>
@@ -20,28 +20,24 @@
             </Grid.RowDefinitions>
 
             <Button x:Name="EasyButton" Grid.Row="1"
-                Content="Dễ"
-                Style="{StaticResource ButtonStyle1}"
-                Width="220" Height="60"
-                Click="EasyButton_Click"/>
+                    Content="Dễ"
+                    Style="{StaticResource ButtonStyle1}"
+                    Click="EasyButton_Click"/>
 
             <Button x:Name="NormalButton" Grid.Row="2"
-                Content="Thường"
-                Style="{StaticResource ButtonStyle1}"
-                Width="220" Height="60" 
-                Click="NormalButton_Click"/>
+                    Content="Thường"
+                    Style="{StaticResource ButtonStyle1}"
+                    Click="NormalButton_Click"/>
 
             <Button x:Name="HardButton" Grid.Row="3"
-                Content="Khó"
-                Style="{StaticResource ButtonStyle1}"
-                Width="220" Height="60" 
-                Click="HardButton_Click"/>
+                    Content="Khó"
+                    Style="{StaticResource ButtonStyle1}"
+                    Click="HardButton_Click"/>
 
             <Button x:Name="BackButton" Grid.Row="4"
-                Content="Quay về"
-                Style="{StaticResource ButtonStyle1}"
-                Width="220" Height="60"
-                Click="BackButton_Click"/>
+                    Content="Quay về"
+                    Style="{StaticResource ButtonStyle1}"
+                    Click="BackButton_Click"/>
         </Grid>
     </Border>
 </UserControl>

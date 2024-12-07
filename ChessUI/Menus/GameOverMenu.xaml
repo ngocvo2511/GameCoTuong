@@ -6,14 +6,15 @@
              xmlns:local="clr-namespace:ChessUI.Menus"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="1200">
-    <Border Width="560"
-            Height="300"
+    <Border Width="600"
+            Height="350"
             Style="{StaticResource BorderStyle1}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="0.5*"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="0.7*"/>
+                <RowDefinition Height="0.1*"/>
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
@@ -24,7 +25,7 @@
 
             <TextBlock x:Name="WinnerText" Grid.ColumnSpan="3"
                    Text="WINNER TEXT"
-                   Style="{StaticResource TextStyle2}"
+                   Style="{StaticResource TextStyle1}"
                    FontSize="75"/>
 
             <TextBlock x:Name="ReasonText" Grid.ColumnSpan="3" Grid.Row="1"

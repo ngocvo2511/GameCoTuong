@@ -51,8 +51,10 @@
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Foreground" Value="Black"/>
         </Style>
-        
+
         <Style TargetType="Button" x:Key="ButtonStyle1">
+            <Setter Property="Width" Value="250"/>
+            <Setter Property="Height" Value="60"/>
             <Setter Property="FontFamily" Value="Cascadia Mono SemiBold"/>
             <Setter Property="FontSize" Value="20"/>
             <Setter Property="BorderThickness" Value="1"/>
@@ -66,5 +68,16 @@
             </Style.Resources>
         </Style>
 
+        <Style TargetType="Button" x:Key="ButtonStyle2">
+            <Setter Property="FontFamily" Value="Cascadia Mono SemiBold"/>
+            <Setter Property="BorderThickness" Value="0"/>            
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+            <Style.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="50"/>
+                </Style>
+            </Style.Resources>
+        </Style>
     </Application.Resources>
 </Application>

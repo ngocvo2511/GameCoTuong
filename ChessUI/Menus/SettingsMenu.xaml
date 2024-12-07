@@ -23,7 +23,6 @@
             <Button x:Name="BackButton" Grid.Row="2"
                     Content="Quay về"
                     Style="{StaticResource ButtonStyle1}"
-                    Width="220" Height="50" 
                     Click="BackButton_Click"/>
 
             <StackPanel Grid.Row="1" Orientation="Vertical">
