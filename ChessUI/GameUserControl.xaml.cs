@@ -572,7 +572,21 @@ namespace ChessUI
         {
             RaiseEvent(new RoutedEventArgs(PauseButtonClickedEvent));
         }
-
+        public event RoutedEventHandler SaveButtonClicked
+        {
+            add { AddHandler(SaveButtonClickedEvent, value); }
+            remove { RemoveHandler(SaveButtonClickedEvent, value); }
+        }
+        public static readonly RoutedEvent SaveButtonClickedEvent = EventManager.RegisterRoutedEvent(
+             "SaveButtonClicked",
+             RoutingStrategy.Bubble,
+             typeof(RoutedEventHandler),
+             typeof(GameUserControl)
+        );
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            RaiseEvent(new RoutedEventArgs(SaveButtonClickedEvent));
+        }
         private void UndoButton_Click(object sender, RoutedEventArgs e)
         {
             _mainWindow.PlayButtonClickSound();

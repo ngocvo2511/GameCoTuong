@@ -56,6 +56,12 @@
         </Viewbox>
         <StackPanel Grid.Column="2" Grid.RowSpan="4"
                     VerticalAlignment="Center">
+            <Button x:Name="SaveButton"
+                    Content="Lưu"
+                    Style="{StaticResource ButtonStyle1}"
+                    Width="110"
+                    Height="50"
+                    Margin="0,0,5,10" Click="SaveButton_Click"/>
             <Button x:Name="PauseButton"
                     Content="Tạm dừng"
                     Style="{StaticResource ButtonStyle1}"
