@@ -150,9 +150,9 @@ namespace ChessUI
         }
         private void CreateSaveMenu()
         {
-            saveSlotControl = new SaveSlotControl();
-            saveSlotControl.BackButtonClicked += ContinueButtonClicked;
-            view.Content = saveSlotControl;
+            saveloadSlotControl = new SaveSlotControl(true);
+            saveloadSlotControl.BackButtonClicked += ContinueButtonClicked;
+            view.Content = saveloadSlotControl;
         }
 
         private void CreateRoomControl()
