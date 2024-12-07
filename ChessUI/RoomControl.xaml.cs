@@ -53,12 +53,12 @@ namespace ChessUI
         {
             if(string.IsNullOrEmpty(RoomNameTextBox.Text))
             {
-                MessageBox.Show("Vui lòng nhập tên phòng");
+                ShowNotification("Vui lòng nhập tên phòng");
                 return;
             }
             else if(_connection.State != HubConnectionState.Connected)
             {
-                MessageBox.Show("Không thể kết nối đến server, vui lòng kiểm tra kết nối mạng.", "Connection Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                ShowNotification("Không thể kết nối đến server, vui lòng kiểm tra kết nối mạng.");
                 return;
             }
             string roomName = RoomNameTextBox.Text;
@@ -69,12 +69,12 @@ namespace ChessUI
         {
             if (string.IsNullOrEmpty(RoomNameTextBox.Text))
             {
-                MessageBox.Show("Vui lòng nhập tên phòng");
+                ShowNotification("Vui lòng nhập tên phòng");
                 return;
             }
             else if (_connection.State != HubConnectionState.Connected)
             {
-                MessageBox.Show("Không thể kết nối đến server, vui lòng kiểm tra kết nối mạng.", "Connection Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                ShowNotification("Không thể kết nối đến server, vui lòng kiểm tra kết nối mạng.");
                 return;
             }
             string roomName = RoomNameTextBox.Text;
@@ -113,6 +113,28 @@ namespace ChessUI
             {
                 PlaceholderTextBlock.Visibility = Visibility.Visible;
             }
+        }
+
+        public static readonly RoutedEvent BackButtonClickedEvent = EventManager.RegisterRoutedEvent(
+            "BackButtonClicked",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(RoomControl)
+            );
+        public event RoutedEventHandler BackButtonClicked
+        {
+            add { AddHandler(BackButtonClickedEvent, value); }
+            remove { RemoveHandler(BackButtonClickedEvent, value); }
+        }
+
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            RaiseEvent(new RoutedEventArgs(BackButtonClickedEvent));
+        }
+        private void ShowNotification(string message)
+        {
+            NotificationMenu.Message.Text = message;
+            NotificationMenu.Visibility = Visibility.Visible;
         }
     }
 }

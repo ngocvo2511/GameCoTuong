@@ -101,7 +101,7 @@ namespace ChessUI
         {
             if (time != 0) gameUserControl.StopTimer();
 
-            pauseMenu.ContinueButtonClicked += PauseMenu_ContinueButtonClicked;
+            pauseMenu.ContinueButtonClicked += ContinueButtonClicked;
             pauseMenu.NewButtonClicked += NewButtonClicked;
             pauseMenu.HomeButtonClicked += PauseMenu_HomeButtonClicked;
             pauseMenu.SettingsButtonClicked += SettingsButtonClicked;
@@ -150,16 +150,16 @@ namespace ChessUI
         }
         private void CreateSaveMenu()
         {
-            saveloadSlotControl = new SaveSlotControl(true);
-            saveloadSlotControl.BackButtonClicked += Save_BackButtonClicked;
-            view.Content = saveloadSlotControl;
+            saveSlotControl = new SaveSlotControl();
+            saveSlotControl.BackButtonClicked += ContinueButtonClicked;
+            view.Content = saveSlotControl;
         }
 
-        private void CreateViewGameOnline()
+        private void CreateRoomControl()
         {
-            onGame = true;
             RoomControl roomControl = new RoomControl();
             roomControl.NavigateToGameOnline += RoomControl_NavigateToGameOnline;
+            roomControl.BackButtonClicked += RoomControl_BackButtonClicked;
             view.Content = roomControl;
         }
 
@@ -173,6 +173,7 @@ namespace ChessUI
                 {
                     return;
                 }
+                onGame = true;
                 GameOnline gameOnline = new GameOnline(roomName);
                 view.Content = gameOnline;
             }
@@ -235,7 +236,12 @@ namespace ChessUI
         private void SelectGameMode_PlayOnlineButtonClicked(object sender, RoutedEventArgs e)
         {
             PlayButtonClickSound();
-            CreateViewGameOnline();
+            CreateRoomControl();
+        }
+
+        private void RoomControl_BackButtonClicked(object sender, RoutedEventArgs e)
+        {
+            view.Content = selectGameModeMenu;
         }
 
         private void SettingsMenu_humanFirstChecked(object sender, RoutedEventArgs e)
@@ -296,7 +302,7 @@ namespace ChessUI
             CreatePauseMenu();
         }
 
-        private void PauseMenu_ContinueButtonClicked(object sender, RoutedEventArgs e)
+        private void ContinueButtonClicked(object sender, RoutedEventArgs e)
         {
             PlayButtonClickSound();
             if (time != 0) gameUserControl.ContinueTimer();
