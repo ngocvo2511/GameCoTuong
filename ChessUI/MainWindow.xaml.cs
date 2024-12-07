@@ -21,7 +21,7 @@ namespace ChessUI
         SettingsMenu settingsMenu = new SettingsMenu();
         PauseMenu pauseMenu = new PauseMenu();
         ConfirmMenu confirmMenu = new ConfirmMenu();
-        SaveSlotControl saveSlotControl;
+        SaveSlotControl saveloadSlotControl;
         GameOverMenu gameOverMenu;
 
         MediaPlayer buttonClickSound = new MediaPlayer();
@@ -148,10 +148,11 @@ namespace ChessUI
             gameUserControl.SaveButtonClicked += SaveButtonClicked;
             view.Content = gameUserControl;
         }
-        private void CreateSaveLoadMenu()
+        private void CreateSaveMenu()
         {
-            saveSlotControl = new SaveSlotControl();
-            view.Content = saveSlotControl;
+            saveloadSlotControl = new SaveSlotControl(true);
+            saveloadSlotControl.BackButtonClicked += Save_BackButtonClicked;
+            view.Content = saveloadSlotControl;
         }
 
         private void CreateViewGameOnline()
@@ -279,8 +280,15 @@ namespace ChessUI
         }
         private void SaveButtonClicked(object sender, RoutedEventArgs e)
         {
+            if(time!=0) gameUserControl.StopTimer();
             PlayButtonClickSound();
-            CreateSaveLoadMenu();
+            CreateSaveMenu();
+        }
+        private void Save_BackButtonClicked(object sender, RoutedEventArgs e)
+        {
+            PlayButtonClickSound();
+            if (time != 0) gameUserControl.ContinueTimer();
+            view.Content = gameUserControl;
         }
         private void PauseButtonClicked(object sender, RoutedEventArgs e)
         {
