@@ -169,12 +169,13 @@ namespace ChessUI
             {
 
                 string roomName = args.RoomName;
+                Player color = args.Color;
                 if (roomName == null)
                 {
                     return;
                 }
                 onGame = true;
-                GameOnline gameOnline = new GameOnline(roomName, this);
+                GameOnline gameOnline = new GameOnline(roomName, this, color);
                 view.Content = gameOnline;
             }
         }

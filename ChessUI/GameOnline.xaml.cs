@@ -34,7 +34,8 @@ namespace ChessUI
         private HubConnection connection;
         private string roomName;
         private MainWindow _mainWindow;
-        public GameOnline(string roomName, MainWindow mainWindow)
+        private Player color;
+        public GameOnline(string roomName, MainWindow mainWindow, Player color)
         {
             InitializeComponent();
             InitializeBoard();
@@ -43,6 +44,7 @@ namespace ChessUI
             ShowGameInformation();
             DrawBoard(gameState.Board);
             _mainWindow = mainWindow;
+            this.color = color;
 
             ConnectHub();
             //settingsMenu.BackButtonClicked += BackButtonClicked;
@@ -61,7 +63,7 @@ namespace ChessUI
             var connectionManager = SignalRConnectionManager.Instance;
             connection = connectionManager.Connection;
 
-            connection.On<int, int, int, int>("ClickAtPoint", (x1, y1, x2, y2) =>
+            connection.On<int, int, int, int>("MoveTo", (x1, y1, x2, y2) =>
             {
                 Dispatcher.Invoke(() =>
                 {
@@ -169,6 +171,10 @@ namespace ChessUI
 
         private void BoardGrid_MouseDown(object sender, MouseEventArgs e)
         {
+            if(gameState.CurrentPlayer != color)
+            {
+                return;
+            }
             Point point = e.GetPosition(BoardGrid);
             Position pos = ToSquarePosition(point);
 
@@ -196,6 +202,7 @@ namespace ChessUI
 
         private void OnFromPositionSelected(Position pos)
         {
+
             IEnumerable<Move> moves = gameState.LegalMovesForPiece(pos);
 
             if (moves.Any())
@@ -217,7 +224,7 @@ namespace ChessUI
 
                 await Task.Run(async () =>
                 {
-                    await connection.SendAsync("Click", move.FromPos.Row, move.FromPos.Column, move.ToPos.Row, move.ToPos.Column);
+                    await connection.SendAsync("MakeMove", move.FromPos.Row, move.FromPos.Column, move.ToPos.Row, move.ToPos.Column);
                 });
             }
         }

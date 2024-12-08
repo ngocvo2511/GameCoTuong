@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR.Client;
+﻿using ChessLogic;
+using Microsoft.AspNetCore.SignalR.Client;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -25,7 +26,7 @@ namespace ChessUI
                 Dispatcher.Invoke(() =>
                 {
                     MessageBox.Show($"Room {roomName} created successfully.");
-                    NavigateToGameOnlineE(roomName);
+                    NavigateToGameOnlineE(roomName, Player.Red);
                 });
             });
 
@@ -34,7 +35,7 @@ namespace ChessUI
                 Dispatcher.Invoke(() =>
                 {
                     MessageBox.Show($"Joined room {roomName} successfully.");
-                    NavigateToGameOnlineE(roomName);
+                    NavigateToGameOnlineE(roomName, Player.Black);
                 });
             });
 
@@ -95,9 +96,9 @@ namespace ChessUI
             typeof(RoomControl)
         );
 
-        private void NavigateToGameOnlineE(string RoomName)
+        private void NavigateToGameOnlineE(string RoomName, Player Color)
         {
-            RaiseEvent(new NavigateToGameOnlineEventArgs(NavigateToGameOnlineEvent, RoomName));
+            RaiseEvent(new NavigateToGameOnlineEventArgs(NavigateToGameOnlineEvent, RoomName, Color));
         }
         private void RemovePlaceholderText(object sender, RoutedEventArgs e)
         {

@@ -94,7 +94,7 @@ namespace Server
         }
 
 
-        public async Task Click(int a, int b, int c, int d, int color)
+        public async Task MakeMove(int a, int b, int c, int d)
         {
             // cần đủ 2 người chơi
             var item = participants.Where(p => p.Id == Context.ConnectionId).FirstOrDefault();
@@ -106,9 +106,8 @@ namespace Server
 
             if(currentPlayer == item.Color)
             {
-                await Clients.Group(item.RoomName).SendAsync("ClickAtPoint", a, b, c, d, color);
+                await Clients.Group(item.RoomName).SendAsync("MoveTo", a, b, c, d);
                 currentPlayer = item.Color == Player.Red ? Player.Black : Player.Red;
-                await Clients.Group(item.RoomName).SendAsync("ChangeTurn", currentPlayer);
 
             }
 
