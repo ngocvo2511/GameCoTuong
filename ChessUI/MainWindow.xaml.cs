@@ -51,7 +51,7 @@ namespace ChessUI
             mainMenu.PlayButtonClicked += MainMenu_PlayButtonClicked;
             mainMenu.InstructionsButtonClicked += MainMenu_InstructionsButtonClicked;
             mainMenu.SettingsButtonClicked += SettingsButtonClicked;
-
+            mainMenu.LoadButtonClicked += LoadButton_Clicked;
             view.Content = mainMenu;
         }
 
@@ -154,7 +154,12 @@ namespace ChessUI
             saveloadSlotControl.BackButtonClicked += ContinueButtonClicked;
             view.Content = saveloadSlotControl;
         }
-
+        private void CreateLoadMenu()
+        {
+            saveloadSlotControl=new SaveSlotControl(false);
+            saveloadSlotControl.BackButtonClicked += BackButtonClicked;
+            view.Content = saveloadSlotControl;
+        }
         private void CreateRoomControl()
         {
             RoomControl roomControl = new RoomControl();
@@ -198,6 +203,11 @@ namespace ChessUI
         {
             PlayButtonClickSound();
             CreateInstructionMenu();
+        }
+        private void LoadButton_Clicked(object sender, RoutedEventArgs e)
+        {
+            PlayButtonClickSound();
+            CreateLoadMenu();
         }
 
         private void SettingsButtonClicked(object sender, RoutedEventArgs e)

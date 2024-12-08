@@ -65,7 +65,7 @@
 
             <Button x:Name="DownloadButton" Grid.Row="6"
                     Style="{StaticResource ButtonStyle1}"
-                    >
+                    Click="LoadButton_Click">
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconFontAwesome Kind="DownloadSolid" Width="30" Height="30" Margin="0,0,20,0" />
                     <TextBlock Text="Tải" VerticalAlignment="Center" />

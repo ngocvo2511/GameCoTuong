@@ -78,6 +78,22 @@ namespace ChessUI.Menus
         {
             RaiseEvent(new RoutedEventArgs(SettingsButtonClickedEvent));
         }
+        public event RoutedEventHandler LoadButtonClicked
+        {
+            add { AddHandler(LoadButtonClickedEvent, value); }
+            remove { RemoveHandler(LoadButtonClickedEvent, value); }
+        }
+        public static readonly RoutedEvent LoadButtonClickedEvent = EventManager.RegisterRoutedEvent(
+            "LoadButtonClicked",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(MainMenu)
+
+        );
+        private void LoadButton_Click(object sender, RoutedEventArgs e)
+        {
+            RaiseEvent(new RoutedEventArgs(LoadButtonClickedEvent));
+        }
 
         private void HistoryButton_Click(object sender, RoutedEventArgs e)
         {
