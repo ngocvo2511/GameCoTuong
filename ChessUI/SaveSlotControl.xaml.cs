@@ -15,6 +15,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Collections.ObjectModel;
 using ChessUI.Menus;
+using ChessLogic;
+using ChessLogic.GameStates.GameState;
+using System.Security.Policy;
 
 namespace ChessUI
 {
@@ -24,15 +27,40 @@ namespace ChessUI
     public partial class SaveSlotControl : UserControl
     {
         public ObservableCollection<string> SaveSlots { get; set; } = new ObservableCollection<string>();
+        private readonly string[] SaveFiles = new string[5]
+        {
+            "save1.xqi",
+            "save2.xqi",
+            "save3.xqi",
+            "save4.xqi",
+            "save5.xqi"
+        };
         private readonly string SaveDirectory;
-        public SaveSlotControl(bool isSave)
+        private bool isSave;
+        private GameState currentGameState;
+        public SaveSlotControl(GameState gameState)
         {
             InitializeComponent();
-            if (isSave == true) title.Text = "LƯU";
-            else title.Text = "TẢI";
-            string projectRoot = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\");
-            SaveDirectory = System.IO.Path.Combine(projectRoot, "SavedData");
+            this.currentGameState = gameState;
+            this.isSave = true;
+            title.Text = "LƯU";
+            string projectRoot = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\");
+            SaveDirectory = System.IO.Path.Combine(projectRoot, "SaveData");
             if(!Directory.Exists(SaveDirectory))
+            {
+                Directory.CreateDirectory(SaveDirectory);
+            }
+            LoadFileToList();
+            SaveSlotList.ItemsSource = SaveSlots;
+        }
+        public SaveSlotControl()
+        {
+            InitializeComponent();
+            this.isSave = false;
+            title.Text = "TẢI";
+            string projectRoot = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\");
+            SaveDirectory = System.IO.Path.Combine(projectRoot, "SaveData");
+            if (!Directory.Exists(SaveDirectory))
             {
                 Directory.CreateDirectory(SaveDirectory);
             }
@@ -42,32 +70,24 @@ namespace ChessUI
         private void LoadFileToList()
         {
             SaveSlots.Clear();
-            var saveFiles = Directory.GetFiles(SaveDirectory, "*.xqi");
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < SaveFiles.Length; i++)
             {
-                if (i < saveFiles.Length)
+                string filePath = System.IO.Path.Combine(SaveDirectory, SaveFiles[i]);
+
+                if (File.Exists(filePath))
                 {
-                    var fileName = System.IO.Path.GetFileNameWithoutExtension(saveFiles[i]);
-                    var lastWriteTime = File.GetLastWriteTime(saveFiles[i]);
+                    DateTime lastWriteTime = File.GetLastWriteTime(filePath);
                     SaveSlots.Add($"{lastWriteTime:ddd, dd/MM/yyyy HH:mm:ss}");
                 }
                 else
                 {
-                    SaveSlots.Add($"Empty Slot");
+                    SaveSlots.Add("Trống");
                 }
             }
         }
         public event Action<int> SaveSlotSelected;
 
-        private void Slot_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            if (sender is Grid grid && grid.DataContext is string slot)
-            {
-                int index = SaveSlots.IndexOf(slot);
-                SaveSlotSelected?.Invoke(index);
-            }
-        }
         public static readonly RoutedEvent BackButtonClickedEvent = EventManager.RegisterRoutedEvent(
             "BackButtonClicked",
             RoutingStrategy.Bubble,
@@ -83,6 +103,44 @@ namespace ChessUI
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             RaiseEvent(new RoutedEventArgs(BackButtonClickedEvent));
+        }
+        public static readonly RoutedEvent SelectedLoadSlotEvent = EventManager.RegisterRoutedEvent(
+            "SelectedLoadSlot",
+            RoutingStrategy.Bubble,
+            typeof(EventHandler<SaveSlotEventArgs>),
+            typeof(SaveSlotControl)
+        );
+        public event EventHandler<SaveSlotEventArgs> SelectedLoadSlot
+        {
+            add { AddHandler(SelectedLoadSlotEvent, value); }
+            remove { RemoveHandler(SelectedLoadSlotEvent, value); }
+        }
+        private void SaveSlotList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int index = SaveSlotList.SelectedIndex;
+            if (index < 0 || index > SaveFiles.Count()) return;
+            string filePath = System.IO.Path.Combine(SaveDirectory, SaveFiles[index]);
+            if (isSave == true)
+            {
+                SaveService.Save(currentGameState,filePath);
+                LoadFileToList();
+            }
+            else
+            {
+                if (File.Exists(filePath))
+                {
+                    RaiseEvent(new SaveSlotEventArgs(SelectedLoadSlotEvent,filePath));
+                }
+            }
+        }
+    }
+    public class SaveSlotEventArgs : RoutedEventArgs
+    {
+        public string FilePath { get; }
+
+        public SaveSlotEventArgs(RoutedEvent routedEvent, string filePath) : base(routedEvent)
+        {
+            FilePath = filePath;
         }
     }
 }

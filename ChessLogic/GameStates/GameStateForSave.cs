@@ -9,7 +9,7 @@ namespace ChessLogic.GameStates
     public class GameStateForSave
     {
         public string GameType { get; set; }
-        public string[,] Board { get; set; }
+        public List<string> Board { get; set; }
         public string CurrentPlayer {  get; set; }
         public int? depth { get; set; }
 

@@ -150,14 +150,15 @@ namespace ChessUI
         }
         private void CreateSaveMenu()
         {
-            saveloadSlotControl = new SaveSlotControl(true);
+            saveloadSlotControl = new SaveSlotControl(gameUserControl.gameState);
             saveloadSlotControl.BackButtonClicked += ContinueButtonClicked;
             view.Content = saveloadSlotControl;
         }
         private void CreateLoadMenu()
         {
-            saveloadSlotControl=new SaveSlotControl(false);
+            saveloadSlotControl=new SaveSlotControl();
             saveloadSlotControl.BackButtonClicked += BackButtonClicked;
+            saveloadSlotControl.SelectedLoadSlot += SelectedLoadSlot_Clicked;
             view.Content = saveloadSlotControl;
         }
         private void CreateRoomControl()
@@ -215,7 +216,10 @@ namespace ChessUI
             PlayButtonClickSound();
             CreateSettingsMenu();
         }
+        private void SelectedLoadSlot_Clicked(object sender, SaveSlotEventArgs e)
+        {
 
+        }
         private void SelectGameMode_PlayWithBotButtonClicked(object sender, RoutedEventArgs e)
         {
             PlayButtonClickSound();

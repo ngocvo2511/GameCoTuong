@@ -30,36 +30,36 @@ namespace ChessLogic
             gameStateForSave.GameType = gameState is GameState2P ? "GameState2P" : "GameStateAI";
             gameStateForSave.depth = (gameState is GameStateAI AI) ? AI.depth : null;
             gameStateForSave.CurrentPlayer = (gameState.CurrentPlayer == Player.Black) ? "Black" : "Red";
-            gameStateForSave.Board = new string[10, 9];
+            gameStateForSave.Board = new List<string>();
             for(int i=0;i< 10; i++)
             {
                 for(int j=0;j< 9; j++)
                 {
-                    if (gameState.Board[i, j] == null) gameStateForSave.Board[i, j] = "n";
+                    if (gameState.Board[i, j] == null) gameStateForSave.Board.Add("n");
                     else
                     {
                         switch (gameState.Board[i, j].Type)
                         {
                             case PieceType.Advisor:
-                                gameStateForSave.Board[i, j] = (gameState.Board[i, j].Color == Player.Black) ? "bA" : "rA";
+                                gameStateForSave.Board.Add((gameState.Board[i, j].Color == Player.Black) ? "bA" : "rA");
                                 break;
                             case PieceType.Horse:
-                                gameStateForSave.Board[i, j] = (gameState.Board[i, j].Color == Player.Black) ? "bH" : "rH";
+                                gameStateForSave.Board.Add((gameState.Board[i, j].Color == Player.Black) ? "bH" : "rH");
                                 break;
                             case PieceType.Chariot:
-                                gameStateForSave.Board[i, j] = (gameState.Board[i, j].Color == Player.Black) ? "bCh" : "rCh";
+                                gameStateForSave.Board.Add((gameState.Board[i, j].Color == Player.Black) ? "bCh" : "rCh");
                                 break;
                             case PieceType.Cannon:
-                                gameStateForSave.Board[i, j] = (gameState.Board[i, j].Color == Player.Black) ? "bC" : "rC";
+                                gameStateForSave.Board.Add((gameState.Board[i, j].Color == Player.Black) ? "bC" : "rC");
                                 break;
                             case PieceType.Elephant:
-                                gameStateForSave.Board[i, j] = (gameState.Board[i, j].Color == Player.Black) ? "bE" : "rE";
+                                gameStateForSave.Board.Add((gameState.Board[i, j].Color == Player.Black) ? "bE" : "rE");
                                 break;
                             case PieceType.Soldier:
-                                gameStateForSave.Board[i, j] = (gameState.Board[i, j].Color == Player.Black) ? "bS" : "rS";
+                                gameStateForSave.Board.Add((gameState.Board[i, j].Color == Player.Black) ? "bS" : "rS");
                                 break;
                             case PieceType.General:
-                                gameStateForSave.Board[i, j] = (gameState.Board[i, j].Color == Player.Black) ? "bG" : "rG";
+                                gameStateForSave.Board.Add((gameState.Board[i, j].Color == Player.Black) ? "bG" : "rG");
                                 break;
                         }
                     }                    
@@ -87,16 +87,18 @@ namespace ChessLogic
                 {"rG",color=>new General(color)}
             };
             Board board = new Board();
+            int k = 0;
             for(int i = 0; i < 10; i++)
             {
                 for(int j = 0; j < 9; j++)
                 {
-                    if (gameStateForSave.Board[i, j] == "n") board[i, j] = null;
-                    else if (mapping.TryGetValue(gameStateForSave.Board[i,j],out var CreatePiece))
+                    if (gameStateForSave.Board[k] == "n") board[i, j] = null;
+                    else if (mapping.TryGetValue(gameStateForSave.Board[k],out var CreatePiece))
                     {
-                        Player color = (gameStateForSave.Board[i, j].StartsWith('b')) ? Player.Black : Player.Red;
+                        Player color = (gameStateForSave.Board[k].StartsWith('b')) ? Player.Black : Player.Red;
                         board[i, j] = CreatePiece(color);
                     }
+                    ++k;
                 }
             }
             Player currentPlayer = (gameStateForSave.CurrentPlayer == "Black") ? Player.Black : Player.Red;

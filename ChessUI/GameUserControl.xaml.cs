@@ -28,7 +28,7 @@ namespace ChessUI
         private readonly Ellipse[,] highlights = new Ellipse[10, 9];
         private readonly Canvas[,] posMoved = new Canvas[10, 9];
         private Dictionary<Position, Move> moveCache = new Dictionary<Position, Move>();
-        private GameState gameState;
+        public GameState gameState { get; set; }
         private Position selectedPos = null;
         private MainWindow _mainWindow;
         private DispatcherTimer redTimer;
