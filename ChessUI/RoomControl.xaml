@@ -20,17 +20,17 @@
                              HorizontalContentAlignment="Center"
                              GotFocus="RemovePlaceholderText" LostFocus="ShowPlaceholderText"/>
                     <TextBlock x:Name="PlaceholderTextBlock" 
-                               Text="Enter Room Name" Foreground="Gray"
+                               Text="Nhập tên phòng" Foreground="Gray"
                                FontSize="20"
                                IsHitTestVisible="False" 
                                VerticalAlignment="Center" Margin="10"/>
                 </Grid>
                 <Button x:Name="CreateRoomButton" 
-                        Content="Create Room" 
+                        Content="Tạo phòng" 
                         Style="{StaticResource ButtonStyle1}"
                         Margin="0,0,0,10" Click="CreateRoomButton_Click"/>
                 <Button x:Name="JoinRoomButton" 
-                        Content="Join Room"
+                        Content="Tìm phòng"
                         Style="{StaticResource ButtonStyle1}"
                         Margin="0,0,0,20" Click="JoinRoomButton_Click"/>
                 <Button x:Name="BackButton"

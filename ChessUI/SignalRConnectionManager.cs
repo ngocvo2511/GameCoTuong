@@ -49,7 +49,6 @@ namespace ChessUI
             }
             catch (HttpRequestException ex)
             {
-                MessageBox.Show("Không thể kết nối đến server, vui lòng kiểm tra kết nối mạng.", "Connection Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }
