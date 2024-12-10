@@ -33,8 +33,8 @@ namespace ChessUI
         //private MainWindow _mainWindow;
         private DispatcherTimer redTimer;
         private DispatcherTimer blackTimer;
-        private int timeRemainingRed = 600;
-        private int timeRemainingBlack = 600;
+        //private int timeRemainingRed = 600;
+        //private int timeRemainingBlack = 600;
         private bool isRedTurn = true;
         private Brush redBrush = new SolidColorBrush(Colors.Red);
         private Brush blackBrush = new SolidColorBrush(Colors.Black);
@@ -42,12 +42,10 @@ namespace ChessUI
         {
             InitializeComponent();
             InitializeBoard();
-            if (isAI == true) gameState = new GameStateAI(color, Board.Initial(), difficult);
-            else gameState = new GameState2P(Player.Red, Board.Initial());
+            if (isAI == true) gameState = new GameStateAI(color, Board.Initial(), difficult,timeLimit);
+            else gameState = new GameState2P(Player.Red, Board.Initial(),timeLimit);
             ShowGameInformation(difficult);
             DrawBoard(gameState.Board);
-            timeRemainingRed = timeLimit;
-            timeRemainingBlack = timeLimit;
             if (timeLimit != 0)
             {
                 InitializeTimer();
@@ -61,8 +59,8 @@ namespace ChessUI
         }
         private void InitializeTimer()
         {
-            int minutes = timeRemainingRed / 60;
-            int seconds = timeRemainingRed % 60;
+            int minutes = gameState.timeRemainingRed / 60;
+            int seconds = gameState.timeRemainingRed % 60;
             redClock.Text = $"{minutes:D2}:{seconds:D2}";
             blackClock.Text = $"{minutes:D2}:{seconds:D2}";
 
@@ -75,11 +73,11 @@ namespace ChessUI
         }
         private void RedTimer_Tick(object sender, EventArgs e)
         {
-            timeRemainingRed--;
-            int minutes = timeRemainingRed / 60;
-            int seconds = timeRemainingRed % 60;
+            gameState.timeRemainingRed--;
+            int minutes = gameState.timeRemainingRed / 60;
+            int seconds = gameState.timeRemainingRed % 60;
             redClock.Text = $"{minutes:D2}:{seconds:D2}";
-            if (timeRemainingRed <= 0)
+            if (gameState.timeRemainingRed <= 0)
             {
                 StopTimer();
                 HideHighlights();
@@ -88,18 +86,18 @@ namespace ChessUI
                 RaiseGameOverEvent(gameState);
                 return;
             }
-            if (timeRemainingRed < 60)
+            if (gameState.timeRemainingRed < 60)
             {
                 redClock.Foreground = redBrush;
             }
         }
         private void BlackTimer_Tick(object sender, EventArgs e)
         {
-            timeRemainingBlack--;
-            int minutes = timeRemainingBlack / 60;
-            int seconds = timeRemainingBlack % 60;
+            gameState.timeRemainingBlack--;
+            int minutes = gameState.timeRemainingBlack / 60;
+            int seconds = gameState.timeRemainingBlack % 60;
             blackClock.Text = $"{minutes:D2}:{seconds:D2}";
-            if (timeRemainingBlack <= 0)
+            if (gameState.timeRemainingBlack <= 0)
             {
                 StopTimer();
                 HideHighlights();
@@ -108,7 +106,7 @@ namespace ChessUI
                 RaiseGameOverEvent(gameState);
                 return;
             }
-            if (timeRemainingBlack < 60)
+            if (gameState.timeRemainingBlack < 60)
             {
                 blackClock.Foreground = redBrush;
             }
@@ -183,7 +181,7 @@ namespace ChessUI
         private async void StartAIMoveWithDelay()
         {
             MainGame.IsHitTestVisible = false;
-            await Task.Delay(1000);
+            await Task.Delay(500);
             if (gameState is GameStateAI AI)
             {
                 await Task.Run(() => AI.AiMove());

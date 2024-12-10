@@ -15,18 +15,22 @@ namespace ChessLogic.GameStates.GameState
         public Result Result { get; protected set; } = null;
 
         public Piece CapturedPiece { get; protected set; }
+        public int timeRemainingRed { get; set; }
+        public int timeRemainingBlack {  get; set; }
 
         private int noCapture = 0;
 
         private string stateString;
         private readonly Dictionary<string, int> stateHistory = new Dictionary<string, int>();
-        public GameState(Player player, Board board)
+        public GameState(Player player, Board board, int timeLimit)
         {
             CurrentPlayer = player;
             Board = board;
             Moved = new Stack<Tuple<Move, Piece>>();
             stateString = new StateString(player, board).ToString();
             stateHistory[stateString] = 1;
+            timeRemainingBlack = timeLimit;
+            timeRemainingRed = timeLimit;
         }
 
         public IEnumerable<Move> LegalMovesForPiece(Position pos)

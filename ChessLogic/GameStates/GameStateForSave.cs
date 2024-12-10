@@ -12,6 +12,6 @@ namespace ChessLogic.GameStates
         public List<string> Board { get; set; }
         public string CurrentPlayer {  get; set; }
         public int? depth { get; set; }
-
+        public List<string> Moved {  get; set; }
     }
 }

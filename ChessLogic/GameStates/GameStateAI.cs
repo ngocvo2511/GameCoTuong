@@ -11,7 +11,7 @@ namespace ChessLogic.GameStates.GameState
         public int depth { get; set; }
         private ValuePiece value;
         public Piece AiCapturedPiece { get; protected set; }
-        public GameStateAI(Player player, Board board, int depth) : base(player, board)
+        public GameStateAI(Player player, Board board, int depth,int timeLimit) : base(player, board, timeLimit)
         {
             this.depth = depth;
             value = new ValuePiece();

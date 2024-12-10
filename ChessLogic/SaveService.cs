@@ -17,11 +17,11 @@ namespace ChessLogic
             GameStateForSave gameStateForSave=ToSave(gameState);
             File.WriteAllText(fileName, JsonSerializer.Serialize(gameStateForSave, new JsonSerializerOptions { WriteIndented = true }));
         }
-        public static GameState Load(string fileName)
+        public static GameStateForLoad Load(string fileName)
         {
             string json = File.ReadAllText(fileName);
             GameStateForSave gameStateForSave=JsonSerializer.Deserialize<GameStateForSave>(json);
-            GameState gameState = fromSave(gameStateForSave);
+            GameStateForLoad gameState = fromSave(gameStateForSave);
             return gameState;
         }
         public static GameStateForSave ToSave(GameState gameState)
@@ -31,6 +31,9 @@ namespace ChessLogic
             gameStateForSave.depth = (gameState is GameStateAI AI) ? AI.depth : null;
             gameStateForSave.CurrentPlayer = (gameState.CurrentPlayer == Player.Black) ? "Black" : "Red";
             gameStateForSave.Board = new List<string>();
+            gameStateForSave.Moved = new List<string>();
+            List<Tuple<Move,Piece>> currentMoved=gameState.Moved.ToList();
+            currentMoved.Reverse();
             for(int i=0;i< 10; i++)
             {
                 for(int j=0;j< 9; j++)
@@ -65,10 +68,46 @@ namespace ChessLogic
                     }                    
                 }
             }
+            foreach(var moved in currentMoved)
+            {
+                gameStateForSave.Moved.Add(moved.Item1.FromPos.Row.ToString());
+                gameStateForSave.Moved.Add(moved.Item1.FromPos.Column.ToString());
+                gameStateForSave.Moved.Add(moved.Item1.ToPos.Row.ToString());
+                gameStateForSave.Moved.Add(moved.Item1.ToPos.Column.ToString());
+                if (moved.Item2 == null) gameStateForSave.Moved.Add("n");
+                else
+                {
+                    switch (moved.Item2.Type)
+                    {
+                        case PieceType.Advisor:
+                            gameStateForSave.Moved.Add((moved.Item2.Color == Player.Black) ? "bA" : "rA");
+                            break;
+                        case PieceType.Horse:
+                            gameStateForSave.Moved.Add((moved.Item2.Color == Player.Black) ? "bH" : "rH");
+                            break;
+                        case PieceType.Chariot:
+                            gameStateForSave.Moved.Add((moved.Item2.Color == Player.Black) ? "bCh" : "rCh");
+                            break;
+                        case PieceType.Cannon:
+                            gameStateForSave.Moved.Add((moved.Item2.Color == Player.Black) ? "bC" : "rC");
+                            break;
+                        case PieceType.Elephant:
+                            gameStateForSave.Moved.Add((moved.Item2.Color == Player.Black) ? "bE" : "rE");
+                            break;
+                        case PieceType.Soldier:
+                            gameStateForSave.Moved.Add((moved.Item2.Color == Player.Black) ? "bS" : "rS");
+                            break;
+                        case PieceType.General:
+                            gameStateForSave.Moved.Add((moved.Item2.Color == Player.Black) ? "bG" : "rG");
+                            break;
+                    }
+                }
+            }
             return gameStateForSave;
         }
-        public static GameState fromSave(GameStateForSave gameStateForSave)
+        public static GameStateForLoad fromSave(GameStateForSave gameStateForSave)
         {
+            GameStateForLoad gameStateForLoad = new GameStateForLoad();
             var mapping = new Dictionary<string, Func<Player, Piece>>
             {
                 {"bA",color=>new Advisor(color)},
@@ -101,13 +140,29 @@ namespace ChessLogic
                     ++k;
                 }
             }
-            Player currentPlayer = (gameStateForSave.CurrentPlayer == "Black") ? Player.Black : Player.Red;
-            int depth = gameStateForSave.depth ?? 0;
-            if (gameStateForSave.GameType == "GameStateAI")
+            Stack<Tuple<Move,Piece>> Moved= new Stack<Tuple<Move,Piece>>();
+            int x = 0;
+            while(x<gameStateForSave.Moved.Count)
             {
-                return new GameStateAI(currentPlayer,board,depth);
+                Position fromPos = new Position(int.Parse(gameStateForSave.Moved[x]), int.Parse(gameStateForSave.Moved[x + 1]));
+                Position toPos = new Position(int.Parse(gameStateForSave.Moved[x + 2]), int.Parse(gameStateForSave.Moved[x + 3]));
+                Move move=new NormalMove(fromPos, toPos);
+                Piece capturedPiece=null;
+                if (gameStateForSave.Moved[x + 4] == "n") capturedPiece = null;
+                else if (mapping.TryGetValue(gameStateForSave.Moved[x +2], out var CreatePiece))
+                {
+                    Player color = (gameStateForSave.Moved[x + 4].StartsWith('b')) ? Player.Black : Player.Red;
+                    capturedPiece = CreatePiece(color);
+                }
+                Moved.Push(Tuple.Create(move,capturedPiece));
+                x += 5;
             }
-            return new GameState2P(currentPlayer, board);
+            gameStateForLoad.Board = board;
+            gameStateForLoad.Moved = Moved;
+            gameStateForLoad.CurrentPlayer = (gameStateForSave.CurrentPlayer == "Black") ? Player.Black : Player.Red;
+            gameStateForLoad.depth = gameStateForSave.depth ?? 0;
+            gameStateForLoad.GameType = gameStateForSave.GameType;
+            return gameStateForLoad;
         }
     }
 }
