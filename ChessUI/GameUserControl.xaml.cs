@@ -30,7 +30,7 @@ namespace ChessUI
         private Dictionary<Position, Move> moveCache = new Dictionary<Position, Move>();
         public GameState gameState { get; set; }
         private Position selectedPos = null;
-        private MainWindow _mainWindow;
+        //private MainWindow _mainWindow;
         private DispatcherTimer redTimer;
         private DispatcherTimer blackTimer;
         private int timeRemainingRed = 600;
@@ -38,7 +38,7 @@ namespace ChessUI
         private bool isRedTurn = true;
         private Brush redBrush = new SolidColorBrush(Colors.Red);
         private Brush blackBrush = new SolidColorBrush(Colors.Black);
-        public GameUserControl(MainWindow mainWindow, Player color, int timeLimit, bool isAI, int difficult = 1)
+        public GameUserControl(Player color, int timeLimit, bool isAI, int difficult = 1)
         {
             InitializeComponent();
             InitializeBoard();
@@ -46,7 +46,6 @@ namespace ChessUI
             else gameState = new GameState2P(Player.Red, Board.Initial());
             ShowGameInformation(difficult);
             DrawBoard(gameState.Board);
-            _mainWindow = mainWindow;
             timeRemainingRed = timeLimit;
             timeRemainingBlack = timeLimit;
             if (timeLimit != 0)
@@ -86,7 +85,7 @@ namespace ChessUI
                 HideHighlights();
                 CellGrid.IsEnabled = false;
                 gameState.TimeForfeit();
-                _mainWindow.CreateGameOverMenu(gameState);
+                RaiseGameOverEvent(gameState);
                 return;
             }
             if (timeRemainingRed < 60)
@@ -106,7 +105,7 @@ namespace ChessUI
                 HideHighlights();
                 CellGrid.IsEnabled = false;
                 gameState.TimeForfeit();
-                _mainWindow.CreateGameOverMenu(gameState);
+                RaiseGameOverEvent(gameState);
                 return;
             }
             if (timeRemainingBlack < 60)
@@ -190,7 +189,7 @@ namespace ChessUI
                 await Task.Run(() => AI.AiMove());
                 DrawBoard(gameState.Board);
                 ShowPrevMove(gameState.Moved.First().Item1);
-                _mainWindow.PlayMoveSound();
+                Sound.PlayMoveSound();
             }
             MainGame.IsHitTestVisible = true;
         }
@@ -538,7 +537,7 @@ namespace ChessUI
         {
             isRedTurn = !isRedTurn;
             if (redTimer != null) SwitchTurn();
-            _mainWindow.PlayMoveSound();
+            Sound.PlayMoveSound();
             MainGame.IsHitTestVisible = false;
             if (gameState.Moved.Any()) HidePrevMove(gameState.Moved.First().Item1);            
             gameState.MakeMove(move);
@@ -560,7 +559,7 @@ namespace ChessUI
                 DrawBoard(gameState.Board);
                 HidePrevMove(prevMove);
                 ShowPrevMove(gameState.Moved.First().Item1);
-                _mainWindow.PlayMoveSound();
+                Sound.PlayMoveSound();
             }
 
             MainGame.IsHitTestVisible = true;
@@ -570,7 +569,7 @@ namespace ChessUI
                 HideHighlights();
                 CellGrid.IsEnabled = false;
                 if (redTimer != null) StopTimer();
-                _mainWindow.CreateGameOverMenu(gameState);
+                RaiseGameOverEvent(gameState);
             }
         }
 
@@ -606,7 +605,7 @@ namespace ChessUI
         }
         private void UndoButton_Click(object sender, RoutedEventArgs e)
         {
-            _mainWindow.PlayButtonClickSound();
+            Sound.PlayButtonClickSound();
             if(gameState.Moved.Any()) HidePrevMove(gameState.Moved.First().Item1);
             OnToPositionSelected(selectedPos);
             gameState.UndoMove();
@@ -621,6 +620,22 @@ namespace ChessUI
                 UndoAiCapturedGrid(AI.AiCapturedPiece);
             isRedTurn = gameState.CurrentPlayer == Player.Red;
             if (redTimer != null) SwitchTurn();
+        }
+
+
+        public static readonly RoutedEvent GameOverEvent = EventManager.RegisterRoutedEvent(
+        "GameOver", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(GameUserControl));
+
+        public event RoutedEventHandler GameOver
+        {
+            add { AddHandler(GameOverEvent, value); }
+            remove { RemoveHandler(GameOverEvent, value); }
+        }
+
+        protected void RaiseGameOverEvent(GameState gameState)
+        {
+            RoutedEventArgs args = new RoutedPropertyChangedEventArgs<GameState>(null, gameState, GameOverEvent);
+            RaiseEvent(args);
         }
     }
 }

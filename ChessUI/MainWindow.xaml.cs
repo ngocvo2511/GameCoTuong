@@ -24,13 +24,10 @@ namespace ChessUI
         SaveSlotControl saveloadSlotControl;
         GameOverMenu gameOverMenu;
 
-        MediaPlayer buttonClickSound = new MediaPlayer();
-        MediaPlayer gameOverSound = new MediaPlayer();
-        MediaPlayer moveSound = new MediaPlayer();
+       
 
         bool onGame = false;
         Player color = Player.Red;
-        int volume = 50;
         int time = 600;
 
         public MainWindow()
@@ -39,9 +36,7 @@ namespace ChessUI
 
             CreateMainMenu();
 
-            buttonClickSound.Open(new Uri("Assets/Sounds/buttonClickSound.mp3", UriKind.Relative));
-            gameOverSound.Open(new Uri("Assets/Sounds/gameOverSound.mp3", UriKind.Relative));
-            moveSound.Open(new Uri("Assets/Sounds/moveSound.mp3", UriKind.Relative));
+            
         }
 
         private void CreateMainMenu()
@@ -117,25 +112,16 @@ namespace ChessUI
             view.Content = confirmMenu;
         }
 
-        internal void CreateGameOverMenu(GameState gameState)
-        {
-            PlayGameOverSound();
-            gameOverMenu = new GameOverMenu(gameState);
-
-            gameOverMenu.NewButtonClicked += NewButtonClicked;
-            gameOverMenu.HomeButtonClicked += GameOverMenu_HomeButtonClicked;
-            gameOverMenu.ReviewButtonClicked += GameOverMenu_ReviewButtonClicked;
-
-            view.Content = gameOverMenu;
-        }
+        
 
         private void CreateViewGameAI(int difficulty)
         {
             onGame = true;
             if (gameUserControl != null) gameUserControl.ResetTimer();
-            gameUserControl = new GameUserControl(this, color, time, true, difficulty);
+            gameUserControl = new GameUserControl(color, time, true, difficulty);
             gameUserControl.PauseButtonClicked += PauseButtonClicked;
             gameUserControl.SaveButtonClicked += SaveButtonClicked;
+            gameUserControl.GameOver += OnGameOver;
             view.Content = gameUserControl;
         }
 
@@ -143,9 +129,10 @@ namespace ChessUI
         {
             onGame = true;
             if(gameUserControl!=null) gameUserControl.ResetTimer();
-            gameUserControl = new GameUserControl(this, color, time, false);
+            gameUserControl = new GameUserControl(color, time, false);
             gameUserControl.PauseButtonClicked += PauseButtonClicked;
             gameUserControl.SaveButtonClicked += SaveButtonClicked;
+            gameUserControl.GameOver += OnGameOver;
             view.Content = gameUserControl;
         }
         private void CreateSaveMenu()
@@ -188,7 +175,7 @@ namespace ChessUI
 
         private void BackButtonClicked(object sender, RoutedEventArgs e)
         {
-            PlayButtonClickSound();
+            Sound.PlayButtonClickSound();
             if (!onGame)
                 view.Content = mainMenu;
             else view.Content = pauseMenu;
@@ -196,24 +183,24 @@ namespace ChessUI
 
         private void MainMenu_PlayButtonClicked(object sender, RoutedEventArgs e)
         {
-            PlayButtonClickSound();
+            Sound.PlayButtonClickSound();
             CreateSelectGameModeMenu();
         }
 
         private void MainMenu_InstructionsButtonClicked(object sender, RoutedEventArgs e)
         {
-            PlayButtonClickSound();
+            Sound.PlayButtonClickSound();
             CreateInstructionMenu();
         }
         private void LoadButton_Clicked(object sender, RoutedEventArgs e)
         {
-            PlayButtonClickSound();
+            Sound.PlayButtonClickSound();
             CreateLoadMenu();
         }
 
         private void SettingsButtonClicked(object sender, RoutedEventArgs e)
         {
-            PlayButtonClickSound();
+            Sound.PlayButtonClickSound();
             CreateSettingsMenu();
         }
         private void SelectedLoadSlot_Clicked(object sender, SaveSlotEventArgs e)
@@ -222,7 +209,7 @@ namespace ChessUI
         }
         private void SelectGameMode_PlayWithBotButtonClicked(object sender, RoutedEventArgs e)
         {
-            PlayButtonClickSound();
+            Sound.PlayButtonClickSound();
             CreateSelectDifficultMenu();
         }
         private void GameDifficultyMenu_BackButtonClicked(object sender, RoutedEventArgs e)
@@ -244,13 +231,13 @@ namespace ChessUI
 
         private void SelectGameMode_TwoPlayerButtonClicked(object sender, RoutedEventArgs e)
         {
-            PlayButtonClickSound();
+            Sound.PlayButtonClickSound();
             CreateViewGame2P();
         }
 
         private void SelectGameMode_PlayOnlineButtonClicked(object sender, RoutedEventArgs e)
         {
-            PlayButtonClickSound();
+            Sound.PlayButtonClickSound();
             CreateRoomControl();
         }
 
@@ -261,7 +248,7 @@ namespace ChessUI
 
         private void SettingsMenu_humanFirstChecked(object sender, RoutedEventArgs e)
         {
-            PlayButtonClickSound();
+            Sound.PlayButtonClickSound();
             if (color == Player.Black)
             {
                 color = Player.Red;
@@ -270,7 +257,7 @@ namespace ChessUI
 
         private void SettingsMenu_botFirstChecked(object sender, RoutedEventArgs e)
         {
-            PlayButtonClickSound();
+            Sound.PlayButtonClickSound();
             if (color == Player.Red)
             {
                 color = Player.Black;
@@ -279,19 +266,19 @@ namespace ChessUI
 
         private void SettingsMenu_VolumeSliderValueChanged(object sender, RoutedEventArgs e)
         {
-            volume = (int)settingsMenu.VolumeSlider.Value;
+            Sound.SetVolume((int)settingsMenu.VolumeSlider.Value);
         }
 
         private void SettingsMenu_isTimeLimitChecked(object sender, RoutedEventArgs e)
         {
-            PlayButtonClickSound();
+            Sound.PlayButtonClickSound();
             settingsMenu.TimeLimitTextBox.IsEnabled = true;
             this.time = Convert.ToInt16(settingsMenu.TimeLimitTextBox.Text);
         }
 
         private void SettingsMenu_isTimeLimitUnchecked(object sender, RoutedEventArgs e)
         {
-            PlayButtonClickSound();
+            Sound.PlayButtonClickSound();
             settingsMenu.TimeLimitTextBox.IsEnabled = false;
             this.time = 0;
         }
@@ -302,48 +289,48 @@ namespace ChessUI
         private void SaveButtonClicked(object sender, RoutedEventArgs e)
         {
             if(time!=0) gameUserControl.StopTimer();
-            PlayButtonClickSound();
+            Sound.PlayButtonClickSound();
             CreateSaveMenu();
         }
         private void PauseButtonClicked(object sender, RoutedEventArgs e)
         {
-            PlayButtonClickSound();
+            Sound.PlayButtonClickSound();
             CreatePauseMenu();
         }
 
         private void ContinueButtonClicked(object sender, RoutedEventArgs e)
         {
-            PlayButtonClickSound();
+            Sound.PlayButtonClickSound();
             if (time != 0) gameUserControl.ContinueTimer();
             view.Content = gameUserControl;
         }
 
         private void NewButtonClicked(object sender, RoutedEventArgs e)
         {
-            PlayButtonClickSound();
+            Sound.PlayButtonClickSound();
             CreateSelectGameModeMenu();
         }
 
         private void PauseMenu_HomeButtonClicked(object sender, RoutedEventArgs e)
         {
-            PlayButtonClickSound();
+            Sound.PlayButtonClickSound();
             CreateConfirmMenu();
         }
 
         private void ConfirmMenu_YesButtonClicked(object sender, RoutedEventArgs e)
         {
-            PlayButtonClickSound();
+            Sound.PlayButtonClickSound();
             CreateMainMenu();
         }
 
         private void GameOverMenu_HomeButtonClicked(object sender, RoutedEventArgs e)
         {
-            PlayButtonClickSound();
+            Sound.PlayButtonClickSound();
             CreateMainMenu();
         }
         private void GameOverMenu_ReviewButtonClicked(object sender, RoutedEventArgs e)
         {
-            PlayButtonClickSound();
+            Sound.PlayButtonClickSound();
             view.Content = gameUserControl;
         }
 
@@ -363,23 +350,24 @@ namespace ChessUI
 
             }
         }
-        internal void PlayButtonClickSound()
+
+        private void OnGameOver(object sender, RoutedEventArgs e)
         {
-            buttonClickSound.Volume = volume / 100.0;
-            buttonClickSound.Position = TimeSpan.Zero;
-            buttonClickSound.Play();
+            if (e is RoutedPropertyChangedEventArgs<GameState> gameOverEventArgs)
+            {
+                GameState gameState = gameOverEventArgs.NewValue;
+                
+                    Sound.PlayGameOverSound();
+                    gameOverMenu = new GameOverMenu(gameState);
+
+                    gameOverMenu.NewButtonClicked += NewButtonClicked;
+                    gameOverMenu.HomeButtonClicked += GameOverMenu_HomeButtonClicked;
+                    gameOverMenu.ReviewButtonClicked += GameOverMenu_ReviewButtonClicked;
+
+                    view.Content = gameOverMenu;
+               
+            }
         }
-        internal void PlayGameOverSound()
-        {
-            gameOverSound.Volume = volume / 100.0;
-            gameOverSound.Position = TimeSpan.Zero;
-            gameOverSound.Play();
-        }
-        internal void PlayMoveSound()
-        {
-            moveSound.Volume = volume / 100.0;
-            moveSound.Position = TimeSpan.Zero;
-            moveSound.Play();
-        }
+
     }
 }

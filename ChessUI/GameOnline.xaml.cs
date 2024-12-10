@@ -438,7 +438,7 @@ namespace ChessUI
             // Cập nhật giao diện trên luồng chính
             await Dispatcher.InvokeAsync(() =>
             {
-                _mainWindow.PlayMoveSound();
+                Sound.PlayMoveSound();
                 DrawBoard(gameState.Board);
                 ShowPrevMove(move);
                 DrawCapturedGrid(gameState.CapturedPiece);
@@ -454,7 +454,7 @@ namespace ChessUI
             {
                 HideHighlights();
                 CellGrid.IsEnabled = false;
-                _mainWindow.CreateGameOverMenu(gameState);
+                //_mainWindow.CreateGameOverMenu(gameState);
             }
         }
 
