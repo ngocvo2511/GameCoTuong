@@ -88,21 +88,21 @@ namespace ChessUI
         }
         public event Action<int> SaveSlotSelected;
 
-        public static readonly RoutedEvent BackButtonClickedEvent = EventManager.RegisterRoutedEvent(
-            "BackButtonClicked",
+        public static readonly RoutedEvent CloseButtonClickedEvent = EventManager.RegisterRoutedEvent(
+            "CloseButtonClicked",
             RoutingStrategy.Bubble,
             typeof(RoutedEventHandler),
             typeof(SaveSlotControl)
         );
-        public event RoutedEventHandler BackButtonClicked
+        public event RoutedEventHandler CloseButtonClicked
         {
-            add { AddHandler(BackButtonClickedEvent, value); }
-            remove { RemoveHandler(BackButtonClickedEvent, value); }
+            add { AddHandler(CloseButtonClickedEvent, value); }
+            remove { RemoveHandler(CloseButtonClickedEvent, value); }
         }
 
-        private void BackButton_Click(object sender, RoutedEventArgs e)
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-            RaiseEvent(new RoutedEventArgs(BackButtonClickedEvent));
+            RaiseEvent(new RoutedEventArgs(CloseButtonClickedEvent));
         }
         public static readonly RoutedEvent SelectedLoadSlotEvent = EventManager.RegisterRoutedEvent(
             "SelectedLoadSlot",

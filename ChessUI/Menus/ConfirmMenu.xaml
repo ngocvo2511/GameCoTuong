@@ -7,16 +7,16 @@
              xmlns:local="clr-namespace:ChessUI.Menus"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="1200">
-    <Border Width="560"
-            Height="300"
+    <Border Width="600"
+            Height="450"
             Style="{StaticResource BorderStyle1}">
-        <StackPanel>
+        <StackPanel VerticalAlignment="Center">
             <TextBlock TextAlignment="Center"
                        TextWrapping="Wrap"
                        Text="Bạn có chắc chắn muốn thoát ván chơi này?"
                        Style="{StaticResource TextStyle1}"
-                       FontSize="40" Width="500"
-                       Margin="0,40,0,30"
+                       FontSize="40" Width="550"
+                       Margin="0,40,0,50"
                        />
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button x:Name="YesButton"

@@ -9,7 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+	  <None Remove="Assets\Fonts\Bungee-Regular.ttf" />
+	  <None Remove="Assets\Fonts\NotoSerif-Italic-VariableFont_wdth,wght.ttf" />
+	  <None Remove="Assets\Fonts\NotoSerif-VariableFont_wdth,wght.ttf" />
+	  <None Remove="Assets\Fonts\YesevaOne-Regular.ttf" />
 	  <None Remove="Assets\Images\background.jpg" />
+	  <None Remove="Assets\Images\background.png" />
 	  <None Remove="Assets\Images\board.jpg" />
 	  <None Remove="Assets\Images\cungVaSong.jpg" />
 	  <None Remove="Assets\Images\icon.png" />
@@ -45,7 +50,11 @@
   </ItemGroup>
 
   <ItemGroup>
-	  <Resource Include="Assets\Images\background.jpg" />
+	  <Resource Include="Assets\Fonts\Bungee-Regular.ttf" />
+	  <Resource Include="Assets\Fonts\NotoSerif-Italic-VariableFont_wdth,wght.ttf" />
+	  <Resource Include="Assets\Fonts\NotoSerif-VariableFont_wdth,wght.ttf" />
+	  <Resource Include="Assets\Fonts\YesevaOne-Regular.ttf" />
+	  <Resource Include="Assets\Images\background.png" />
 	  <Resource Include="Assets\Images\board.jpg" />
 	  <Resource Include="Assets\Images\cungVaSong.jpg" />
 	  <Resource Include="Assets\Images\MaDo.png" />

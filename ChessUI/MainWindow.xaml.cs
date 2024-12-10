@@ -1,7 +1,6 @@
 ﻿using ChessLogic;
 using ChessLogic.GameStates.GameState;
 using ChessUI.Menus;
-using Microsoft.AspNetCore.SignalR.Client;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -14,15 +13,15 @@ namespace ChessUI
     public partial class MainWindow : Window
     {
         GameUserControl gameUserControl;
-        MainMenu mainMenu = new MainMenu();
-        SelectGameModeMenu selectGameModeMenu = new SelectGameModeMenu();
-        GameDifficultyMenu gameDifficultyMenu = new GameDifficultyMenu();
-        InstructionsMenu instructionsMenu = new InstructionsMenu();
-        SettingsMenu settingsMenu = new SettingsMenu();
-        PauseMenu pauseMenu = new PauseMenu();
-        ConfirmMenu confirmMenu = new ConfirmMenu();
+        MainMenu mainMenu;
+        SelectGameModeMenu selectGameModeMenu;
+        GameDifficultyMenu gameDifficultyMenu;
+        InstructionsMenu instructionsMenu;
+        SettingsMenu settingsMenu;
+        PauseMenu pauseMenu;
+        ConfirmMenu confirmMenu;
         SaveSlotControl saveloadSlotControl;
-        GameOverMenu gameOverMenu;
+        GameOverMenu gameOverMenu; 
 
        
 
@@ -43,73 +42,111 @@ namespace ChessUI
         {
             onGame = false;
 
-            mainMenu.PlayButtonClicked += MainMenu_PlayButtonClicked;
-            mainMenu.InstructionsButtonClicked += MainMenu_InstructionsButtonClicked;
-            mainMenu.SettingsButtonClicked += SettingsButtonClicked;
-            mainMenu.LoadButtonClicked += LoadButton_Clicked;
-            view.Content = mainMenu;
+            if (mainMenu == null)
+            {
+                mainMenu = new MainMenu();
+
+                mainMenu.PlayButtonClicked += MainMenu_PlayButtonClicked;
+                mainMenu.InstructionsButtonClicked += MainMenu_InstructionsButtonClicked;
+                mainMenu.SettingsButtonClicked += SettingsButtonClicked;
+                mainMenu.LoadButtonClicked += LoadButton_Clicked;
+            }
+
+            mainWindowGrid.Children.Clear();
+            mainWindowGrid.Children.Add(mainMenu);
         }
 
         private void CreateSelectGameModeMenu()
         {
-            selectGameModeMenu.BackButtonClicked += BackButtonClicked;
-            selectGameModeMenu.PlayWithBotButtonClicked += SelectGameMode_PlayWithBotButtonClicked;
-            selectGameModeMenu.TwoPlayerButtonClicked += SelectGameMode_TwoPlayerButtonClicked;
-            selectGameModeMenu.PlayOnlineButtonClicked += SelectGameMode_PlayOnlineButtonClicked;
+            if (selectGameModeMenu == null)
+            {
+                selectGameModeMenu = new SelectGameModeMenu();
 
-            view.Content = selectGameModeMenu;
+                selectGameModeMenu.CloseButtonClicked += CloseButtonClicked;
+                selectGameModeMenu.PlayWithBotButtonClicked += SelectGameMode_PlayWithBotButtonClicked;
+                selectGameModeMenu.TwoPlayerButtonClicked += SelectGameMode_TwoPlayerButtonClicked;
+                selectGameModeMenu.PlayOnlineButtonClicked += SelectGameMode_PlayOnlineButtonClicked;
+            }
+
+            mainWindowGrid.Children.Add(selectGameModeMenu);
         }
         private void CreateSelectDifficultMenu()
         {
-            gameDifficultyMenu.BackButtonClicked += GameDifficultyMenu_BackButtonClicked;
-            gameDifficultyMenu.PlayEasyBotButtonClicked += GameDifficultyMenu_PlayEasyBotButtonClicked;
-            gameDifficultyMenu.PlayNormalBotButtonClicked += GameDifficultyMenu_PlayNormalBotButtonClicked;
-            gameDifficultyMenu.PlayHardBotButtonClicked += GameDifficultyMenu_PlayHardBotButtonClicked;
-            view.Content = gameDifficultyMenu;
+            if (gameDifficultyMenu == null)
+            {
+                gameDifficultyMenu = new GameDifficultyMenu();
+
+                gameDifficultyMenu.BackButtonClicked += GameDifficultyMenu_BackButtonClicked;
+                gameDifficultyMenu.PlayEasyBotButtonClicked += GameDifficultyMenu_PlayEasyBotButtonClicked;
+                gameDifficultyMenu.PlayNormalBotButtonClicked += GameDifficultyMenu_PlayNormalBotButtonClicked;
+                gameDifficultyMenu.PlayHardBotButtonClicked += GameDifficultyMenu_PlayHardBotButtonClicked;
+            }
+
+            mainWindowGrid.Children.Add(gameDifficultyMenu);
         }
         private void CreateInstructionMenu()
         {
-            instructionsMenu.BackButtonClicked += BackButtonClicked;
+            if (instructionsMenu == null)
+            {
+                instructionsMenu = new InstructionsMenu();
 
-            view.Content = instructionsMenu;
+                instructionsMenu.CloseButtonClicked += CloseButtonClicked;
+            }    
+
+            mainWindowGrid.Children.Add(instructionsMenu);
         }
 
         private void CreateSettingsMenu()
         {
-            settingsMenu.humanFirst.IsEnabled = !onGame;
-            settingsMenu.botFirst.IsEnabled = !onGame;
-            settingsMenu.isTimeLimit.IsEnabled = !onGame;
-            settingsMenu.TimeLimitTextBox.IsEnabled = !onGame;
+            if (settingsMenu == null)
+            {
+                settingsMenu = new SettingsMenu();
 
-            settingsMenu.BackButtonClicked += BackButtonClicked;
-            settingsMenu.humanFirstChecked += SettingsMenu_humanFirstChecked;
-            settingsMenu.botFirstChecked += SettingsMenu_botFirstChecked;
-            settingsMenu.VolumeSliderValueChanged += SettingsMenu_VolumeSliderValueChanged;
-            settingsMenu.isTimeLimitChecked += SettingsMenu_isTimeLimitChecked;
-            settingsMenu.isTimeLimitUnchecked += SettingsMenu_isTimeLimitUnchecked;
-            settingsMenu.TimeLimitTextBoxChanged += SettingsMenu_TimeLimitTextBoxChanged;
+                settingsMenu.humanFirst.IsEnabled = !onGame;
+                settingsMenu.botFirst.IsEnabled = !onGame;
+                settingsMenu.isTimeLimit.IsEnabled = !onGame;
+                settingsMenu.TimeLimitTextBox.IsEnabled = !onGame;
 
-            view.Content = settingsMenu;
+                settingsMenu.CloseButtonClicked += CloseButtonClicked;
+                settingsMenu.humanFirstChecked += SettingsMenu_humanFirstChecked;
+                settingsMenu.botFirstChecked += SettingsMenu_botFirstChecked;
+                settingsMenu.VolumeSliderValueChanged += SettingsMenu_VolumeSliderValueChanged;
+                settingsMenu.isTimeLimitChecked += SettingsMenu_isTimeLimitChecked;
+                settingsMenu.isTimeLimitUnchecked += SettingsMenu_isTimeLimitUnchecked;
+                settingsMenu.TimeLimitTextBoxChanged += SettingsMenu_TimeLimitTextBoxChanged;
+            }
+
+            mainWindowGrid.Children.Add(settingsMenu);
         }
 
         private void CreatePauseMenu()
         {
             if (time != 0) gameUserControl.StopTimer();
 
-            pauseMenu.ContinueButtonClicked += ContinueButtonClicked;
-            pauseMenu.NewButtonClicked += NewButtonClicked;
-            pauseMenu.HomeButtonClicked += PauseMenu_HomeButtonClicked;
-            pauseMenu.SettingsButtonClicked += SettingsButtonClicked;
+            if (pauseMenu == null)
+            {
+                pauseMenu = new PauseMenu();
 
-            view.Content = pauseMenu;
+                pauseMenu.ContinueButtonClicked += ContinueButtonClicked;
+                pauseMenu.NewButtonClicked += NewButtonClicked;
+                pauseMenu.HomeButtonClicked += PauseMenu_HomeButtonClicked;
+                pauseMenu.SettingsButtonClicked += SettingsButtonClicked;
+            }
+
+            mainWindowGrid.Children.Add(pauseMenu);
         }
 
         private void CreateConfirmMenu()
         {
-            confirmMenu.YesButtonClicked += ConfirmMenu_YesButtonClicked;
-            confirmMenu.NoButtonClicked += BackButtonClicked;
+            if (confirmMenu == null)
+            {
+                confirmMenu = new ConfirmMenu();
 
-            view.Content = confirmMenu;
+                confirmMenu.YesButtonClicked += ConfirmMenu_YesButtonClicked;
+                confirmMenu.NoButtonClicked += CloseButtonClicked;
+            }
+
+            mainWindowGrid.Children.Add(confirmMenu);
         }
 
         
@@ -122,7 +159,9 @@ namespace ChessUI
             gameUserControl.PauseButtonClicked += PauseButtonClicked;
             gameUserControl.SaveButtonClicked += SaveButtonClicked;
             gameUserControl.GameOver += OnGameOver;
-            view.Content = gameUserControl;
+
+            mainWindowGrid.Children.Clear();
+            mainWindowGrid.Children.Add(gameUserControl);
         }
 
         private void CreateViewGame2P()
@@ -133,27 +172,32 @@ namespace ChessUI
             gameUserControl.PauseButtonClicked += PauseButtonClicked;
             gameUserControl.SaveButtonClicked += SaveButtonClicked;
             gameUserControl.GameOver += OnGameOver;
-            view.Content = gameUserControl;
+
+            mainWindowGrid.Children.Clear();
+            mainWindowGrid.Children.Add(gameUserControl);
         }
         private void CreateSaveMenu()
         {
             saveloadSlotControl = new SaveSlotControl(gameUserControl.gameState);
-            saveloadSlotControl.BackButtonClicked += ContinueButtonClicked;
-            view.Content = saveloadSlotControl;
+            saveloadSlotControl.CloseButtonClicked += ContinueButtonClicked;
+
+            mainWindowGrid.Children.Add(saveloadSlotControl);
         }
         private void CreateLoadMenu()
         {
             saveloadSlotControl=new SaveSlotControl();
-            saveloadSlotControl.BackButtonClicked += BackButtonClicked;
+            saveloadSlotControl.CloseButtonClicked += CloseButtonClicked;
             saveloadSlotControl.SelectedLoadSlot += SelectedLoadSlot_Clicked;
-            view.Content = saveloadSlotControl;
+
+            mainWindowGrid.Children.Add(saveloadSlotControl);
         }
         private void CreateRoomControl()
         {
             RoomControl roomControl = new RoomControl();
             roomControl.NavigateToGameOnline += RoomControl_NavigateToGameOnline;
-            roomControl.BackButtonClicked += RoomControl_BackButtonClicked;
-            view.Content = roomControl;
+            roomControl.BackButtonClicked += CloseButtonClicked;
+
+            mainWindowGrid.Children.Add(roomControl);
         }
 
         private void RoomControl_NavigateToGameOnline(object sender, RoutedEventArgs e)
@@ -169,16 +213,16 @@ namespace ChessUI
                 }
                 onGame = true;
                 GameOnline gameOnline = new GameOnline(roomName, this, color);
-                view.Content = gameOnline;
+
+                mainWindowGrid.Children.Clear();
+                mainWindowGrid.Children.Add(gameOnline);
             }
         }
 
-        private void BackButtonClicked(object sender, RoutedEventArgs e)
+        private void CloseButtonClicked(object sender, RoutedEventArgs e)
         {
             Sound.PlayButtonClickSound();
-            if (!onGame)
-                view.Content = mainMenu;
-            else view.Content = pauseMenu;
+            CloseAMenu();
         }
 
         private void MainMenu_PlayButtonClicked(object sender, RoutedEventArgs e)
@@ -214,7 +258,8 @@ namespace ChessUI
         }
         private void GameDifficultyMenu_BackButtonClicked(object sender, RoutedEventArgs e)
         {
-            view.Content = selectGameModeMenu;
+            Sound.PlayButtonClickSound();
+            mainWindowGrid.Children.RemoveAt(mainWindowGrid.Children.Count - 1);
         }
         private void GameDifficultyMenu_PlayEasyBotButtonClicked(object sender, RoutedEventArgs e)
         {
@@ -239,11 +284,6 @@ namespace ChessUI
         {
             Sound.PlayButtonClickSound();
             CreateRoomControl();
-        }
-
-        private void RoomControl_BackButtonClicked(object sender, RoutedEventArgs e)
-        {
-            view.Content = selectGameModeMenu;
         }
 
         private void SettingsMenu_humanFirstChecked(object sender, RoutedEventArgs e)
@@ -302,7 +342,7 @@ namespace ChessUI
         {
             Sound.PlayButtonClickSound();
             if (time != 0) gameUserControl.ContinueTimer();
-            view.Content = gameUserControl;
+            CloseAMenu();
         }
 
         private void NewButtonClicked(object sender, RoutedEventArgs e)
@@ -331,17 +371,16 @@ namespace ChessUI
         private void GameOverMenu_ReviewButtonClicked(object sender, RoutedEventArgs e)
         {
             Sound.PlayButtonClickSound();
-            view.Content = gameUserControl;
+            CloseAMenu();
         }
 
         private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
             {
-
-                if (view.Content == pauseMenu)
+                if (onGame && mainWindowGrid.Children.Count != 1)
                 {
-                    view.Content = gameUserControl;
+                    CloseAMenu();
                 }
                 else if (onGame)
                 {
@@ -351,21 +390,26 @@ namespace ChessUI
             }
         }
 
+        private void CloseAMenu()
+        {
+            mainWindowGrid.Children.RemoveAt(mainWindowGrid.Children.Count - 1);
+        }
+
         private void OnGameOver(object sender, RoutedEventArgs e)
         {
             if (e is RoutedPropertyChangedEventArgs<GameState> gameOverEventArgs)
             {
                 GameState gameState = gameOverEventArgs.NewValue;
                 
-                    Sound.PlayGameOverSound();
-                    gameOverMenu = new GameOverMenu(gameState);
+                Sound.PlayGameOverSound();
+                gameOverMenu = new GameOverMenu(gameState);
 
-                    gameOverMenu.NewButtonClicked += NewButtonClicked;
-                    gameOverMenu.HomeButtonClicked += GameOverMenu_HomeButtonClicked;
-                    gameOverMenu.ReviewButtonClicked += GameOverMenu_ReviewButtonClicked;
+                gameOverMenu.NewButtonClicked += NewButtonClicked;
+                gameOverMenu.HomeButtonClicked += GameOverMenu_HomeButtonClicked;
+                gameOverMenu.ReviewButtonClicked += GameOverMenu_ReviewButtonClicked;
 
-                    view.Content = gameOverMenu;
-               
+                mainWindowGrid.Children.RemoveAt(mainWindowGrid.Children.Count - 1);
+
             }
         }
 

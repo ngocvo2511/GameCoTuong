@@ -99,5 +99,33 @@ namespace ChessUI.Menus
         {
 
         }
+
+        private void CloseAppButton_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        private void MinimizeAppButton_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.MainWindow.WindowState = WindowState.Minimized;
+        }
+
+        private void MaximizeAppButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Application.Current.MainWindow.WindowState == WindowState.Maximized)
+            {
+                Application.Current.MainWindow.WindowState = WindowState.Normal;
+            }
+            else
+                Application.Current.MainWindow.WindowState = WindowState.Maximized;
+        }
+
+        private void TitleBar_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                Application.Current.MainWindow.DragMove();
+            }
+        }
     }
 }

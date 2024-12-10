@@ -4,41 +4,29 @@
              xmlns:local="clr-namespace:ChessUI"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <SolidColorBrush x:Key="StrokeColor1">#ff3cafa7</SolidColorBrush>
-        <SolidColorBrush x:Key="StrokeColor2">#5b7b57</SolidColorBrush>
-        <SolidColorBrush x:Key="FillColor">#f9f9f9</SolidColorBrush>
-        <SolidColorBrush x:Key="TextColor">#ff781e</SolidColorBrush>
-        <SolidColorBrush x:Key="ButtonColor">#e4e2cf</SolidColorBrush>
+        <SolidColorBrush x:Key="StrokeColor1">#5b7b57</SolidColorBrush>
+        <SolidColorBrush x:Key="FillColor">#ffffff</SolidColorBrush>
+        <SolidColorBrush x:Key="TextColor">#a93737</SolidColorBrush>
+        <SolidColorBrush x:Key="ButtonColor">#a93737</SolidColorBrush>
 
         <Style TargetType="Border" x:Key="BorderStyle1">
             <Setter Property="Opacity" Value="1"/>
-            <Setter Property="BorderThickness" Value="15"/>
-            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="CornerRadius" Value="25"/>
+            <Setter Property="BorderBrush" Value="Black"/>
             <Setter Property="Background" Value="{StaticResource FillColor}"/>
-            <Setter Property="BorderBrush">
-                <Setter.Value>
-                    <VisualBrush>
-                        <VisualBrush.Visual>
-                            <Rectangle 
-                                Height="100" Width="100"
-                                StrokeThickness="1"
-                                Stroke="{StaticResource StrokeColor1}"
-                                StrokeDashArray="4,4"/>
-                        </VisualBrush.Visual>
-                    </VisualBrush>
-                </Setter.Value>
-            </Setter>
         </Style>
 
         <Style TargetType="Border" x:Key="BorderStyle2">
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="BorderBrush" Value="{StaticResource StrokeColor2}"/>
+            <Setter Property="Opacity" Value="0.8"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
             <Setter Property="Background" Value="{StaticResource FillColor}"/>
-            <Setter Property="CornerRadius" Value="25"/>
+            <Setter Property="CornerRadius" Value="25"/>            
         </Style>
 
         <Style TargetType="TextBlock" x:Key="TextStyle1">
-            <Setter Property="FontFamily" Value="Segoe UI Black"/>
+            <Setter Property="FontFamily" Value="Assets/Fonts/#Bungee"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
@@ -46,7 +34,7 @@
 
 
         <Style TargetType="TextBlock" x:Key="TextStyle2">
-            <Setter Property="FontFamily" Value="Cascadia Mono SemiBold"/>
+            <Setter Property="FontFamily" Value="Assets/Fonts/#Noto Serif"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Foreground" Value="Black"/>
@@ -55,10 +43,10 @@
         <Style TargetType="Button" x:Key="ButtonStyle1">
             <Setter Property="Width" Value="250"/>
             <Setter Property="Height" Value="60"/>
-            <Setter Property="FontFamily" Value="Cascadia Mono SemiBold"/>
+            <Setter Property="FontFamily" Value="Assets/Fonts/#Noto Serif"/>
             <Setter Property="FontSize" Value="20"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="BorderBrush" Value="{StaticResource StrokeColor2}"/>
+            <Setter Property="BorderBrush" Value="Black"/>
             <Setter Property="Background" Value="{StaticResource FillColor}"/>
             <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
             <Style.Resources>
@@ -69,15 +57,24 @@
         </Style>
 
         <Style TargetType="Button" x:Key="ButtonStyle2">
-            <Setter Property="FontFamily" Value="Cascadia Mono SemiBold"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+            <Setter Property="Width" Value="70"/>
+            <Setter Property="Height" Value="70"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="{StaticResource ButtonColor}"/>
             <Style.Resources>
                 <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="50"/>
+                    <Setter Property="CornerRadius" Value="100"/>
                 </Style>
             </Style.Resources>
+        </Style>
+
+        <Style TargetType="ToolTip">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Placement" Value="Bottom" />
+            <Setter Property="VerticalOffset" Value="10" />
         </Style>
     </Application.Resources>
 </Application>
