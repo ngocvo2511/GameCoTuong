@@ -7,39 +7,54 @@
              xmlns:local="clr-namespace:ChessUI"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="1200">
-    <Border Width="400"
-            Height="400"
+    <Border Width="500"
+            Height="450"
             Style="{StaticResource BorderStyle1}">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.25*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="0.25*"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <Button x:Name="PlayWithBotButton" Grid.Row="1"
-                    Content="Chơi với máy"
                     Style="{StaticResource ButtonStyle1}"
-                    Click="PlayWithBotButton_Click"/>
+                    Click="PlayWithBotButton_Click">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconFontAwesome Kind="RobotSolid" Width="30" Height="30" Margin="0,0,20,0" />
+                    <TextBlock Text="Chơi với máy" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
 
             <Button x:Name="TwoPlayerButton" Grid.Row="2"
-                    Content="2 người chơi"
                     Style="{StaticResource ButtonStyle1}"
-                    Click="TwoPlayerButton_Click"/>
+                    Click="TwoPlayerButton_Click">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterial Kind="AccountMultiple" Width="30" Height="30" Margin="0,0,20,0" />
+                    <TextBlock Text="2 người chơi" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
 
             <Button x:Name="PlayOnlineButton" Grid.Row="3"
-                    Content="Chơi trực tuyến"
                     Style="{StaticResource ButtonStyle1}"
-                    Click="PlayOnlineButton_Click"/>
+                    Click="PlayOnlineButton_Click">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterial Kind="Wifi" Width="30" Height="30" Margin="0,0,20,0" />
+                    <TextBlock Text="Chơi trực tuyến" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
 
-            <Button x:Name="BackButton" Grid.Row="4"
-                    Style="{StaticResource ButtonStyle2}"
-                    Width="70" Height="70"
-                    Click="BackButton_Click">
-                <iconPacks:PackIconMaterial Kind="ArrowLeft" Height="50" Width="50"/>
+            <Button x:Name="CloseButton" Grid.RowSpan="2"
+                    HorizontalAlignment="Right" VerticalAlignment="Top"
+                    Background="Transparent"
+                    Foreground="Black"
+                    BorderThickness="0"
+                    Width="30" Height="30" 
+                    Margin="0,10,10,0"
+                    Click="CloseButton_Click">
+                <iconPacks:PackIconMaterial Kind="Close" Height="20" Width="20"/>
             </Button>
         </Grid>
     </Border>

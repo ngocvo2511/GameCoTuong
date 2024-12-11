@@ -7,12 +7,12 @@
              xmlns:local="clr-namespace:ChessUI.Menus"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="1200">
-    <Border Width="400"
-            Height="400"
+    <Border Width="500"
+            Height="450"
             Style="{StaticResource BorderStyle1}">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.25*"/>
+                <RowDefinition Height="0.5*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>

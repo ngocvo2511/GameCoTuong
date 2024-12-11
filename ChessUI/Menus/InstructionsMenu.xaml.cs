@@ -25,21 +25,21 @@ namespace ChessUI.Menus
             InitializeComponent();
         }
 
-        public static readonly RoutedEvent BackButtonClickedEvent = EventManager.RegisterRoutedEvent(
-            "BackButtonClicked",
+        public static readonly RoutedEvent CloseButtonClickedEvent = EventManager.RegisterRoutedEvent(
+            "CloseButtonClicked",
             RoutingStrategy.Bubble,
             typeof(RoutedEventHandler),
             typeof(InstructionsMenu)
         );
-        public event RoutedEventHandler BackButtonClicked
+        public event RoutedEventHandler CloseButtonClicked
         {
-            add { AddHandler(BackButtonClickedEvent, value); }
-            remove { RemoveHandler(BackButtonClickedEvent, value); }
+            add { AddHandler(CloseButtonClickedEvent, value); }
+            remove { RemoveHandler(CloseButtonClickedEvent, value); }
         }
 
-        private void BackButton_Click(object sender, RoutedEventArgs e)
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-            RaiseEvent(new RoutedEventArgs(BackButtonClickedEvent));
+            RaiseEvent(new RoutedEventArgs(CloseButtonClickedEvent));
         }
 
     }

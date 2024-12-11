@@ -4,20 +4,22 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChessUI.Menus"
+        xmlns:local2="clr-namespace:ChessUI"
         mc:Ignorable="d"
         Title="Cờ Tướng" Height ="720"  Width="1200"
         Icon="Assets/Images/icon.png"
         WindowStartupLocation="CenterScreen" ResizeMode="CanResize"
-        KeyDown="Window_KeyDown">
+        KeyDown="Window_KeyDown"
+        WindowStyle="None" AllowsTransparency="True"
+        Background="Transparent">
 
-    <Grid>
-        <Grid.Background>
-            <ImageBrush ImageSource="Assets/Images/background.jpg"/>
-        </Grid.Background>
-        <Grid Grid.Row="1">
+    <Border Background="White"
+            BorderThickness="0"
+            CornerRadius="30">
+        <Grid x:Name="mainWindowGrid">
             <ContentControl x:Name="view"/>
         </Grid>
 
 
-    </Grid>
+    </Border>
 </Window>
