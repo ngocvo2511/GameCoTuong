@@ -21,18 +21,28 @@ namespace ChessLogic.GameStates.GameState
         private int noCapture = 0;
 
         private string stateString;
-        private readonly Dictionary<string, int> stateHistory = new Dictionary<string, int>();
+        private readonly Dictionary<string, int> stateHistory;
         public GameState(Player player, Board board, int timeLimit)
         {
             CurrentPlayer = player;
             Board = board;
             Moved = new Stack<Tuple<Move, Piece>>();
+            stateHistory=new Dictionary<string, int>();
             stateString = new StateString(player, board).ToString();
             stateHistory[stateString] = 1;
             timeRemainingBlack = timeLimit;
             timeRemainingRed = timeLimit;
         }
-
+        public List<string> getStateHistory()
+        {
+            List<string> history = new List<string>();
+            foreach (var state in stateHistory)
+            {
+                history.Add(state.Key);
+                history.Add($"{state.Value}");
+            }
+            return history;
+        }
         public IEnumerable<Move> LegalMovesForPiece(Position pos)
         {
             if (Board.IsEmpty(pos) || Board[pos].Color != CurrentPlayer)

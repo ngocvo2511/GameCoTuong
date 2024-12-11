@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using ChessLogic.GameStates;
 
 namespace ChessUI
 {
@@ -55,6 +56,20 @@ namespace ChessUI
             {
                 isRedTurn = false;
                 StartAIMoveWithDelay();
+            }
+        }
+        public GameUserControl(GameStateForLoad gameStateForLoad)
+        {
+            InitializeComponent();
+            InitializeBoard();
+            if (gameStateForLoad.GameType == "GameStateAI") gameState = new GameStateAI();
+            else gameState = new GameState2P();
+            ShowGameInformation(gameStateForLoad.depth);
+            DrawBoard(gameState.Board);
+            if (gameState.timeRemainingBlack != 0)
+            {
+                InitializeTimer();
+                SwitchTurn();
             }
         }
         private void InitializeTimer()

@@ -13,5 +13,8 @@ namespace ChessLogic.GameStates
         public string CurrentPlayer {  get; set; }
         public int? depth { get; set; }
         public List<string> Moved {  get; set; }
+        public List<string> stateHistory {  get; set; }
+        public int timeRemainingRed {  get; set; }
+        public int timeRemainingBlack { get; set; }
     }
 }

@@ -13,5 +13,8 @@ namespace ChessLogic.GameStates
         public Stack<Tuple<Move, Piece>> Moved { get; set; }
         public Player CurrentPlayer { get; set; }
         public int depth {  get; set; }
+        public int timeRemainingRed {  get; set; }
+        public int timeRemainingBlack { get; set; }
+        public Dictionary<string, int> stateHistory = new Dictionary<string, int>();
     }
 }

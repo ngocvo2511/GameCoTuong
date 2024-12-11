@@ -30,6 +30,9 @@ namespace ChessLogic
             gameStateForSave.GameType = gameState is GameState2P ? "GameState2P" : "GameStateAI";
             gameStateForSave.depth = (gameState is GameStateAI AI) ? AI.depth : null;
             gameStateForSave.CurrentPlayer = (gameState.CurrentPlayer == Player.Black) ? "Black" : "Red";
+            gameStateForSave.timeRemainingRed = gameState.timeRemainingRed;
+            gameStateForSave.timeRemainingBlack = gameState.timeRemainingBlack;
+            gameStateForSave.stateHistory=gameState.getStateHistory();
             gameStateForSave.Board = new List<string>();
             gameStateForSave.Moved = new List<string>();
             List<Tuple<Move,Piece>> currentMoved=gameState.Moved.ToList();
@@ -157,11 +160,17 @@ namespace ChessLogic
                 Moved.Push(Tuple.Create(move,capturedPiece));
                 x += 5;
             }
+            for(int i = 0; i < gameStateForSave.stateHistory.Count-1; i += 2)
+            {
+                gameStateForLoad.stateHistory[gameStateForSave.stateHistory[i]] = int.Parse(gameStateForSave.stateHistory[i + 1]);
+            }
             gameStateForLoad.Board = board;
             gameStateForLoad.Moved = Moved;
             gameStateForLoad.CurrentPlayer = (gameStateForSave.CurrentPlayer == "Black") ? Player.Black : Player.Red;
             gameStateForLoad.depth = gameStateForSave.depth ?? 0;
             gameStateForLoad.GameType = gameStateForSave.GameType;
+            gameStateForLoad.timeRemainingBlack = gameStateForSave.timeRemainingBlack;
+            gameStateForLoad.timeRemainingRed = gameStateForSave.timeRemainingRed;
             return gameStateForLoad;
         }
     }
