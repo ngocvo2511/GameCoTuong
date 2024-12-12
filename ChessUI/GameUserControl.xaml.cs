@@ -62,8 +62,8 @@ namespace ChessUI
         {
             InitializeComponent();
             InitializeBoard();
-            if (gameStateForLoad.GameType == "GameStateAI") gameState = new GameStateAI();
-            else gameState = new GameState2P();
+            if (gameStateForLoad.GameType == "GameStateAI") gameState = new GameStateAI(gameStateForLoad);
+            else gameState = new GameState2P(gameStateForLoad);
             ShowGameInformation(gameStateForLoad.depth);
             DrawBoard(gameState.Board);
             if (gameState.timeRemainingBlack != 0)

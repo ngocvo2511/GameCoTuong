@@ -93,5 +93,12 @@
     "rCh"
   ],
   "CurrentPlayer": "Red",
-  "depth": null
+  "depth": null,
+  "Moved": [],
+  "stateHistory": [
+    "cheagaehc/9/1n5n1/s1s1s1s1s/9/9/S1S1S1S1S/1N5N1/9/CHEAGAEHC r",
+    "1"
+  ],
+  "timeRemainingRed": 599,
+  "timeRemainingBlack": 600
 }

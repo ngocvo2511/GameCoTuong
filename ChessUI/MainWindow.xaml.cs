@@ -1,4 +1,5 @@
 ﻿using ChessLogic;
+using ChessLogic.GameStates;
 using ChessLogic.GameStates.GameState;
 using ChessUI.Menus;
 using System.Windows;
@@ -176,6 +177,18 @@ namespace ChessUI
             mainWindowGrid.Children.Clear();
             mainWindowGrid.Children.Add(gameUserControl);
         }
+        private void CreateViewGameLoad(GameStateForLoad gameStateForLoad)
+        {
+            onGame = true;
+            if (gameUserControl != null) gameUserControl.ResetTimer();
+            gameUserControl = new GameUserControl(gameStateForLoad);
+            gameUserControl.PauseButtonClicked += PauseButtonClicked;
+            gameUserControl.SaveButtonClicked += SaveButtonClicked;
+            gameUserControl.GameOver += OnGameOver;
+
+            mainWindowGrid.Children.Clear();
+            mainWindowGrid.Children.Add(gameUserControl);
+        }
         private void CreateSaveMenu()
         {
             saveloadSlotControl = new SaveSlotControl(gameUserControl.gameState);
@@ -249,7 +262,8 @@ namespace ChessUI
         }
         private void SelectedLoadSlot_Clicked(object sender, SaveSlotEventArgs e)
         {
-
+            GameStateForLoad gameStateForLoad = SaveService.Load(e.FilePath);
+            CreateViewGameLoad(gameStateForLoad);
         }
         private void SelectGameMode_PlayWithBotButtonClicked(object sender, RoutedEventArgs e)
         {

@@ -26,12 +26,21 @@ namespace ChessLogic.GameStates.GameState
         {
             CurrentPlayer = player;
             Board = board;
-            Moved = new Stack<Tuple<Move, Piece>>();
-            stateHistory=new Dictionary<string, int>();
+            this.Moved = new Stack<Tuple<Move, Piece>>();
+            this.stateHistory = new Dictionary<string, int>();
             stateString = new StateString(player, board).ToString();
-            stateHistory[stateString] = 1;
+            this.stateHistory[stateString] = 1;
             timeRemainingBlack = timeLimit;
             timeRemainingRed = timeLimit;
+        }
+        public GameState(Player player,Board board,int redTime,int blackTime,Stack<Tuple<Move, Piece>> Moved,Dictionary<string,int> stateHistory)
+        {
+            CurrentPlayer = player;
+            Board = board;
+            this.Moved = Moved;
+            this.stateHistory = stateHistory;
+            timeRemainingBlack = blackTime;
+            timeRemainingRed = redTime;
         }
         public List<string> getStateHistory()
         {
