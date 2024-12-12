@@ -16,7 +16,8 @@ namespace ChessLogic.GameStates.GameState
             this.depth = depth;
             value = new ValuePiece();
         }
-        public GameStateAI(GameStateForLoad gameStateForLoad):base(gameStateForLoad.CurrentPlayer, gameStateForLoad.Board, gameStateForLoad.timeRemainingRed, gameStateForLoad.timeRemainingBlack, gameStateForLoad.Moved, gameStateForLoad.stateHistory)
+        public GameStateAI(GameStateForLoad gameStateForLoad):base(gameStateForLoad.CurrentPlayer, gameStateForLoad.Board, 
+            gameStateForLoad.timeRemainingRed, gameStateForLoad.timeRemainingBlack, gameStateForLoad.Moved, gameStateForLoad.stateHistory,gameStateForLoad.CapturedRedPiece,gameStateForLoad.CapturedBlackPiece)
         {
             this.depth = gameStateForLoad.depth;
             value=new ValuePiece();

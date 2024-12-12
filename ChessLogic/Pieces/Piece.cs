@@ -23,5 +23,18 @@ namespace ChessLogic
                 return piece != null && piece.Type == PieceType.General;
             });
         }
+        public override string ToString()
+        {
+            switch (Type)
+            {
+                case PieceType.General: return (Color == Player.Black) ? "bG" : "rG";
+                case PieceType.Advisor: return (Color == Player.Black) ? "bA" : "rA";
+                case PieceType.Chariot: return (Color == Player.Black) ? "bCh" : "rCh";
+                case PieceType.Cannon: return (Color == Player.Black) ? "bC" : "rC";
+                case PieceType.Elephant: return (Color == Player.Black) ? "bE" : "rE";
+                case PieceType.Horse: return (Color == Player.Black) ? "bH" : "rH";
+                default: return (Color == Player.Black) ? "bS" : "rS";
+            }
+        }
     }
 }

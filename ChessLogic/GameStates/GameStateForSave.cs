@@ -16,5 +16,7 @@ namespace ChessLogic.GameStates
         public List<string> stateHistory {  get; set; }
         public int timeRemainingRed {  get; set; }
         public int timeRemainingBlack { get; set; }
+        public List<string> CapturedRedPiece { get; set; }
+        public List<string> CapturedBlackPiece { get; set; }
     }
 }

@@ -17,7 +17,8 @@ namespace ChessLogic.GameStates.GameState
         public Piece CapturedPiece { get; protected set; }
         public int timeRemainingRed { get; set; }
         public int timeRemainingBlack {  get; set; }
-
+        public List<Piece> CapturedRedPiece { get; set; }
+        public List<Piece> CapturedBlackPiece { get; set; }
         private int noCapture = 0;
 
         private string stateString;
@@ -27,18 +28,23 @@ namespace ChessLogic.GameStates.GameState
             CurrentPlayer = player;
             Board = board;
             this.Moved = new Stack<Tuple<Move, Piece>>();
+            this.CapturedBlackPiece = new List<Piece>();
+            this.CapturedRedPiece = new List<Piece>();
             this.stateHistory = new Dictionary<string, int>();
             stateString = new StateString(player, board).ToString();
             this.stateHistory[stateString] = 1;
             timeRemainingBlack = timeLimit;
             timeRemainingRed = timeLimit;
         }
-        public GameState(Player player,Board board,int redTime,int blackTime,Stack<Tuple<Move, Piece>> Moved,Dictionary<string,int> stateHistory)
+        public GameState(Player player,Board board,int redTime,int blackTime,Stack<Tuple<Move, Piece>> Moved,Dictionary<string,int> stateHistory
+            ,List<Piece> CapturedRedPiece,List<Piece> CapturedBlackPiece)
         {
             CurrentPlayer = player;
             Board = board;
             this.Moved = Moved;
             this.stateHistory = stateHistory;
+            this.CapturedBlackPiece = CapturedBlackPiece;
+            this.CapturedRedPiece = CapturedRedPiece;
             timeRemainingBlack = blackTime;
             timeRemainingRed = redTime;
         }
@@ -68,6 +74,11 @@ namespace ChessLogic.GameStates.GameState
         {
             Moved.Push(Tuple.Create(move, Board[move.ToPos]));
             CapturedPiece = Board[move.ToPos];
+            if(CapturedPiece != null)
+            {
+                if(CapturedPiece.Color==Player.Black) CapturedBlackPiece.Add(CapturedPiece);
+                else CapturedRedPiece.Add(CapturedPiece);
+            }
             bool capture = move.Execute(Board);
 
             if (capture)

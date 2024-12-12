@@ -66,6 +66,9 @@ namespace ChessUI
             else gameState = new GameState2P(gameStateForLoad);
             ShowGameInformation(gameStateForLoad.depth);
             DrawBoard(gameState.Board);
+            foreach(var piece in gameState.CapturedRedPiece) DrawCapturedGrid(piece);
+            foreach (var piece in gameState.CapturedBlackPiece) DrawCapturedGrid(piece);
+            if (gameState.Moved.Any()) ShowPrevMove(gameState.Moved.First().Item1);
             if (gameState.timeRemainingBlack != 0)
             {
                 InitializeTimer();
@@ -336,7 +339,7 @@ namespace ChessUI
             if (piece == null) return;
             Image image = new Image();
             image.Source = Images.GetImage(piece);
-            if (gameState.CurrentPlayer == Player.Red)
+            if (piece.Color==Player.Red)
             {
                 BlackCapturedGrid.Children.Add(image);
             }
