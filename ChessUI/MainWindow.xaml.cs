@@ -19,12 +19,13 @@ namespace ChessUI
         GameDifficultyMenu gameDifficultyMenu;
         InstructionsMenu instructionsMenu;
         SettingsMenu settingsMenu;
+        HistoryMenu historyMenu;
         PauseMenu pauseMenu;
         ConfirmMenu confirmMenu;
         SaveSlotControl saveloadSlotControl;
-        GameOverMenu gameOverMenu; 
+        GameOverMenu gameOverMenu;
 
-       
+
 
         bool onGame = false;
         Player color = Player.Red;
@@ -35,8 +36,8 @@ namespace ChessUI
             InitializeComponent();
 
             CreateMainMenu();
-
             
+
         }
 
         private void CreateMainMenu()
@@ -50,6 +51,7 @@ namespace ChessUI
                 mainMenu.PlayButtonClicked += MainMenu_PlayButtonClicked;
                 mainMenu.InstructionsButtonClicked += MainMenu_InstructionsButtonClicked;
                 mainMenu.SettingsButtonClicked += SettingsButtonClicked;
+                mainMenu.HistoryButtonClicked += MainMenu_HistoryButtonClicked;
                 mainMenu.LoadButtonClicked += LoadButton_Clicked;
             }
 
@@ -118,6 +120,19 @@ namespace ChessUI
             }
 
             mainWindowGrid.Children.Add(settingsMenu);
+        }
+
+        private void CreateHistoryMenu()
+        {
+            if (historyMenu == null)
+            {
+                historyMenu = new HistoryMenu();
+
+                historyMenu.CloseButtonClicked += CloseButtonClicked;
+            }
+
+            historyMenu.LoadHistory();
+            mainWindowGrid.Children.Add(historyMenu);
         }
 
         private void CreatePauseMenu()
@@ -249,6 +264,12 @@ namespace ChessUI
             Sound.PlayButtonClickSound();
             CreateInstructionMenu();
         }
+        private void MainMenu_HistoryButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Sound.PlayButtonClickSound();
+            CreateHistoryMenu();
+        }
+
         private void LoadButton_Clicked(object sender, RoutedEventArgs e)
         {
             Sound.PlayButtonClickSound();
@@ -422,8 +443,9 @@ namespace ChessUI
                 gameOverMenu.HomeButtonClicked += GameOverMenu_HomeButtonClicked;
                 gameOverMenu.ReviewButtonClicked += GameOverMenu_ReviewButtonClicked;
 
-                mainWindowGrid.Children.RemoveAt(mainWindowGrid.Children.Count - 1);
+                mainWindowGrid.Children.Add(gameOverMenu);
 
+                LocalGameHistoryService.SaveGameHistory(gameOverMenu, gameState);
             }
         }
 

@@ -39,7 +39,7 @@ namespace ChessUI.Menus
             {
                 Player.Red => "ĐỎ THẮNG!",
                 Player.Black => "ĐEN THẮNG!",
-                _ => "HÒA"
+                _ => "HÒA!"
             };
         }
 
