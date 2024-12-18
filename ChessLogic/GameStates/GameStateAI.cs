@@ -51,7 +51,7 @@ namespace ChessLogic.GameStates.GameState
             Board[undo.Item1.ToPos] = undo.Item2;
             CurrentPlayer = CurrentPlayer.Opponent();
         }
-        public void AiMove()
+        public void AiMove(CancellationToken token)
         {
             IEnumerable<Move> moves = AllLegalMovesFor(CurrentPlayer);
             if (!moves.Any()) return;
@@ -68,7 +68,8 @@ namespace ChessLogic.GameStates.GameState
                     bestValue = value;
                     bestMove = move;
                 }
-            }
+                if (token.IsCancellationRequested) return;
+            }            
             MakeMove(bestMove);
         }
         private int AlphaBeta(int depth, int alpha = -9999, int beta = 9999) // giá trị nước đi

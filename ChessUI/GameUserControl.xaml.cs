@@ -39,6 +39,7 @@ namespace ChessUI
         private bool isRedTurn = true;
         private Brush redBrush = new SolidColorBrush(Colors.Red);
         private Brush blackBrush = new SolidColorBrush(Colors.Black);
+        private CancellationTokenSource cts = new CancellationTokenSource();
         public GameUserControl(Player color, int timeLimit, bool isAI, int difficult = 1)
         {
             InitializeComponent();
@@ -100,6 +101,7 @@ namespace ChessUI
                 StopTimer();
                 HideHighlights();
                 CellGrid.IsEnabled = false;
+                cts.Cancel();
                 gameState.TimeForfeit();
                 RaiseGameOverEvent(gameState);
                 return;
@@ -120,6 +122,7 @@ namespace ChessUI
                 StopTimer();
                 HideHighlights();
                 CellGrid.IsEnabled = false;
+                cts.Cancel();
                 gameState.TimeForfeit();
                 RaiseGameOverEvent(gameState);
                 return;
@@ -202,7 +205,7 @@ namespace ChessUI
             await Task.Delay(500);
             if (gameState is GameStateAI AI)
             {
-                await Task.Run(() => AI.AiMove());
+                await Task.Run(() => AI.AiMove(cts.Token),cts.Token);
                 DrawBoard(gameState.Board);
                 ShowPrevMove(gameState.Moved.First().Item1);
                 Sound.PlayMoveSound();
@@ -566,7 +569,7 @@ namespace ChessUI
             if (gameState is GameStateAI AI)
             {
                 Move prevMove = gameState.Moved.First().Item1;
-                await Task.Run(() => AI.AiMove());
+                await Task.Run(() => AI.AiMove(cts.Token),cts.Token);
                 isRedTurn = !isRedTurn;
                 if (redTimer != null) SwitchTurn();
                 WarningTextBlock.Text = gameState.Board.IsInCheck(gameState.CurrentPlayer)? "Chiếu tướng!" : null;

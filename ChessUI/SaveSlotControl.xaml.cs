@@ -86,7 +86,6 @@ namespace ChessUI
                 }
             }
         }
-        public event Action<int> SaveSlotSelected;
 
         public static readonly RoutedEvent CloseButtonClickedEvent = EventManager.RegisterRoutedEvent(
             "CloseButtonClicked",
