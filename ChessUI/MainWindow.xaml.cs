@@ -359,7 +359,8 @@ namespace ChessUI
         }
         private void SettingsMenu_TimeLimitTextBoxChanged(object sender, RoutedEventArgs e)
         {
-            this.time = Convert.ToInt16(settingsMenu.TimeLimitTextBox.Text) * 60;
+            if (string.IsNullOrEmpty(settingsMenu.TimeLimitTextBox.Text)) this.time = 0;
+            else this.time = Convert.ToInt16(settingsMenu.TimeLimitTextBox.Text) * 60;
         }
         private void SaveButtonClicked(object sender, RoutedEventArgs e)
         {

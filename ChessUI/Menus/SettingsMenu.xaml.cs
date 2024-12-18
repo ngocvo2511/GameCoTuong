@@ -152,5 +152,10 @@ namespace ChessUI.Menus
 
             RaiseEvent(new RoutedEventArgs(TimeLimitTextBoxChangedEvent));
         }
+
+        private void TimeLimitTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(TimeLimitTextBox.Text)) TimeLimitTextBox.Text = "10";
+        }
     }
 }
