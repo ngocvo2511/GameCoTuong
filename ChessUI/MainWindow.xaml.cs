@@ -24,6 +24,9 @@ namespace ChessUI
         ConfirmMenu confirmMenu;
         SaveSlotControl saveloadSlotControl;
         GameOverMenu gameOverMenu;
+        RoomControl roomControl;
+        CreateRoom createRoom;
+        JoinRoom joinRoom;
 
 
 
@@ -36,7 +39,7 @@ namespace ChessUI
             InitializeComponent();
 
             CreateMainMenu();
-            
+
 
         }
 
@@ -94,7 +97,7 @@ namespace ChessUI
                 instructionsMenu = new InstructionsMenu();
 
                 instructionsMenu.CloseButtonClicked += CloseButtonClicked;
-            }    
+            }
 
             mainWindowGrid.Children.Add(instructionsMenu);
         }
@@ -165,7 +168,7 @@ namespace ChessUI
             mainWindowGrid.Children.Add(confirmMenu);
         }
 
-        
+
 
         private void CreateViewGameAI(int difficulty)
         {
@@ -183,7 +186,7 @@ namespace ChessUI
         private void CreateViewGame2P()
         {
             onGame = true;
-            if(gameUserControl!=null) gameUserControl.ResetTimer();
+            if (gameUserControl != null) gameUserControl.ResetTimer();
             gameUserControl = new GameUserControl(color, time, false);
             gameUserControl.PauseButtonClicked += PauseButtonClicked;
             gameUserControl.SaveButtonClicked += SaveButtonClicked;
@@ -213,7 +216,7 @@ namespace ChessUI
         }
         private void CreateLoadMenu()
         {
-            saveloadSlotControl=new SaveSlotControl();
+            saveloadSlotControl = new SaveSlotControl();
             saveloadSlotControl.CloseButtonClicked += CloseButtonClicked;
             saveloadSlotControl.SelectedLoadSlot += SelectedLoadSlot_Clicked;
 
@@ -221,11 +224,48 @@ namespace ChessUI
         }
         private void CreateRoomControl()
         {
-            RoomControl roomControl = new RoomControl();
-            roomControl.NavigateToGameOnline += RoomControl_NavigateToGameOnline;
-            roomControl.BackButtonClicked += CloseButtonClicked;
+            if(roomControl == null)
+            {
+                roomControl = new RoomControl();
+                roomControl.CreateRoomButtonClicked += RoomControl_CreateRoomButtonClicked;
+                roomControl.JoinRoomButtonClicked += RoomControl_JoinRoomButtonClicked;
+                roomControl.RandomMatchButtonClicked += RoomControl_RandomMatchButtonClicked;
+                roomControl.BackButtonClicked += CloseButtonClicked;
+            }
+            
 
             mainWindowGrid.Children.Add(roomControl);
+        }
+
+        private void RoomControl_RandomMatchButtonClicked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void RoomControl_JoinRoomButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Sound.PlayButtonClickSound();
+            if (joinRoom == null)
+            {
+                joinRoom = new JoinRoom();
+                joinRoom.BackButtonClicked += CloseButtonClicked;
+                joinRoom.NavigateToGameOnline += RoomControl_NavigateToGameOnline;
+            }
+            mainWindowGrid.Children.Add(joinRoom);
+
+        }
+
+        private void RoomControl_CreateRoomButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Sound.PlayButtonClickSound();
+            if (createRoom == null)
+            {
+                createRoom = new CreateRoom();
+                createRoom.BackButtonClicked += CloseButtonClicked;
+                createRoom.NavigateToGameOnline += RoomControl_NavigateToGameOnline;
+            }
+            mainWindowGrid.Children.Add(createRoom);
+
         }
 
         private void RoomControl_NavigateToGameOnline(object sender, RoutedEventArgs e)
@@ -364,7 +404,7 @@ namespace ChessUI
         }
         private void SaveButtonClicked(object sender, RoutedEventArgs e)
         {
-            if(time!=0) gameUserControl.StopTimer();
+            if (time != 0) gameUserControl.StopTimer();
             Sound.PlayButtonClickSound();
             CreateSaveMenu();
         }
@@ -436,7 +476,7 @@ namespace ChessUI
             if (e is RoutedPropertyChangedEventArgs<GameState> gameOverEventArgs)
             {
                 GameState gameState = gameOverEventArgs.NewValue;
-                
+
                 Sound.PlayGameOverSound();
                 gameOverMenu = new GameOverMenu(gameState);
 

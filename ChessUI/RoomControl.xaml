@@ -12,19 +12,14 @@
                 Height="450"
                 Style="{StaticResource BorderStyle1}">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Grid Width="250" Height="60" Margin="0,0,0,20">
-                    <TextBox x:Name="RoomNameTextBox"
-                             Tag="Enter Room Name"
-                             FontSize="20" 
-                             VerticalContentAlignment="Center"
-                             HorizontalContentAlignment="Center"
-                             GotFocus="RemovePlaceholderText" LostFocus="ShowPlaceholderText"/>
-                    <TextBlock x:Name="PlaceholderTextBlock" 
-                               Text="Nhập tên phòng" Foreground="Gray"
-                               FontSize="20"
-                               IsHitTestVisible="False" 
-                               VerticalAlignment="Center" Margin="10"/>
-                </Grid>
+
+                <Button x:Name="RandomMatchButton" 
+                        Style="{StaticResource ButtonStyle1}"
+                        Margin="0,0,0,10" Click="RandomMatchButton_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Ghép ngẫu nhiên" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
                 <Button x:Name="CreateRoomButton" 
                         Style="{StaticResource ButtonStyle1}"
                         Margin="0,0,0,10" Click="CreateRoomButton_Click">
@@ -35,7 +30,7 @@
                 </Button>
                 <Button x:Name="JoinRoomButton" 
                         Style="{StaticResource ButtonStyle1}"
-                        Margin="0,0,0,50" Click="JoinRoomButton_Click">
+                        Margin="0,0,0,20" Click="JoinRoomButton_Click">
                     <StackPanel Orientation="Horizontal">
                         <iconPacks:PackIconMaterial Kind="Magnify" Width="30" Height="30" Margin="0,0,20,0"/>
                         <TextBlock Text="Tìm phòng" VerticalAlignment="Center"/>
@@ -49,7 +44,6 @@
                 </Button>
             </StackPanel>
         </Border>
-        <local:NotificationMenu x:Name="NotificationMenu" Visibility="Collapsed" />
         <Border x:Name="NotificationPanel" Background="LightCoral" CornerRadius="10" 
                  Opacity="0" 
                 HorizontalAlignment="Center" VerticalAlignment="Top" 
