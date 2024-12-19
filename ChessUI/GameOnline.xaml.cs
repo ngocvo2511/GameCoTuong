@@ -39,12 +39,12 @@ namespace ChessUI
         {
             InitializeComponent();
             InitializeBoard();
-            gameState = new GameState2P(Player.Red, Board.Initial());
+            this.color = color;
+            gameState = new GameState2P(Player.Red, Board.InitialForOnline(color));
             this.roomName = roomName;
             ShowGameInformation();
             DrawBoard(gameState.Board);
             _mainWindow = mainWindow;
-            this.color = color;
 
             ConnectHub();
             //settingsMenu.BackButtonClicked += BackButtonClicked;
@@ -65,13 +65,27 @@ namespace ChessUI
 
             connection.On<int, int, int, int>("MoveTo", (x1, y1, x2, y2) =>
             {
-                Dispatcher.Invoke(() =>
+                if (color == gameState.CurrentPlayer)
                 {
-                    Position from = new Position(x1, y1);
-                    Position to = new Position(x2, y2);
-                    Move move = new NormalMove(from, to);
-                    HandleMove(move);
-                });
+                    Dispatcher.Invoke(() =>
+                    {
+
+                        Position from = new Position(x1, y1);
+                        Position to = new Position(x2, y2);
+                        Move move = new NormalMove(from, to);
+                        HandleMove(move);
+                    });
+                }
+                else
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        Position from = new Position(9 - x1, 8 - y1);
+                        Position to = new Position(9 - x2, 8 - y2);
+                        Move move = new NormalMove(from, to);
+                        HandleMove(move);
+                    });
+                }
             });
 
             connection.On<string>("PlayerLeft", (connectionId) =>

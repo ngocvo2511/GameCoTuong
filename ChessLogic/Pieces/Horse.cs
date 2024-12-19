@@ -10,13 +10,14 @@ namespace ChessLogic
     {
         public override PieceType Type => PieceType.Horse;
         public override Player Color { get; }
-        public Horse(Player color)
+        public Horse(Player color, Player BottomPlayer = Player.Red)
         {
             Color = color;
+            bottomPlayer = BottomPlayer;
         }
         public override Piece Copy()
         {
-            Horse copy = new Horse(Color);
+            Horse copy = new Horse(Color, bottomPlayer);
             copy.HasMoved = false;
             return copy;
         }

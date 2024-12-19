@@ -8,6 +8,7 @@ namespace ChessLogic
 {
     public abstract class Piece
     {
+        public Player bottomPlayer;
         public abstract PieceType Type { get; }
         public abstract Player Color { get; }
         public bool HasMoved { get; set; } = false;

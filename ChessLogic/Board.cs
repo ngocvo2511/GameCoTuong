@@ -8,6 +8,7 @@ namespace ChessLogic
 {
     public class Board
     {
+        private static Player bottomPlayer = Player.Red;
         private readonly Piece[,] pieces = new Piece[10, 9];
         public Piece this[int row, int col]
         {
@@ -61,6 +62,59 @@ namespace ChessLogic
             this[6, 6] = new Soldier(Player.Red);
             this[6, 8] = new Soldier(Player.Red);
         }
+
+        public static Board InitialForOnline(Player color)
+        {
+            bottomPlayer = color;
+            if (color == Player.Red)
+            {
+                Board board = new Board();
+                board.AddStartPieces();
+                return board;
+            }
+            else
+            {
+                Board board = new Board();
+                board.AddStartPiecesForBlackPlayer();
+                return board;
+            }
+        }
+        private void AddStartPiecesForBlackPlayer()
+        {
+            this[0, 0] = new Chariot(Player.Red, Player.Black);
+            this[0, 1] = new Horse(Player.Red, Player.Black);
+            this[0, 2] = new Elephant(Player.Red, Player.Black);
+            this[0, 3] = new Advisor(Player.Red, Player.Black);
+            this[0, 4] = new General(Player.Red, Player.Black);
+            this[0, 5] = new Advisor(Player.Red, Player.Black);
+            this[0, 6] = new Elephant(Player.Red, Player.Black);
+            this[0, 7] = new Horse(Player.Red, Player.Black);
+            this[0, 8] = new Chariot(Player.Red, Player.Black);
+            this[2, 1] = new Cannon(Player.Red, Player.Black);
+            this[2, 7] = new Cannon(Player.Red, Player.Black);
+            this[3, 0] = new Soldier(Player.Red, Player.Black);
+            this[3, 2] = new Soldier(Player.Red, Player.Black);
+            this[3, 4] = new Soldier(Player.Red, Player.Black);
+            this[3, 6] = new Soldier(Player.Red, Player.Black);
+            this[3, 8] = new Soldier(Player.Red, Player.Black);
+
+            this[9, 0] = new Chariot(Player.Black, Player.Black);
+            this[9, 1] = new Horse(Player.Black, Player.Black);
+            this[9, 2] = new Elephant(Player.Black, Player.Black);
+            this[9, 3] = new Advisor(Player.Black, Player.Black);
+            this[9, 4] = new General(Player.Black, Player.Black);
+            this[9, 5] = new Advisor(Player.Black, Player.Black);
+            this[9, 6] = new Elephant(Player.Black, Player.Black);
+            this[9, 7] = new Horse(Player.Black, Player.Black);
+            this[9, 8] = new Chariot(Player.Black, Player.Black);
+            this[7, 1] = new Cannon(Player.Black, Player.Black);
+            this[7, 7] = new Cannon(Player.Black, Player.Black);
+            this[6, 0] = new Soldier(Player.Black, Player.Black);
+            this[6, 2] = new Soldier(Player.Black, Player.Black);
+            this[6, 4] = new Soldier(Player.Black, Player.Black);
+            this[6, 6] = new Soldier(Player.Black, Player.Black);
+            this[6, 8] = new Soldier(Player.Black, Player.Black);
+        }
         public static bool IsInside(Position pos)
         {
             return pos.Row >= 0 && pos.Column >= 0 && pos.Row < 10 && pos.Column < 9;
@@ -71,15 +125,30 @@ namespace ChessLogic
         }
         public static bool IsInPalace(Position pos, Player color)
         {
-            if (color == Player.Red)
+            if (bottomPlayer == Player.Red)
             {
-                return pos.Row >= 7 && pos.Row <= 9 && pos.Column >= 3 && pos.Column <= 5;
+                if (color == Player.Red)
+                {
+                    return pos.Row >= 7 && pos.Row <= 9 && pos.Column >= 3 && pos.Column <= 5;
+                }
+                else if (color == Player.Black)
+                {
+                    return pos.Row >= 0 && pos.Row <= 2 && pos.Column >= 3 && pos.Column <= 5;
+                }
+                else return false;
             }
-            else if (color == Player.Black)
+            else
             {
-                return pos.Row >= 0 && pos.Row <= 2 && pos.Column >= 3 && pos.Column <= 5;
+                if (color == Player.Red)
+                {
+                    return pos.Row >= 0 && pos.Row <= 2 && pos.Column >= 3 && pos.Column <= 5;
+                }
+                else if (color == Player.Black)
+                {
+                    return pos.Row >= 7 && pos.Row <= 9 && pos.Column >= 3 && pos.Column <= 5;
+                }
+                else return false;
             }
-            else return false;
         }
 
         public IEnumerable<Position> PiecePositions() //lay vi tri tat ca quan co
@@ -154,7 +223,5 @@ namespace ChessLogic
         {
             return counting.TotalCount == 3 && (counting.Red(PieceType.Cannon) == 1 || counting.Black(PieceType.Cannon) == 1);
         }
-
-        
     }
 }

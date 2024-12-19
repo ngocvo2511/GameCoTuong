@@ -10,9 +10,10 @@ namespace ChessLogic
     {
         public override PieceType Type => PieceType.Elephant;
         public override Player Color { get; }
-        public Elephant(Player color)
+        public Elephant(Player color, Player BottomPlayer = Player.Red)
         {
             Color = color;
+            bottomPlayer = BottomPlayer;
         }
 
         private static readonly Direction[] dirs = new Direction[]
@@ -21,24 +22,42 @@ namespace ChessLogic
         };
         public override Piece Copy()
         {
-            Elephant copy = new Elephant(Color);
+            Elephant copy = new Elephant(Color, bottomPlayer);
             copy.HasMoved = false;
             return copy;
         }
 
         private bool IsCrossedRiver(Position pos)
         {
-            if (Color == Player.Red)
+            if (bottomPlayer == Player.Red)
             {
-                return pos.Row < 5;
-            }
-            else if (Color == Player.Black)
-            {
-                return pos.Row > 4;
+                if (Color == Player.Red)
+                {
+                    return pos.Row < 5;
+                }
+                else if (Color == Player.Black)
+                {
+                    return pos.Row > 4;
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {
-                return false;
+                if (Color == Player.Red)
+                {
+                    return pos.Row > 4;
+                }
+                else if (Color == Player.Black)
+                {
+                    return pos.Row < 5;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
 

@@ -15,13 +15,14 @@ namespace ChessLogic
         {
             Direction.North, Direction.South, Direction.East, Direction.West
         };
-        public Cannon(Player color)
+        public Cannon(Player color, Player BottomPlayer = Player.Red)
         {
             Color = color;
+            bottomPlayer = BottomPlayer;
         }
         public override Piece Copy()
         {
-            Cannon copy = new Cannon(Color);
+            Cannon copy = new Cannon(Color, bottomPlayer);
             copy.HasMoved = false;
             return copy;
         }

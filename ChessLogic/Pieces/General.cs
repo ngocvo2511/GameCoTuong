@@ -10,9 +10,10 @@ namespace ChessLogic
     {
         public override PieceType Type => PieceType.General;
         public override Player Color { get; }
-        public General(Player color)
+        public General(Player color, Player BottomPlayer = Player.Red)
         {
             Color = color;
+            bottomPlayer = BottomPlayer;
         }
 
         private static readonly Direction[] dirs = new Direction[]
@@ -21,7 +22,7 @@ namespace ChessLogic
         };
         public override Piece Copy()
         {
-            General copy = new General(Color);
+            General copy = new General(Color, bottomPlayer);
             copy.HasMoved = false;
             return copy;
         }
@@ -75,41 +76,83 @@ namespace ChessLogic
 
         private Position FindOpponentKing(Board board)
         {
-            if (Color == Player.Red)
+            if (bottomPlayer == Player.Red)
             {
-                for (int r = 0; r <= 2; r++)
+                if (Color == Player.Red)
                 {
-                    for (int c = 3; c <= 5; c++)
+                    for (int r = 0; r <= 2; r++)
                     {
-                        Position pos = new Position(r, c);
-                        Piece piece = board[pos];
-                        if (piece != null && piece.Type == PieceType.General)
+                        for (int c = 3; c <= 5; c++)
                         {
-                            return pos;
+                            Position pos = new Position(r, c);
+                            Piece piece = board[pos];
+                            if (piece != null && piece.Type == PieceType.General)
+                            {
+                                return pos;
+                            }
                         }
                     }
+                    return null;
                 }
-                return null;
-            }
-            else if (Color == Player.Black)
-            {
-                for (int r = 7; r <= 9; r++)
+                else if (Color == Player.Black)
                 {
-                    for (int c = 3; c <= 5; c++)
+                    for (int r = 7; r <= 9; r++)
                     {
-                        Position pos = new Position(r, c);
-                        Piece piece = board[pos];
-                        if (piece != null && piece.Type == PieceType.General)
+                        for (int c = 3; c <= 5; c++)
                         {
-                            return pos;
+                            Position pos = new Position(r, c);
+                            Piece piece = board[pos];
+                            if (piece != null && piece.Type == PieceType.General)
+                            {
+                                return pos;
+                            }
                         }
                     }
+                    return null;
                 }
-                return null;
+                else
+                {
+                    return null;
+                }
             }
             else
             {
-                return null;
+                if (Color == Player.Black)
+                {
+                    for (int r = 0; r <= 2; r++)
+                    {
+                        for (int c = 3; c <= 5; c++)
+                        {
+                            Position pos = new Position(r, c);
+                            Piece piece = board[pos];
+                            if (piece != null && piece.Type == PieceType.General)
+                            {
+                                return pos;
+                            }
+                        }
+                    }
+                    return null;
+                }
+                else if (Color == Player.Red)
+                {
+                    for (int r = 7; r <= 9; r++)
+                    {
+                        for (int c = 3; c <= 5; c++)
+                        {
+                            Position pos = new Position(r, c);
+                            Piece piece = board[pos];
+                            if (piece != null && piece.Type == PieceType.General)
+                            {
+                                return pos;
+                            }
+                        }
+                    }
+                    return null;
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
 

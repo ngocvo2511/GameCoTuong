@@ -12,38 +12,71 @@ namespace ChessLogic
         public override Player Color { get; }
 
         private readonly Direction forward;
-        public Soldier(Player color)
+        public Soldier(Player color, Player BottomPlayer = Player.Red)
         {
             Color = color;
-            if (color == Player.Red)
+            bottomPlayer = BottomPlayer;
+            if (bottomPlayer == Player.Red)
             {
-                forward = Direction.North;
+                if (color == Player.Red)
+                {
+                    forward = Direction.North;
+                }
+                else if (color == Player.Black)
+                {
+                    forward = Direction.South;
+                }
             }
-            else if (color == Player.Black)
+            else if (bottomPlayer == Player.Black)
             {
-                forward = Direction.South;
+                if (color == Player.Red)
+                {
+                    forward = Direction.South;
+                }
+                else if (color == Player.Black)
+                {
+                    forward = Direction.North;
+                }
             }
         }
         public override Piece Copy()
         {
-            Soldier copy = new Soldier(Color);
+            Soldier copy = new Soldier(Color, bottomPlayer);
             copy.HasMoved = false;
             return copy;
         }
 
         private bool IsCrossedRiver(Position pos)
         {
-            if (Color == Player.Red)
+            if (bottomPlayer == Player.Red)
             {
-                return pos.Row < 5;
-            }
-            else if (Color == Player.Black)
-            {
-                return pos.Row > 4;
+                if (Color == Player.Red)
+                {
+                    return pos.Row < 5;
+                }
+                else if (Color == Player.Black)
+                {
+                    return pos.Row > 4;
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {
-                return false;
+                if (Color == Player.Red)
+                {
+                    return pos.Row > 4;
+                }
+                else if (Color == Player.Black)
+                {
+                    return pos.Row < 5;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
 
