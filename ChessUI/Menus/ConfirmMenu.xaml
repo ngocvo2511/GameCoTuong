@@ -13,9 +13,9 @@
         <StackPanel VerticalAlignment="Center">
             <TextBlock TextAlignment="Center"
                        TextWrapping="Wrap"
-                       Text="Bạn có chắc chắn muốn thoát ván chơi này?"
+                       Text="Bạn có chắc chắn muốn thoát?"
                        Style="{StaticResource TextStyle1}"
-                       FontSize="40" Width="550"
+                       FontSize="40" Width="480"
                        Margin="0,40,0,50"
                        />
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">

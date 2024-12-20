@@ -10,7 +10,7 @@ namespace Server
         private static readonly Dictionary<string, List<string>> Rooms = new Dictionary<string, List<string>>();
         public static List<ClientDetail> participants = new List<ClientDetail>();
         public static Player currentPlayer = Player.Red;
-        public async Task CreateRoom(string roomName)
+        public async Task CreateRoom(string roomName, string username, int time)
         {
             if (!Rooms.ContainsKey(roomName))
             {
@@ -26,11 +26,13 @@ namespace Server
                 {
                     Id = Context.ConnectionId,
                     RoomName = roomName,
-                    Color = Player.Red
+                    Username = username,
+                    Color = Player.Red,
+                    Time = time
                 });
                 await Groups.AddToGroupAsync(Context.ConnectionId, roomName);
 
-                await Clients.Caller.SendAsync("RoomCreated", roomName);
+                await Clients.Caller.SendAsync("RoomCreated", roomName, username, time);
             }
             else
             {
@@ -38,7 +40,7 @@ namespace Server
             }
         }
 
-        public async Task JoinRoom(string roomName)
+        public async Task JoinRoom(string roomName, string username)
         {
             if (Rooms.ContainsKey(roomName))
             {
@@ -55,15 +57,18 @@ namespace Server
                 
 
                 Rooms[roomName].Add(Context.ConnectionId);
+                var roomCreator = participants.Where(p => p.RoomName == roomName).FirstOrDefault();
                 participants.Add(new ClientDetail
                 {
                     Id = Context.ConnectionId,
                     RoomName = roomName,
-                    Color = Player.Black
+                    Username = username,
+                    Color = Player.Black,
+                    Time = roomCreator.Time
                 });
 
                 await Groups.AddToGroupAsync(Context.ConnectionId, roomName);
-                await Clients.Caller.SendAsync("RoomJoined", roomName);
+                await Clients.Caller.SendAsync("RoomJoined", roomName, username, roomCreator.Time);
             }
             else
             {
@@ -126,6 +131,8 @@ namespace Server
     {
         public string Id { get; set; }
         public string RoomName { get; set; }
+        public string Username { get; set; }
+        public int Time { get; set; }
         public Player Color { get; set; }
     }
 }

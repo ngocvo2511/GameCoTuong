@@ -1,21 +1,8 @@
 ﻿using ChessLogic;
-using ChessUI.Menus;
 using Microsoft.AspNetCore.SignalR.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace ChessUI
@@ -87,12 +74,15 @@ namespace ChessUI
             var connectionManager = SignalRConnectionManager.Instance;
             _connection = connectionManager.Connection;
 
-            _connection.On<string>("RoomCreated", (roomName) =>
+            _connection.Remove("RoomCreated");
+            _connection.Remove("Error");
+
+            _connection.On<string, string, int>("RoomCreated", (roomName, username, time) =>
             {
                 Dispatcher.Invoke(() =>
                 {
                     MessageBox.Show($"Room {roomName} created successfully.");
-                    NavigateToGameOnlineE(roomName, Player.Red);
+                    NavigateToGameOnlineE(roomName, username, Player.Red, time);
                 });
             });
 
@@ -120,8 +110,19 @@ namespace ChessUI
                 ShowNotification("Không thể kết nối đến server, vui lòng kiểm tra kết nối mạng.");
                 return;
             }
+            string username;
+            int time;
+            if (string.IsNullOrEmpty(UsernameTextBox.Text))
+            {
+                username = "Người chơi 1";
+            }
+            else
+            {
+                username = UsernameTextBox.Text;
+            }
+            time = int.Parse(TimeLimitTextBox.Text) * 60;
             string roomName = RoomNameTextBox.Text;
-            await _connection.InvokeAsync("CreateRoom", roomName);
+            await _connection.InvokeAsync("CreateRoom", roomName, username, time);
         }
 
         public event RoutedEventHandler NavigateToGameOnline
@@ -137,9 +138,9 @@ namespace ChessUI
             typeof(CreateRoom)
         );
 
-        private void NavigateToGameOnlineE(string RoomName, Player Color)
+        private void NavigateToGameOnlineE(string RoomName, string Username, Player Color, int Time)
         {
-            RaiseEvent(new NavigateToGameOnlineEventArgs(NavigateToGameOnlineEvent, RoomName, Color));
+            RaiseEvent(new NavigateToGameOnlineEventArgs(NavigateToGameOnlineEvent, RoomName, Username, Color, Time));
         }
         private void RemovePlaceholderText(object sender, RoutedEventArgs e)
         {

@@ -20,9 +20,28 @@ namespace ChessUI.Menus
     /// </summary>
     public partial class SettingsMenu : UserControl
     {
-        public SettingsMenu()
+        public SettingsModel settings = new SettingsModel();
+        public event Action<SettingsModel> SettingsChanged;
+        private bool isInitializing = true;
+
+
+        public SettingsMenu(SettingsModel settings)
         {
             InitializeComponent();
+            isInitializing = true; // Bắt đầu khởi tạo
+
+            this.settings = settings;
+            VolumeSlider.Value = settings.Volume;
+            VolumeValue.Text = settings.Volume.ToString();
+
+            humanFirst.IsChecked = settings.HumanFirst;
+            botFirst.IsChecked = !settings.HumanFirst;
+
+            isTimeLimit.IsChecked = settings.IsTimeLimit;
+            TimeLimitTextBox.Text = settings.TimeLimit.ToString();
+
+            isInitializing = false; // Kết thúc khởi tạo
+
         }
 
         public static readonly RoutedEvent CloseButtonClickedEvent = EventManager.RegisterRoutedEvent(
@@ -57,7 +76,13 @@ namespace ChessUI.Menus
 
         private void humanFirst_Checked(object sender, RoutedEventArgs e)
         {
-            RaiseEvent(new RoutedEventArgs(humanFirstCheckedEvent));
+            if (isInitializing) return;
+            Sound.PlayButtonClickSound();
+
+            settings.HumanFirst = true;
+            SettingsChanged?.Invoke(settings);
+
+            //RaiseEvent(new RoutedEventArgs(humanFirstCheckedEvent));
         }
 
         public static readonly RoutedEvent botFirstCheckedEvent = EventManager.RegisterRoutedEvent(
@@ -75,7 +100,13 @@ namespace ChessUI.Menus
 
         private void botFirst_Checked(object sender, RoutedEventArgs e)
         {
-            RaiseEvent(new RoutedEventArgs(botFirstCheckedEvent));
+            if (isInitializing) return;
+            Sound.PlayButtonClickSound();
+
+            settings.HumanFirst = false;
+            SettingsChanged?.Invoke(settings);
+
+            //RaiseEvent(new RoutedEventArgs(botFirstCheckedEvent));
         }
 
 
@@ -94,9 +125,15 @@ namespace ChessUI.Menus
 
         private void VolumeSlider_ValueChanged(object sender, RoutedEventArgs e)
         {
-            if (VolumeValue != null)
-                VolumeValue.Text = VolumeSlider.Value.ToString();
-            RaiseEvent(new RoutedEventArgs(VolumeSliderValueChangedEvent));
+            if (isInitializing) return;
+            if (double.TryParse(VolumeValue.Text, out double volume))
+            {
+                settings.Volume = (int)VolumeSlider.Value;
+                VolumeValue.Text = settings.Volume.ToString();
+                SettingsChanged?.Invoke(settings);
+            }
+
+            //RaiseEvent(new RoutedEventArgs(VolumeSliderValueChangedEvent));
         }
 
         public static readonly RoutedEvent isTimeLimitCheckedEvent = EventManager.RegisterRoutedEvent(
@@ -114,7 +151,14 @@ namespace ChessUI.Menus
 
         private void isTimeLimit_Checked(object sender, RoutedEventArgs e)
         {
-            RaiseEvent(new RoutedEventArgs(isTimeLimitCheckedEvent));
+            if (isInitializing) return;
+            Sound.PlayButtonClickSound();
+
+            settings.IsTimeLimit = true;
+            TimeLimitTextBox.IsEnabled = true;
+            SettingsChanged?.Invoke(settings);
+
+            //RaiseEvent(new RoutedEventArgs(isTimeLimitCheckedEvent));
         }
         public static readonly RoutedEvent isTimeLimitUncheckedEvent = EventManager.RegisterRoutedEvent(
             "isTimeLimitUnchecked",
@@ -131,7 +175,14 @@ namespace ChessUI.Menus
 
         private void isTimeLimit_Unchecked(object sender, RoutedEventArgs e)
         {
-            RaiseEvent(new RoutedEventArgs(isTimeLimitUncheckedEvent));
+            if (isInitializing) return;
+            Sound.PlayButtonClickSound();
+
+            settings.IsTimeLimit = false;
+            TimeLimitTextBox.IsEnabled = false;
+            SettingsChanged?.Invoke(settings);
+
+            //RaiseEvent(new RoutedEventArgs(isTimeLimitUncheckedEvent));
         }
 
         public static readonly RoutedEvent TimeLimitTextBoxChangedEvent = EventManager.RegisterRoutedEvent(
@@ -149,13 +200,37 @@ namespace ChessUI.Menus
 
         private void TimeLimitTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-
-            RaiseEvent(new RoutedEventArgs(TimeLimitTextBoxChangedEvent));
+            //int time;
+            //if (!int.TryParse(TimeLimitTextBox.Text, out time))
+            //{
+            //    return;
+            //    //TimeLimitTextBox.Text = settings.TimeLimit.ToString();
+            //    //RaiseEvent(new RoutedEventArgs(TimeLimitTextBoxChangedEvent));
+            //}
+            //else
+            //{
+            //    TimeLimitTextBox.Text = time.ToString();
+            //    settings.TimeLimit = time;
+            //    SettingsChanged?.Invoke(settings);
+            //}
+            
         }
 
         private void TimeLimitTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(TimeLimitTextBox.Text)) TimeLimitTextBox.Text = "10";
+            int time;
+            if (!int.TryParse(TimeLimitTextBox.Text, out time))
+            {
+                return;
+                //TimeLimitTextBox.Text = settings.TimeLimit.ToString();
+                //RaiseEvent(new RoutedEventArgs(TimeLimitTextBoxChangedEvent));
+            }
+            else
+            {
+                TimeLimitTextBox.Text = time.ToString();
+                settings.TimeLimit = time;
+                SettingsChanged?.Invoke(settings);
+            }
         }
     }
 }

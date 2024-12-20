@@ -14,19 +14,10 @@ namespace ChessUI
     public partial class MainWindow : Window
     {
         GameUserControl gameUserControl;
-        MainMenu mainMenu;
-        SelectGameModeMenu selectGameModeMenu;
-        GameDifficultyMenu gameDifficultyMenu;
-        InstructionsMenu instructionsMenu;
-        SettingsMenu settingsMenu;
-        HistoryMenu historyMenu;
-        PauseMenu pauseMenu;
-        ConfirmMenu confirmMenu;
+        private SettingsModel settingsModel = new SettingsModel();
+
         SaveSlotControl saveloadSlotControl;
         GameOverMenu gameOverMenu;
-        RoomControl roomControl;
-        CreateRoom createRoom;
-        JoinRoom joinRoom;
 
 
 
@@ -43,20 +34,101 @@ namespace ChessUI
 
         }
 
+        private void CleanupCurrentView()
+        {
+            if (mainWindowGrid.Children.Count > 0)
+            {
+                // Giả định rằng phần tử cuối cùng là view hiện tại
+                var currentView = mainWindowGrid.Children[mainWindowGrid.Children.Count - 1];
+
+                if (currentView is GameUserControl gameControl)
+                {
+                    gameControl.PauseButtonClicked -= PauseButtonClicked;
+                    gameControl.SaveButtonClicked -= SaveButtonClicked;
+                    gameControl.GameOver -= OnGameOver;
+                    gameControl.StopTimer();
+                }
+                else if (currentView is PauseMenu pauseMenu)
+                {
+                    pauseMenu.ContinueButtonClicked -= ContinueButtonClicked;
+                    pauseMenu.NewButtonClicked -= NewButtonClicked;
+                    pauseMenu.HomeButtonClicked -= PauseMenu_HomeButtonClicked;
+                    pauseMenu.SettingsButtonClicked -= SettingsButtonClicked;
+                }
+                else if (currentView is GameOverMenu gameOverMenu)
+                {
+                    gameOverMenu.NewButtonClicked -= NewButtonClicked;
+                    gameOverMenu.HomeButtonClicked -= GameOverMenu_HomeButtonClicked;
+                    gameOverMenu.ReviewButtonClicked -= GameOverMenu_ReviewButtonClicked;
+                }
+                else if (currentView is SettingsMenu settingsMenu)
+                {
+                    settingsMenu.CloseButtonClicked -= CloseButtonClicked;
+                    settingsMenu.humanFirstChecked -= SettingsMenu_humanFirstChecked;
+                    settingsMenu.botFirstChecked -= SettingsMenu_botFirstChecked;
+                    settingsMenu.isTimeLimitChecked -= SettingsMenu_isTimeLimitChecked;
+                    settingsMenu.isTimeLimitUnchecked -= SettingsMenu_isTimeLimitUnchecked;
+                    settingsMenu.TimeLimitTextBoxChanged -= SettingsMenu_TimeLimitTextBoxChanged;
+                    settingsMenu.SettingsChanged -= SettingsMenu_SettingsChanged;
+                }
+                else if (currentView is SelectGameModeMenu selectGameModeMenu)
+                {
+                    selectGameModeMenu.CloseButtonClicked -= CloseButtonClicked;
+                    selectGameModeMenu.PlayWithBotButtonClicked -= SelectGameMode_PlayWithBotButtonClicked;
+                    selectGameModeMenu.TwoPlayerButtonClicked -= SelectGameMode_TwoPlayerButtonClicked;
+                    selectGameModeMenu.PlayOnlineButtonClicked -= SelectGameMode_PlayOnlineButtonClicked;
+                }
+                else if (currentView is RoomControl roomControl)
+                {
+                    roomControl.CreateRoomButtonClicked -= RoomControl_CreateRoomButtonClicked;
+                    roomControl.JoinRoomButtonClicked -= RoomControl_JoinRoomButtonClicked;
+                    roomControl.RandomMatchButtonClicked -= RoomControl_RandomMatchButtonClicked;
+                    roomControl.BackButtonClicked -= CloseButtonClicked;
+                }
+                else if (currentView is JoinRoom joinRoom)
+                {
+                    joinRoom.BackButtonClicked -= CloseButtonClicked;
+                    joinRoom.NavigateToGameOnline -= RoomControl_NavigateToGameOnline;
+                }
+                else if (currentView is CreateRoom createRoom)
+                {
+                    createRoom.BackButtonClicked -= CloseButtonClicked;
+                    createRoom.NavigateToGameOnline -= RoomControl_NavigateToGameOnline;
+                }
+                else if (currentView is SaveSlotControl saveSlotControl)
+                {
+                    saveSlotControl.CloseButtonClicked -= ContinueButtonClicked;
+                    saveSlotControl.SelectedLoadSlot -= SelectedLoadSlot_Clicked;
+                }
+                else if (currentView is HistoryMenu historyMenu)
+                {
+                    historyMenu.CloseButtonClicked -= CloseButtonClicked;
+                }
+                else if(currentView is GameOnline gameOnline)
+                {
+                    gameOnline.SettingButtonClicked -= SettingsButtonClicked;
+                    gameOnline.LeaveRoomButtonClicked -= GameOnline_LeaveRoomButtonClicked;
+                }
+
+            }
+        }
+
+
+
         private void CreateMainMenu()
         {
+            CleanupCurrentView();
             onGame = false;
 
-            if (mainMenu == null)
-            {
-                mainMenu = new MainMenu();
 
-                mainMenu.PlayButtonClicked += MainMenu_PlayButtonClicked;
-                mainMenu.InstructionsButtonClicked += MainMenu_InstructionsButtonClicked;
-                mainMenu.SettingsButtonClicked += SettingsButtonClicked;
-                mainMenu.HistoryButtonClicked += MainMenu_HistoryButtonClicked;
-                mainMenu.LoadButtonClicked += LoadButton_Clicked;
-            }
+            MainMenu mainMenu = new MainMenu();
+
+            mainMenu.PlayButtonClicked += MainMenu_PlayButtonClicked;
+            mainMenu.InstructionsButtonClicked += MainMenu_InstructionsButtonClicked;
+            mainMenu.SettingsButtonClicked += SettingsButtonClicked;
+            mainMenu.HistoryButtonClicked += MainMenu_HistoryButtonClicked;
+            mainMenu.LoadButtonClicked += LoadButton_Clicked;
+
 
             mainWindowGrid.Children.Clear();
             mainWindowGrid.Children.Add(mainMenu);
@@ -64,75 +136,73 @@ namespace ChessUI
 
         private void CreateSelectGameModeMenu()
         {
-            if (selectGameModeMenu == null)
-            {
-                selectGameModeMenu = new SelectGameModeMenu();
+            CleanupCurrentView();
+            SelectGameModeMenu selectGameModeMenu = new SelectGameModeMenu();
 
-                selectGameModeMenu.CloseButtonClicked += CloseButtonClicked;
-                selectGameModeMenu.PlayWithBotButtonClicked += SelectGameMode_PlayWithBotButtonClicked;
-                selectGameModeMenu.TwoPlayerButtonClicked += SelectGameMode_TwoPlayerButtonClicked;
-                selectGameModeMenu.PlayOnlineButtonClicked += SelectGameMode_PlayOnlineButtonClicked;
-            }
+            selectGameModeMenu.CloseButtonClicked += CloseButtonClicked;
+            selectGameModeMenu.PlayWithBotButtonClicked += SelectGameMode_PlayWithBotButtonClicked;
+            selectGameModeMenu.TwoPlayerButtonClicked += SelectGameMode_TwoPlayerButtonClicked;
+            selectGameModeMenu.PlayOnlineButtonClicked += SelectGameMode_PlayOnlineButtonClicked;
+
 
             mainWindowGrid.Children.Add(selectGameModeMenu);
         }
         private void CreateSelectDifficultMenu()
         {
-            if (gameDifficultyMenu == null)
-            {
-                gameDifficultyMenu = new GameDifficultyMenu();
+            GameDifficultyMenu gameDifficultyMenu = new GameDifficultyMenu();
 
-                gameDifficultyMenu.BackButtonClicked += GameDifficultyMenu_BackButtonClicked;
-                gameDifficultyMenu.PlayEasyBotButtonClicked += GameDifficultyMenu_PlayEasyBotButtonClicked;
-                gameDifficultyMenu.PlayNormalBotButtonClicked += GameDifficultyMenu_PlayNormalBotButtonClicked;
-                gameDifficultyMenu.PlayHardBotButtonClicked += GameDifficultyMenu_PlayHardBotButtonClicked;
-            }
+            gameDifficultyMenu.BackButtonClicked += GameDifficultyMenu_BackButtonClicked;
+            gameDifficultyMenu.PlayEasyBotButtonClicked += GameDifficultyMenu_PlayEasyBotButtonClicked;
+            gameDifficultyMenu.PlayNormalBotButtonClicked += GameDifficultyMenu_PlayNormalBotButtonClicked;
+            gameDifficultyMenu.PlayHardBotButtonClicked += GameDifficultyMenu_PlayHardBotButtonClicked;
+
 
             mainWindowGrid.Children.Add(gameDifficultyMenu);
         }
         private void CreateInstructionMenu()
         {
-            if (instructionsMenu == null)
-            {
-                instructionsMenu = new InstructionsMenu();
+            CleanupCurrentView();
+            InstructionsMenu instructionsMenu = new InstructionsMenu();
 
-                instructionsMenu.CloseButtonClicked += CloseButtonClicked;
-            }
+            instructionsMenu.CloseButtonClicked += CloseButtonClicked;
+
 
             mainWindowGrid.Children.Add(instructionsMenu);
         }
 
         private void CreateSettingsMenu()
         {
-            if (settingsMenu == null)
-            {
-                settingsMenu = new SettingsMenu();
+            CleanupCurrentView();
 
-                settingsMenu.humanFirst.IsEnabled = !onGame;
-                settingsMenu.botFirst.IsEnabled = !onGame;
-                settingsMenu.isTimeLimit.IsEnabled = !onGame;
-                settingsMenu.TimeLimitTextBox.IsEnabled = !onGame;
-
-                settingsMenu.CloseButtonClicked += CloseButtonClicked;
-                settingsMenu.humanFirstChecked += SettingsMenu_humanFirstChecked;
-                settingsMenu.botFirstChecked += SettingsMenu_botFirstChecked;
-                settingsMenu.VolumeSliderValueChanged += SettingsMenu_VolumeSliderValueChanged;
-                settingsMenu.isTimeLimitChecked += SettingsMenu_isTimeLimitChecked;
-                settingsMenu.isTimeLimitUnchecked += SettingsMenu_isTimeLimitUnchecked;
-                settingsMenu.TimeLimitTextBoxChanged += SettingsMenu_TimeLimitTextBoxChanged;
-            }
-
+            SettingsMenu settingsMenu = new SettingsMenu(settingsModel);
             mainWindowGrid.Children.Add(settingsMenu);
+
+            settingsMenu.humanFirst.IsEnabled = !onGame;
+            settingsMenu.botFirst.IsEnabled = !onGame;
+            settingsMenu.isTimeLimit.IsEnabled = !onGame;
+            settingsMenu.TimeLimitTextBox.IsEnabled = !onGame;
+
+            settingsMenu.CloseButtonClicked += CloseButtonClicked;
+            settingsMenu.humanFirstChecked += SettingsMenu_humanFirstChecked;
+            settingsMenu.botFirstChecked += SettingsMenu_botFirstChecked;
+            settingsMenu.VolumeSliderValueChanged += SettingsMenu_VolumeSliderValueChanged;
+            settingsMenu.isTimeLimitChecked += SettingsMenu_isTimeLimitChecked;
+            settingsMenu.isTimeLimitUnchecked += SettingsMenu_isTimeLimitUnchecked;
+            settingsMenu.TimeLimitTextBoxChanged += SettingsMenu_TimeLimitTextBoxChanged;
+            settingsMenu.SettingsChanged += SettingsMenu_SettingsChanged;
+
+
+
+
         }
 
         private void CreateHistoryMenu()
         {
-            if (historyMenu == null)
-            {
-                historyMenu = new HistoryMenu();
+            CleanupCurrentView();
+            HistoryMenu historyMenu = new HistoryMenu();
 
-                historyMenu.CloseButtonClicked += CloseButtonClicked;
-            }
+            historyMenu.CloseButtonClicked += CloseButtonClicked;
+
 
             historyMenu.LoadHistory();
             mainWindowGrid.Children.Add(historyMenu);
@@ -140,30 +210,28 @@ namespace ChessUI
 
         private void CreatePauseMenu()
         {
+
             if (time != 0) gameUserControl.StopTimer();
 
-            if (pauseMenu == null)
-            {
-                pauseMenu = new PauseMenu();
+            PauseMenu pauseMenu = new PauseMenu();
 
-                pauseMenu.ContinueButtonClicked += ContinueButtonClicked;
-                pauseMenu.NewButtonClicked += NewButtonClicked;
-                pauseMenu.HomeButtonClicked += PauseMenu_HomeButtonClicked;
-                pauseMenu.SettingsButtonClicked += SettingsButtonClicked;
-            }
+            pauseMenu.ContinueButtonClicked += ContinueButtonClicked;
+            pauseMenu.NewButtonClicked += NewButtonClicked;
+            pauseMenu.HomeButtonClicked += PauseMenu_HomeButtonClicked;
+            pauseMenu.SettingsButtonClicked += SettingsButtonClicked;
+
 
             mainWindowGrid.Children.Add(pauseMenu);
         }
 
         private void CreateConfirmMenu()
         {
-            if (confirmMenu == null)
-            {
-                confirmMenu = new ConfirmMenu();
 
-                confirmMenu.YesButtonClicked += ConfirmMenu_YesButtonClicked;
-                confirmMenu.NoButtonClicked += CloseButtonClicked;
-            }
+            ConfirmMenu confirmMenu = new ConfirmMenu();
+
+            confirmMenu.YesButtonClicked += ConfirmMenu_YesButtonClicked;
+            confirmMenu.NoButtonClicked += CloseButtonClicked;
+
 
             mainWindowGrid.Children.Add(confirmMenu);
         }
@@ -172,8 +240,10 @@ namespace ChessUI
 
         private void CreateViewGameAI(int difficulty)
         {
+
             onGame = true;
             if (gameUserControl != null) gameUserControl.ResetTimer();
+            color = settingsModel.HumanFirst ? Player.Red : Player.Black;
             gameUserControl = new GameUserControl(color, time, true, difficulty);
             gameUserControl.PauseButtonClicked += PauseButtonClicked;
             gameUserControl.SaveButtonClicked += SaveButtonClicked;
@@ -187,7 +257,8 @@ namespace ChessUI
         {
             onGame = true;
             if (gameUserControl != null) gameUserControl.ResetTimer();
-            gameUserControl = new GameUserControl(color, time, false);
+            color = settingsModel.HumanFirst ? Player.Red : Player.Black;
+            gameUserControl = new GameUserControl(color, settingsModel.TimeLimit * 60, false);
             gameUserControl.PauseButtonClicked += PauseButtonClicked;
             gameUserControl.SaveButtonClicked += SaveButtonClicked;
             gameUserControl.GameOver += OnGameOver;
@@ -224,15 +295,13 @@ namespace ChessUI
         }
         private void CreateRoomControl()
         {
-            if(roomControl == null)
-            {
-                roomControl = new RoomControl();
-                roomControl.CreateRoomButtonClicked += RoomControl_CreateRoomButtonClicked;
-                roomControl.JoinRoomButtonClicked += RoomControl_JoinRoomButtonClicked;
-                roomControl.RandomMatchButtonClicked += RoomControl_RandomMatchButtonClicked;
-                roomControl.BackButtonClicked += CloseButtonClicked;
-            }
-            
+            RoomControl roomControl = new RoomControl();
+            roomControl.CreateRoomButtonClicked += RoomControl_CreateRoomButtonClicked;
+            roomControl.JoinRoomButtonClicked += RoomControl_JoinRoomButtonClicked;
+            roomControl.RandomMatchButtonClicked += RoomControl_RandomMatchButtonClicked;
+            roomControl.BackButtonClicked += CloseButtonClicked;
+
+
 
             mainWindowGrid.Children.Add(roomControl);
         }
@@ -245,25 +314,21 @@ namespace ChessUI
         private void RoomControl_JoinRoomButtonClicked(object sender, RoutedEventArgs e)
         {
             Sound.PlayButtonClickSound();
-            if (joinRoom == null)
-            {
-                joinRoom = new JoinRoom();
-                joinRoom.BackButtonClicked += CloseButtonClicked;
-                joinRoom.NavigateToGameOnline += RoomControl_NavigateToGameOnline;
-            }
-            mainWindowGrid.Children.Add(joinRoom);
 
+            JoinRoom joinRoom = new JoinRoom();
+            joinRoom.BackButtonClicked += CloseButtonClicked;
+            joinRoom.NavigateToGameOnline += RoomControl_NavigateToGameOnline;
+
+            mainWindowGrid.Children.Add(joinRoom);
         }
 
         private void RoomControl_CreateRoomButtonClicked(object sender, RoutedEventArgs e)
         {
             Sound.PlayButtonClickSound();
-            if (createRoom == null)
-            {
-                createRoom = new CreateRoom();
-                createRoom.BackButtonClicked += CloseButtonClicked;
-                createRoom.NavigateToGameOnline += RoomControl_NavigateToGameOnline;
-            }
+            CreateRoom createRoom = new CreateRoom();
+            createRoom.BackButtonClicked += CloseButtonClicked;
+            createRoom.NavigateToGameOnline += RoomControl_NavigateToGameOnline;
+
             mainWindowGrid.Children.Add(createRoom);
 
         }
@@ -272,19 +337,28 @@ namespace ChessUI
         {
             if (e is NavigateToGameOnlineEventArgs args)
             {
-
+                CleanupCurrentView();
                 string roomName = args.RoomName;
+                string username = args.Username;
                 Player color = args.Color;
+                int time = args.Time;
                 if (roomName == null)
                 {
                     return;
                 }
                 onGame = true;
-                GameOnline gameOnline = new GameOnline(roomName, this, color);
+                GameOnline gameOnline = new GameOnline(roomName, color, time, username);
+                gameOnline.SettingButtonClicked += SettingsButtonClicked;
+                gameOnline.LeaveRoomButtonClicked += GameOnline_LeaveRoomButtonClicked;
 
                 mainWindowGrid.Children.Clear();
                 mainWindowGrid.Children.Add(gameOnline);
             }
+        }
+
+        private void GameOnline_LeaveRoomButtonClicked(object sender, RoutedEventArgs e)
+        {
+            CreateMainMenu();
         }
 
         private void CloseButtonClicked(object sender, RoutedEventArgs e)
@@ -364,6 +438,7 @@ namespace ChessUI
         private void SettingsMenu_humanFirstChecked(object sender, RoutedEventArgs e)
         {
             Sound.PlayButtonClickSound();
+            settingsModel.HumanFirst = true;
             if (color == Player.Black)
             {
                 color = Player.Red;
@@ -373,34 +448,42 @@ namespace ChessUI
         private void SettingsMenu_botFirstChecked(object sender, RoutedEventArgs e)
         {
             Sound.PlayButtonClickSound();
+            settingsModel.HumanFirst = false;
             if (color == Player.Red)
             {
                 color = Player.Black;
             }
         }
 
+        private void SettingsMenu_SettingsChanged(SettingsModel updatedSettings)
+        {
+            Sound.SetVolume((int)updatedSettings.Volume);
+            settingsModel = updatedSettings;
+
+            // Nếu cần, bạn cũng có thể lưu trạng thái hoặc cập nhật UI khác
+        }
         private void SettingsMenu_VolumeSliderValueChanged(object sender, RoutedEventArgs e)
         {
-            Sound.SetVolume((int)settingsMenu.VolumeSlider.Value);
+            //settingsModel.Volume =
+            //Sound.SetVolume((int)settingsMenu.VolumeSlider.Value);
+
         }
 
         private void SettingsMenu_isTimeLimitChecked(object sender, RoutedEventArgs e)
         {
             Sound.PlayButtonClickSound();
-            settingsMenu.TimeLimitTextBox.IsEnabled = true;
-            this.time = Convert.ToInt16(settingsMenu.TimeLimitTextBox.Text);
+            //this.time = Convert.ToInt16(settingsMenu.TimeLimitTextBox.Text);
         }
 
         private void SettingsMenu_isTimeLimitUnchecked(object sender, RoutedEventArgs e)
         {
             Sound.PlayButtonClickSound();
-            settingsMenu.TimeLimitTextBox.IsEnabled = false;
             this.time = 0;
         }
         private void SettingsMenu_TimeLimitTextBoxChanged(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(settingsMenu.TimeLimitTextBox.Text)) this.time = 0;
-            else this.time = Convert.ToInt16(settingsMenu.TimeLimitTextBox.Text) * 60;
+            //if (string.IsNullOrEmpty(settingsMenu.TimeLimitTextBox.Text)) this.time = 0;
+            //else this.time = Convert.ToInt16(settingsMenu.TimeLimitTextBox.Text) * 60;
         }
         private void SaveButtonClicked(object sender, RoutedEventArgs e)
         {
