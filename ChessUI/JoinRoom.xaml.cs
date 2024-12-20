@@ -85,7 +85,10 @@ namespace ChessUI
         {
             var connectionManager = SignalRConnectionManager.Instance;
             _connection = connectionManager.Connection;
-          
+
+            _connection.Remove("RoomJoined");
+            _connection.Remove("Error");
+
             _connection.On<string, string, int>("RoomJoined", (roomName, username, time) =>
             {
                 Dispatcher.Invoke(() =>

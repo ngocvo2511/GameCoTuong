@@ -33,21 +33,22 @@ namespace ChessUI
         private Position selectedPos = null;
         private HubConnection connection;
         private string roomName;
-        private MainWindow _mainWindow;
         private Player color;
         private int time;
-        public GameOnline(string roomName, MainWindow mainWindow, Player color, int time)
+        string username;
+        string opponentUsername;
+        public GameOnline(string roomName, Player color, int time, string username, string opponentUsername = "")
         {
             InitializeComponent();
             InitializeBoard();
             this.color = color;
             gameState = new GameState2P(Player.Red, Board.InitialForOnline(color));
             this.roomName = roomName;
+            this.time = time;
+            this.username = username;
+            this.opponentUsername = opponentUsername;
             ShowGameInformation();
             DrawBoard(gameState.Board);
-            _mainWindow = mainWindow;
-            this.time = time;
-
             ConnectHub();
             //settingsMenu.BackButtonClicked += BackButtonClicked;
             //selectGameModeMenu.BackButtonClicked += BackButtonClicked;
@@ -58,6 +59,8 @@ namespace ChessUI
         //}
         private void ShowGameInformation()
         {
+            redInfo.Text = username;
+            blackInfo.Text = opponentUsername;
             TurnTextBlock.Text = gameState.CurrentPlayer == Player.Red ? "Đỏ" : "Đen";
         }
         private async void ConnectHub()
@@ -187,7 +190,11 @@ namespace ChessUI
 
         private void BoardGrid_MouseDown(object sender, MouseEventArgs e)
         {
-            if(gameState.CurrentPlayer != color)
+            if(opponentUsername == "")
+            {
+                return;
+            }
+            if (gameState.CurrentPlayer != color)
             {
                 return;
             }
@@ -484,12 +491,24 @@ namespace ChessUI
             "SettingButtonClicked",
             RoutingStrategy.Bubble,
             typeof(RoutedEventHandler),
-            typeof(GameUserControl)
+            typeof(GameOnline)
         );
         private void SettingButton_Click(object sender, RoutedEventArgs e)
         {
             RaiseEvent(new RoutedEventArgs(SettingButtonClickedEvent));
         }
+
+        public event RoutedEventHandler LeaveRoomButtonClicked
+        {
+            add { AddHandler(LeaveRoomButtonClickedEvent, value); }
+            remove { RemoveHandler(LeaveRoomButtonClickedEvent, value); }
+        }
+        public static readonly RoutedEvent LeaveRoomButtonClickedEvent = EventManager.RegisterRoutedEvent(
+            "LeaveRoomButtonClicked",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(GameOnline)
+        );
 
         private async void LeaveRoomButton_Click(object sender, RoutedEventArgs e)
         {
@@ -501,9 +520,19 @@ namespace ChessUI
             {
                 MessageBox.Show("Not connected to the server.");
             }
+            RaiseEvent(new RoutedEventArgs(LeaveRoomButtonClickedEvent));
+
         }
-        private void CloseAppButton_Click(object sender, RoutedEventArgs e)
+        private async void CloseAppButton_Click(object sender, RoutedEventArgs e)
         {
+            if (connection != null && connection.State == HubConnectionState.Connected)
+            {
+                await connection.InvokeAsync("LeaveRoom", roomName);
+            }
+            else
+            {
+                MessageBox.Show("Not connected to the server.");
+            }
             Application.Current.Shutdown();
         }
 
