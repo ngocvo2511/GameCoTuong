@@ -48,6 +48,7 @@ namespace ChessUI
             else gameState = new GameState2P(Player.Red, Board.Initial(),timeLimit);
             ShowGameInformation(difficult);
             DrawBoard(gameState.Board);
+            if (color == Player.Black) isRedTurn = false;
             if (timeLimit != 0)
             {
                 InitializeTimer();
@@ -211,6 +212,8 @@ namespace ChessUI
                 Sound.PlayMoveSound();
             }
             MainGame.IsHitTestVisible = true;
+            isRedTurn = !isRedTurn;
+            SwitchTurn();
         }
         private void InitializeBoard()
         {

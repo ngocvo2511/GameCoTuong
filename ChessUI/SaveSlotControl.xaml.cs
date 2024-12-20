@@ -132,7 +132,12 @@ namespace ChessUI
                             LoadFileToList();
                         }
                     });
-                }                
+                }
+                else
+                {
+                    SaveService.Save(currentGameState, filePath);
+                    LoadFileToList();
+                }
             }
             else
             {
