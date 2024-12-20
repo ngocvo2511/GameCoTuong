@@ -35,7 +35,8 @@ namespace ChessUI
         private string roomName;
         private MainWindow _mainWindow;
         private Player color;
-        public GameOnline(string roomName, MainWindow mainWindow, Player color)
+        private int time;
+        public GameOnline(string roomName, MainWindow mainWindow, Player color, int time)
         {
             InitializeComponent();
             InitializeBoard();
@@ -45,6 +46,7 @@ namespace ChessUI
             ShowGameInformation();
             DrawBoard(gameState.Board);
             _mainWindow = mainWindow;
+            this.time = time;
 
             ConnectHub();
             //settingsMenu.BackButtonClicked += BackButtonClicked;

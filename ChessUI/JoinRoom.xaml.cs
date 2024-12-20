@@ -86,12 +86,12 @@ namespace ChessUI
             var connectionManager = SignalRConnectionManager.Instance;
             _connection = connectionManager.Connection;
           
-            _connection.On<string>("RoomJoined", (roomName) =>
+            _connection.On<string, string, int>("RoomJoined", (roomName, username, time) =>
             {
                 Dispatcher.Invoke(() =>
                 {
                     MessageBox.Show($"Joined room {roomName} successfully.");
-                    NavigateToGameOnlineE(roomName, Player.Black);
+                    NavigateToGameOnlineE(roomName, username, Player.Black, time);
                 });
             });
 
@@ -120,7 +120,16 @@ namespace ChessUI
                 return;
             }
             string roomName = RoomNameTextBox.Text;
-            await _connection.InvokeAsync("JoinRoom", roomName);
+            string username;
+            if (string.IsNullOrEmpty(UsernameTextBox.Text))
+            {
+                username = "Người chơi 2";
+            }
+            else
+            {
+                username = UsernameTextBox.Text;
+            }
+            await _connection.InvokeAsync("JoinRoom", roomName, username);
         }
 
 
@@ -137,9 +146,9 @@ namespace ChessUI
             typeof(JoinRoom)
         );
 
-        private void NavigateToGameOnlineE(string RoomName, Player Color)
+        private void NavigateToGameOnlineE(string RoomName, string Username, Player Color, int Time)
         {
-            RaiseEvent(new NavigateToGameOnlineEventArgs(NavigateToGameOnlineEvent, RoomName, Color));
+            RaiseEvent(new NavigateToGameOnlineEventArgs(NavigateToGameOnlineEvent, RoomName, Username, Color, Time));
         }
         private void RemovePlaceholderText(object sender, RoutedEventArgs e)
         {

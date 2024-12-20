@@ -274,13 +274,15 @@ namespace ChessUI
             {
 
                 string roomName = args.RoomName;
+                string username = args.Username;
                 Player color = args.Color;
+                int time = args.Time;
                 if (roomName == null)
                 {
                     return;
                 }
                 onGame = true;
-                GameOnline gameOnline = new GameOnline(roomName, this, color);
+                GameOnline gameOnline = new GameOnline(roomName, this, color, time);
 
                 mainWindowGrid.Children.Clear();
                 mainWindowGrid.Children.Add(gameOnline);
