@@ -56,7 +56,6 @@ namespace ChessUI
             }
             if(gameState is GameStateAI && color==Player.Black)
             {
-                isRedTurn = false;
                 StartAIMoveWithDelay();
             }
         }
@@ -202,7 +201,8 @@ namespace ChessUI
         }
         private async void StartAIMoveWithDelay()
         {
-            MainGame.IsHitTestVisible = false;
+            //MainGame.IsHitTestVisible = false;
+            UnableClick();
             await Task.Delay(500);
             if (gameState is GameStateAI AI)
             {
@@ -211,9 +211,24 @@ namespace ChessUI
                 ShowPrevMove(gameState.Moved.First().Item1);
                 Sound.PlayMoveSound();
             }
-            MainGame.IsHitTestVisible = true;
+            //MainGame.IsHitTestVisible = true;
+            AbleClick();
             isRedTurn = !isRedTurn;
             SwitchTurn();
+        }
+        private void UnableClick()
+        {
+            CellGrid.IsHitTestVisible = false;
+            PauseButton.IsEnabled = false;
+            UndoButton.IsEnabled = false;
+            SaveButton.IsEnabled = false;
+        }
+        private void AbleClick()
+        {
+            CellGrid.IsHitTestVisible = true;
+            PauseButton.IsEnabled = true;
+            UndoButton.IsEnabled = true;
+            SaveButton.IsEnabled = true;
         }
         private void InitializeBoard()
         {
@@ -560,7 +575,8 @@ namespace ChessUI
             isRedTurn = !isRedTurn;
             if (redTimer != null) SwitchTurn();
             Sound.PlayMoveSound();
-            MainGame.IsHitTestVisible = false;
+            //MainGame.IsHitTestVisible = false;
+            UnableClick();
             if (gameState.Moved.Any()) HidePrevMove(gameState.Moved.First().Item1);            
             gameState.MakeMove(move);
             DrawBoard(gameState.Board);
@@ -584,8 +600,8 @@ namespace ChessUI
                 Sound.PlayMoveSound();
             }
 
-            MainGame.IsHitTestVisible = true;
-
+            //MainGame.IsHitTestVisible = true;
+            AbleClick();
             if (gameState.IsGameOver())
             {
                 HideHighlights();

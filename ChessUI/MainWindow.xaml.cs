@@ -412,15 +412,15 @@ namespace ChessUI
         }
         private void GameDifficultyMenu_PlayEasyBotButtonClicked(object sender, RoutedEventArgs e)
         {
-            CreateViewGameAI(2);
+            CreateViewGameAI(3);
         }
         private void GameDifficultyMenu_PlayNormalBotButtonClicked(object sender, RoutedEventArgs e)
         {
-            CreateViewGameAI(3);
+            CreateViewGameAI(4);
         }
         private void GameDifficultyMenu_PlayHardBotButtonClicked(object sender, RoutedEventArgs e)
         {
-            CreateViewGameAI(4);
+            CreateViewGameAI(5);
         }
 
         private void SelectGameMode_TwoPlayerButtonClicked(object sender, RoutedEventArgs e)
