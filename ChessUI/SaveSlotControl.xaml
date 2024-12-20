@@ -6,8 +6,8 @@
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:local="clr-namespace:ChessUI"
              mc:Ignorable="d" 
-             d:DesignHeight="720" d:DesignWidth="1200">
-    <Border Style="{StaticResource BorderStyle1}" Padding="10" Height="500" Width="450">
+             d:DesignHeight="690" d:DesignWidth="1200">
+    <Border Style="{StaticResource BorderStyle1}" Padding="10" Height="450" Width="450">
         <Grid>
             <Button x:Name="CloseButton"
                     HorizontalAlignment="Right" VerticalAlignment="Top"
@@ -27,8 +27,7 @@
                            HorizontalAlignment="Center" />
                 <ListBox Name="SaveSlotList"
                          BorderThickness="0" 
-                         Background="Transparent"
-                         SelectionChanged="SaveSlotList_SelectionChanged">
+                         Background="Transparent" MouseUp="SaveSlotList_MouseUp">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid Margin="5" Height="50">
@@ -41,6 +40,12 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </StackPanel>
+            <Grid x:Name="ConfirmationDialogContainer" Background="Transparent" Visibility="Collapsed" Width="450" Height="450">
+                <local:SaveLoadConfirm x:Name="ConfirmationControl" 
+                                         HorizontalAlignment="Center" 
+                                         VerticalAlignment="Center" />
+            </Grid>
         </Grid>
+        
     </Border>
 </UserControl>

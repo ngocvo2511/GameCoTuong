@@ -114,23 +114,49 @@ namespace ChessUI
             add { AddHandler(SelectedLoadSlotEvent, value); }
             remove { RemoveHandler(SelectedLoadSlotEvent, value); }
         }
-        private void SaveSlotList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+
+        private void SaveSlotList_MouseUp(object sender, MouseButtonEventArgs e)
         {
             int index = SaveSlotList.SelectedIndex;
             if (index < 0 || index > SaveFiles.Count()) return;
             string filePath = System.IO.Path.Combine(SaveDirectory, SaveFiles[index]);
             if (isSave == true)
             {
-                SaveService.Save(currentGameState,filePath);
-                LoadFileToList();
+                if (File.Exists(filePath))
+                {
+                    ShowConfirmationDialog("Bạn có muốn ghi đè trận đấu trước đó?", result =>
+                    {
+                        if (result)
+                        {
+                            SaveService.Save(currentGameState, filePath);
+                            LoadFileToList();
+                        }
+                    });
+                }                
             }
             else
             {
                 if (File.Exists(filePath))
                 {
-                    RaiseEvent(new SaveSlotEventArgs(SelectedLoadSlotEvent,filePath));
+                    ShowConfirmationDialog("Bạn có muốn tải trận đấu này?", result =>
+                    {
+                        if (result)
+                        {
+                            RaiseEvent(new SaveSlotEventArgs(SelectedLoadSlotEvent, filePath));
+                        }
+                    });                                     
                 }
             }
+        }
+        private void ShowConfirmationDialog(string message, Action<bool> callback)
+        {
+            ConfirmationControl.SetMessage(message);
+            ConfirmationControl.result += (result) =>
+            {
+                ConfirmationDialogContainer.Visibility = Visibility.Collapsed;
+                callback(result);
+            };
+            ConfirmationDialogContainer.Visibility = Visibility.Visible;
         }
     }
     public class SaveSlotEventArgs : RoutedEventArgs
@@ -141,6 +167,6 @@ namespace ChessUI
         {
             FilePath = filePath;
         }
-    }
+    }   
 }
 
