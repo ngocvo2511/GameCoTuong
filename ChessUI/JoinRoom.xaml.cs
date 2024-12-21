@@ -89,12 +89,12 @@ namespace ChessUI
             _connection.Remove("RoomJoined");
             _connection.Remove("Error");
 
-            _connection.On<string, string, int>("RoomJoined", (roomName, username, time) =>
+            _connection.On<string, string, int, string>("RoomJoined", (roomName, username, time, opponentUsername) =>
             {
                 Dispatcher.Invoke(() =>
                 {
                     MessageBox.Show($"Joined room {roomName} successfully.");
-                    NavigateToGameOnlineE(roomName, username, Player.Black, time);
+                    NavigateToGameOnlineE(roomName, username, Player.Black, time, opponentUsername);
                 });
             });
 
@@ -149,9 +149,9 @@ namespace ChessUI
             typeof(JoinRoom)
         );
 
-        private void NavigateToGameOnlineE(string RoomName, string Username, Player Color, int Time)
+        private void NavigateToGameOnlineE(string RoomName, string Username, Player Color, int Time, string OpponentUsername)
         {
-            RaiseEvent(new NavigateToGameOnlineEventArgs(NavigateToGameOnlineEvent, RoomName, Username, Color, Time));
+            RaiseEvent(new NavigateToGameOnlineEventArgs(NavigateToGameOnlineEvent, RoomName, Username, Color, Time, OpponentUsername));
         }
         private void RemovePlaceholderText(object sender, RoutedEventArgs e)
         {

@@ -68,7 +68,28 @@ namespace Server
                 });
 
                 await Groups.AddToGroupAsync(Context.ConnectionId, roomName);
-                await Clients.Caller.SendAsync("RoomJoined", roomName, username, roomCreator.Time);
+                await Clients.Caller.SendAsync("RoomJoined", roomName, username, roomCreator.Time, roomCreator.Username);
+                await Clients.OthersInGroup(roomName).SendAsync("PlayerJoined", roomCreator.Username, username);
+            }
+            else
+            {
+                await Clients.Caller.SendAsync("Error", "Room does not exist.");
+            }
+        }
+
+        public async Task StartGame(string roomName)
+        {
+            if (Rooms.ContainsKey(roomName))
+            {
+                var roomParticipants = participants.Where(p => p.RoomName == roomName).ToList();
+                if (roomParticipants.Count == 2)
+                {
+                    await Clients.Group(roomName).SendAsync("GameStarted", roomParticipants[0].Username, roomParticipants[1].Username, roomParticipants[0].Time);
+                }
+                else
+                {
+                    await Clients.Caller.SendAsync("Error", "Not enough players to start the game.");
+                }
             }
             else
             {

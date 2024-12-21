@@ -15,13 +15,7 @@ namespace ChessUI
         {
             InitializeComponent();
             
-        }
-
-        
-
-
-
-        
+        }        
         
         public static readonly RoutedEvent CreateRoomButtonClickedEvent = EventManager.RegisterRoutedEvent(
             "CreateRoomButtonClicked",

@@ -37,6 +37,7 @@ namespace ChessUI
         private int time;
         string username;
         string opponentUsername;
+        private bool start = false;
         public GameOnline(string roomName, Player color, int time, string username, string opponentUsername = "")
         {
             InitializeComponent();
@@ -62,11 +63,19 @@ namespace ChessUI
             redInfo.Text = username;
             blackInfo.Text = opponentUsername;
             TurnTextBlock.Text = gameState.CurrentPlayer == Player.Red ? "Đỏ" : "Đen";
+            StartButton.Visibility = (color == Player.Red && opponentUsername != "") ? Visibility.Visible : Visibility.Collapsed;
+
         }
         private async void ConnectHub()
         {
             var connectionManager = SignalRConnectionManager.Instance;
             connection = connectionManager.Connection;
+
+            connection.Remove("MoveTo");
+            connection.Remove("PlayerJoined");
+            connection.Remove("PlayerLeft");
+            connection.Remove("Error");
+
 
             connection.On<int, int, int, int>("MoveTo", (x1, y1, x2, y2) =>
             {
@@ -93,11 +102,40 @@ namespace ChessUI
                 }
             });
 
+            connection.On<string, string>("PlayerJoined", (creatorUsername, joinerUsername) =>
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    opponentUsername = joinerUsername;
+                    ShowGameInformation();
+                });
+            });
+
+            connection.On<string, string, int>("GameStarted", (player1, player2, gameTime) =>
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    time = gameTime;
+                    StartGame();
+                });
+            });
+
             connection.On<string>("PlayerLeft", (connectionId) =>
             {
                 Dispatcher.Invoke(() =>
                 {
-                    MessageBox.Show($"Player {connectionId} has left the room.");
+                MessageBox.Show($"Player {connectionId} has left the room.");
+                    if (!start)
+                    {
+                        if (StartButton.Visibility == Visibility.Visible)
+                        {
+                            StartButton.Visibility = Visibility.Collapsed;
+                        }
+                    }
+                    else
+                    {
+                        //win
+                    }
                 });
             });
 
@@ -110,6 +148,32 @@ namespace ChessUI
             });
 
             await connectionManager.StartConnectionAsync();
+
+        }
+
+        private async void StartButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (connection != null && connection.State == HubConnectionState.Connected)
+            {
+                await connection.SendAsync("StartGame", roomName);
+
+            }
+            else
+            {
+                MessageBox.Show("Not connected to the server.");
+            }
+        }
+
+        private void StartGame()
+        {
+            // Bắt đầu trò chơi và tính thời gian
+            // Ví dụ: khởi tạo bộ đếm thời gian và bắt đầu trò chơi
+            //gameState = new GameState2P(Player.Red, Board.InitialForOnline(color), time);
+            //ShowGameInformation();
+            //DrawBoard(gameState.Board);
+            // Khởi động bộ đếm thời gian nếu cần
+            StartButton.Visibility = Visibility.Collapsed;
+            start = true;
 
         }
 
@@ -190,7 +254,7 @@ namespace ChessUI
 
         private void BoardGrid_MouseDown(object sender, MouseEventArgs e)
         {
-            if(opponentUsername == "")
+            if (!start)
             {
                 return;
             }
@@ -468,7 +532,7 @@ namespace ChessUI
                 WarningTextBlock.Text = gameState.Board.IsInCheck(gameState.CurrentPlayer) ? "Chiếu tướng!" : null;
                 TurnTextBlock.Text = gameState.CurrentPlayer == Player.Red ? "Đỏ" : "Đen";
             });
-           
+
 
             // Mở khóa giao diện
             await Dispatcher.InvokeAsync(() => MainGame.IsHitTestVisible = true);

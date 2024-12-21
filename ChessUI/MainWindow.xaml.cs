@@ -340,6 +340,7 @@ namespace ChessUI
                 CleanupCurrentView();
                 string roomName = args.RoomName;
                 string username = args.Username;
+                string opponentUsername = args.OpponentUsername;
                 Player color = args.Color;
                 int time = args.Time;
                 if (roomName == null)
@@ -347,7 +348,7 @@ namespace ChessUI
                     return;
                 }
                 onGame = true;
-                GameOnline gameOnline = new GameOnline(roomName, color, time, username);
+                GameOnline gameOnline = new GameOnline(roomName, color, time, username, opponentUsername);
                 gameOnline.SettingButtonClicked += SettingsButtonClicked;
                 gameOnline.LeaveRoomButtonClicked += GameOnline_LeaveRoomButtonClicked;
 
