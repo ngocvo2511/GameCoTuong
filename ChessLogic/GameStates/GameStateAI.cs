@@ -55,9 +55,9 @@ namespace ChessLogic.GameStates.GameState
         {
             IEnumerable<Move> moves = AllLegalMovesFor(CurrentPlayer);
             if (!moves.Any()) return;
-            Move bestMove = moves.ElementAt(0);
+            Move bestMove = null;
             int value;
-            int bestValue = -9999;
+            int bestValue = -10000;
             foreach (var move in moves)
             {
                 MakeTestMove(move);
@@ -70,21 +70,23 @@ namespace ChessLogic.GameStates.GameState
                 }
                 if (token.IsCancellationRequested) return;
             }            
-            MakeMove(bestMove);
+            if(bestMove!=null) MakeMove(bestMove);
         }
         private int AlphaBeta(int depth, int alpha = -9999, int beta = 9999) // giá trị nước đi
         {
-            if (depth == 0) return value.GetValueBoard(Board);
             IEnumerable<Move> moves = AllLegalMovesFor(CurrentPlayer);
+            if (!moves.Any()) return (CurrentPlayer == Player.Black) ? -9999 : 9999;
+            if (depth == 0) return value.GetValueBoard(Board);            
             if (CurrentPlayer == Player.Black)
             {
                 int bestValue = -9999;                
                 foreach (var move in moves)
                 {
                     MakeTestMove(move);
-                    bestValue = Math.Max(bestValue, AlphaBeta(depth - 1, alpha, beta));
+                    int value =  AlphaBeta(depth - 1, alpha, beta);
                     UndoTestMove();
-                    beta = Math.Min(beta, bestValue);
+                    bestValue = Math.Max(bestValue, value);
+                    alpha = Math.Max(alpha, value);
                     if (alpha >= beta) return bestValue;
                 }
                 return bestValue;
@@ -95,9 +97,10 @@ namespace ChessLogic.GameStates.GameState
                 foreach (var move in moves)
                 {
                     MakeTestMove(move);
-                    bestValue = Math.Min(bestValue, AlphaBeta(depth - 1, alpha, beta));
+                    int value =  AlphaBeta(depth - 1, alpha, beta);
                     UndoTestMove();
-                    alpha = Math.Max(alpha, bestValue);
+                    bestValue = Math.Min(bestValue, value);
+                    beta = Math.Min(beta, value);
                     if (alpha >= beta) return bestValue;
                 }
                 return bestValue;
