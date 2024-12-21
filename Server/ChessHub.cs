@@ -68,8 +68,8 @@ namespace Server
                 });
 
                 await Groups.AddToGroupAsync(Context.ConnectionId, roomName);
-                await Clients.Caller.SendAsync("RoomJoined", roomName, username, roomCreator.Time);
-                await Clients.Group(roomName).SendAsync("PlayerJoined", roomCreator.Username, username);
+                await Clients.Caller.SendAsync("RoomJoined", roomName, username, roomCreator.Time, roomCreator.Username);
+                await Clients.OthersInGroup(roomName).SendAsync("PlayerJoined", roomCreator.Username, username);
             }
             else
             {

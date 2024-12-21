@@ -115,7 +115,6 @@ namespace ChessUI
             {
                 Dispatcher.Invoke(() =>
                 {
-                    opponentUsername = player2;
                     time = gameTime;
                     StartGame();
                 });
@@ -125,7 +124,18 @@ namespace ChessUI
             {
                 Dispatcher.Invoke(() =>
                 {
-                    MessageBox.Show($"Player {connectionId} has left the room.");
+                MessageBox.Show($"Player {connectionId} has left the room.");
+                    if (!start)
+                    {
+                        if (StartButton.Visibility == Visibility.Visible)
+                        {
+                            StartButton.Visibility = Visibility.Collapsed;
+                        }
+                    }
+                    else
+                    {
+                        //win
+                    }
                 });
             });
 
@@ -244,7 +254,7 @@ namespace ChessUI
 
         private void BoardGrid_MouseDown(object sender, MouseEventArgs e)
         {
-            if(!start)
+            if (!start)
             {
                 return;
             }
@@ -522,7 +532,7 @@ namespace ChessUI
                 WarningTextBlock.Text = gameState.Board.IsInCheck(gameState.CurrentPlayer) ? "Chiếu tướng!" : null;
                 TurnTextBlock.Text = gameState.CurrentPlayer == Player.Red ? "Đỏ" : "Đen";
             });
-           
+
 
             // Mở khóa giao diện
             await Dispatcher.InvokeAsync(() => MainGame.IsHitTestVisible = true);
