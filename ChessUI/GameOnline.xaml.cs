@@ -17,6 +17,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.AspNetCore.SignalR.Client;
 using System.Data.Common;
+using System.Windows.Threading;
 
 namespace ChessUI
 {
@@ -38,12 +39,17 @@ namespace ChessUI
         string username;
         string opponentUsername;
         private bool start = false;
+        private DispatcherTimer redTimer;
+        private DispatcherTimer blackTimer;
+        private Brush redBrush = new SolidColorBrush(Colors.Red);
+        private Brush blackBrush = new SolidColorBrush(Colors.Black);
+
         public GameOnline(string roomName, Player color, int time, string username, string opponentUsername = "")
         {
             InitializeComponent();
             InitializeBoard();
             this.color = color;
-            gameState = new GameState2P(Player.Red, Board.InitialForOnline(color));
+            gameState = new GameState2P(Player.Red, Board.InitialForOnline(color), time);
             this.roomName = roomName;
             this.time = time;
             this.username = username;
@@ -166,15 +172,145 @@ namespace ChessUI
 
         private void StartGame()
         {
-            // Bắt đầu trò chơi và tính thời gian
-            // Ví dụ: khởi tạo bộ đếm thời gian và bắt đầu trò chơi
-            //gameState = new GameState2P(Player.Red, Board.InitialForOnline(color), time);
-            //ShowGameInformation();
-            //DrawBoard(gameState.Board);
-            // Khởi động bộ đếm thời gian nếu cần
             StartButton.Visibility = Visibility.Collapsed;
             start = true;
+            InitializeTimer();
+            SwitchTurn();
 
+        }
+
+        private void RedTimer_Tick(object sender, EventArgs e)
+        {
+            gameState.timeRemainingRed--;
+            int minutes = gameState.timeRemainingRed / 60;
+            int seconds = gameState.timeRemainingRed % 60;
+            if(color == Player.Red)
+            {
+                bottomClock.Text = $"{minutes:D2}:{seconds:D2}";
+            }
+            else
+            {
+                topClock.Text = $"{minutes:D2}:{seconds:D2}";
+            }
+            if (gameState.timeRemainingRed <= 0)
+            {
+                StopTimer();
+                HideHighlights();
+                CellGrid.IsEnabled = false;
+                gameState.TimeForfeit();
+                RaiseGameOverEvent(gameState);
+                return;
+            }
+            if (gameState.timeRemainingRed < 60)
+            {
+                if(color == Player.Red)
+                {
+                    bottomClock.Foreground = redBrush;
+                }
+                else
+                {
+                    topClock.Foreground = redBrush;
+                }
+            }
+        }
+        private void BlackTimer_Tick(object sender, EventArgs e)
+        {
+            gameState.timeRemainingBlack--;
+            int minutes = gameState.timeRemainingBlack / 60;
+            int seconds = gameState.timeRemainingBlack % 60;
+            if(color == Player.Black)
+            {
+                bottomClock.Text = $"{minutes:D2}:{seconds:D2}";
+            }
+            else
+            {
+                topClock.Text = $"{minutes:D2}:{seconds:D2}";
+            }
+            if (gameState.timeRemainingBlack <= 0)
+            {
+                StopTimer();
+                HideHighlights();
+                CellGrid.IsEnabled = false;
+                gameState.TimeForfeit();
+                RaiseGameOverEvent(gameState);
+                return;
+            }
+            if (gameState.timeRemainingBlack < 60)
+            {
+                if(color == Player.Black)
+                {
+                    bottomClock.Foreground = blackBrush;
+                }
+                else
+                {
+                    topClock.Foreground = blackBrush;
+                }
+            }
+        }
+
+        internal void StopTimer()
+        {
+            redTimer.Stop();
+            blackTimer.Stop();
+        }
+        internal void ContinueTimer()
+        {
+            if (!gameState.IsGameOver())
+            {
+                if (gameState.CurrentPlayer == Player.Red)
+                {
+                    redTimer.Start();
+                }
+                else
+                {
+                    blackTimer.Start();
+                }
+            }
+        }
+        private void SwitchTurn()
+        {
+            redTimer.Stop();
+            blackTimer.Stop();
+
+            if (gameState.CurrentPlayer == Player.Red)
+            {
+                redTimer.Start();
+            }
+            else
+            {
+                blackTimer.Start();
+            }
+        }
+
+        private void InitializeTimer()
+        {
+            int minutes = gameState.timeRemainingRed / 60;
+            int seconds = gameState.timeRemainingRed % 60;
+            bottomClock.Text = $"{minutes:D2}:{seconds:D2}";
+            topClock.Text = $"{minutes:D2}:{seconds:D2}";
+
+            redTimer = new DispatcherTimer();
+            redTimer.Interval = TimeSpan.FromSeconds(1);
+            redTimer.Tick += RedTimer_Tick;
+            blackTimer = new DispatcherTimer();
+            blackTimer.Interval = TimeSpan.FromSeconds(1);
+            blackTimer.Tick += BlackTimer_Tick;
+        }
+
+        public void ResetTimer()
+        {
+            if (redTimer != null)
+            {
+                redTimer.Stop();
+                redTimer.Tick -= RedTimer_Tick;
+                redTimer = null;
+            }
+            if (blackTimer != null)
+            {
+                blackTimer.Stop();
+                blackTimer.Tick -= BlackTimer_Tick;
+                blackTimer = null;
+            }
         }
 
         private void InitializeBoard()
@@ -525,6 +661,7 @@ namespace ChessUI
             // Cập nhật giao diện trên luồng chính
             await Dispatcher.InvokeAsync(() =>
             {
+                SwitchTurn();
                 Sound.PlayMoveSound();
                 DrawBoard(gameState.Board);
                 ShowPrevMove(move);
@@ -541,7 +678,8 @@ namespace ChessUI
             {
                 HideHighlights();
                 CellGrid.IsEnabled = false;
-                //_mainWindow.CreateGameOverMenu(gameState);
+                if (redTimer != null) StopTimer();
+                RaiseGameOverEvent(gameState);
             }
         }
 
@@ -619,6 +757,21 @@ namespace ChessUI
             {
                 Application.Current.MainWindow.DragMove();
             }
+        }
+
+        public static readonly RoutedEvent GameOverEvent = EventManager.RegisterRoutedEvent(
+       "GameOver", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(GameUserControl));
+
+        public event RoutedEventHandler GameOver
+        {
+            add { AddHandler(GameOverEvent, value); }
+            remove { RemoveHandler(GameOverEvent, value); }
+        }
+
+        protected void RaiseGameOverEvent(GameState gameState)
+        {
+            RoutedEventArgs args = new RoutedPropertyChangedEventArgs<GameState>(null, gameState, GameOverEvent);
+            RaiseEvent(args);
         }
     }
 }

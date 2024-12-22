@@ -34,90 +34,89 @@ namespace ChessUI
 
         }
 
-        private void CleanupCurrentView()
-        {
-            if (mainWindowGrid.Children.Count > 0)
-            {
-                // Giả định rằng phần tử cuối cùng là view hiện tại
-                var currentView = mainWindowGrid.Children[mainWindowGrid.Children.Count - 1];
+        //private void CleanupCurrentView()
+        //{
+        //    if (mainWindowGrid.Children.Count > 0)
+        //    {
+        //        // Giả định rằng phần tử cuối cùng là view hiện tại
+        //        var currentView = mainWindowGrid.Children[mainWindowGrid.Children.Count - 1];
 
-                if (currentView is GameUserControl gameControl)
-                {
-                    gameControl.PauseButtonClicked -= PauseButtonClicked;
-                    gameControl.SaveButtonClicked -= SaveButtonClicked;
-                    gameControl.GameOver -= OnGameOver;
-                    gameControl.StopTimer();
-                }
-                else if (currentView is PauseMenu pauseMenu)
-                {
-                    pauseMenu.ContinueButtonClicked -= ContinueButtonClicked;
-                    pauseMenu.NewButtonClicked -= NewButtonClicked;
-                    pauseMenu.HomeButtonClicked -= PauseMenu_HomeButtonClicked;
-                    pauseMenu.SettingsButtonClicked -= SettingsButtonClicked;
-                }
-                else if (currentView is GameOverMenu gameOverMenu)
-                {
-                    gameOverMenu.NewButtonClicked -= NewButtonClicked;
-                    gameOverMenu.HomeButtonClicked -= GameOverMenu_HomeButtonClicked;
-                    gameOverMenu.ReviewButtonClicked -= GameOverMenu_ReviewButtonClicked;
-                }
-                else if (currentView is SettingsMenu settingsMenu)
-                {
-                    settingsMenu.CloseButtonClicked -= CloseButtonClicked;
-                    settingsMenu.humanFirstChecked -= SettingsMenu_humanFirstChecked;
-                    settingsMenu.botFirstChecked -= SettingsMenu_botFirstChecked;
-                    settingsMenu.isTimeLimitChecked -= SettingsMenu_isTimeLimitChecked;
-                    settingsMenu.isTimeLimitUnchecked -= SettingsMenu_isTimeLimitUnchecked;
-                    settingsMenu.TimeLimitTextBoxChanged -= SettingsMenu_TimeLimitTextBoxChanged;
-                    settingsMenu.SettingsChanged -= SettingsMenu_SettingsChanged;
-                }
-                else if (currentView is SelectGameModeMenu selectGameModeMenu)
-                {
-                    selectGameModeMenu.CloseButtonClicked -= CloseButtonClicked;
-                    selectGameModeMenu.PlayWithBotButtonClicked -= SelectGameMode_PlayWithBotButtonClicked;
-                    selectGameModeMenu.TwoPlayerButtonClicked -= SelectGameMode_TwoPlayerButtonClicked;
-                    selectGameModeMenu.PlayOnlineButtonClicked -= SelectGameMode_PlayOnlineButtonClicked;
-                }
-                else if (currentView is RoomControl roomControl)
-                {
-                    roomControl.CreateRoomButtonClicked -= RoomControl_CreateRoomButtonClicked;
-                    roomControl.JoinRoomButtonClicked -= RoomControl_JoinRoomButtonClicked;
-                    roomControl.RandomMatchButtonClicked -= RoomControl_RandomMatchButtonClicked;
-                    roomControl.BackButtonClicked -= CloseButtonClicked;
-                }
-                else if (currentView is JoinRoom joinRoom)
-                {
-                    joinRoom.BackButtonClicked -= CloseButtonClicked;
-                    joinRoom.NavigateToGameOnline -= RoomControl_NavigateToGameOnline;
-                }
-                else if (currentView is CreateRoom createRoom)
-                {
-                    createRoom.BackButtonClicked -= CloseButtonClicked;
-                    createRoom.NavigateToGameOnline -= RoomControl_NavigateToGameOnline;
-                }
-                else if (currentView is SaveSlotControl saveSlotControl)
-                {
-                    saveSlotControl.CloseButtonClicked -= ContinueButtonClicked;
-                    saveSlotControl.SelectedLoadSlot -= SelectedLoadSlot_Clicked;
-                }
-                else if (currentView is HistoryMenu historyMenu)
-                {
-                    historyMenu.CloseButtonClicked -= CloseButtonClicked;
-                }
-                else if(currentView is GameOnline gameOnline)
-                {
-                    gameOnline.SettingButtonClicked -= SettingsButtonClicked;
-                    gameOnline.LeaveRoomButtonClicked -= GameOnline_LeaveRoomButtonClicked;
-                }
+        //        if (currentView is GameUserControl gameControl)
+        //        {
+        //            gameControl.PauseButtonClicked -= PauseButtonClicked;
+        //            gameControl.SaveButtonClicked -= SaveButtonClicked;
+        //            gameControl.GameOver -= OnGameOver;
+        //            gameControl.StopTimer();
+        //        }
+        //        else if (currentView is PauseMenu pauseMenu)
+        //        {
+        //            pauseMenu.ContinueButtonClicked -= ContinueButtonClicked;
+        //            pauseMenu.NewButtonClicked -= NewButtonClicked;
+        //            pauseMenu.HomeButtonClicked -= PauseMenu_HomeButtonClicked;
+        //            pauseMenu.SettingsButtonClicked -= SettingsButtonClicked;
+        //        }
+        //        else if (currentView is GameOverMenu gameOverMenu)
+        //        {
+        //            gameOverMenu.NewButtonClicked -= NewButtonClicked;
+        //            gameOverMenu.HomeButtonClicked -= GameOverMenu_HomeButtonClicked;
+        //            gameOverMenu.ReviewButtonClicked -= GameOverMenu_ReviewButtonClicked;
+        //        }
+        //        else if (currentView is SettingsMenu settingsMenu)
+        //        {
+        //            settingsMenu.CloseButtonClicked -= CloseButtonClicked;
+        //            settingsMenu.humanFirstChecked -= SettingsMenu_humanFirstChecked;
+        //            settingsMenu.botFirstChecked -= SettingsMenu_botFirstChecked;
+        //            settingsMenu.isTimeLimitChecked -= SettingsMenu_isTimeLimitChecked;
+        //            settingsMenu.isTimeLimitUnchecked -= SettingsMenu_isTimeLimitUnchecked;
+        //            settingsMenu.TimeLimitTextBoxChanged -= SettingsMenu_TimeLimitTextBoxChanged;
+        //            settingsMenu.SettingsChanged -= SettingsMenu_SettingsChanged;
+        //        }
+        //        else if (currentView is SelectGameModeMenu selectGameModeMenu)
+        //        {
+        //            selectGameModeMenu.CloseButtonClicked -= CloseButtonClicked;
+        //            selectGameModeMenu.PlayWithBotButtonClicked -= SelectGameMode_PlayWithBotButtonClicked;
+        //            selectGameModeMenu.TwoPlayerButtonClicked -= SelectGameMode_TwoPlayerButtonClicked;
+        //            selectGameModeMenu.PlayOnlineButtonClicked -= SelectGameMode_PlayOnlineButtonClicked;
+        //        }
+        //        else if (currentView is RoomControl roomControl)
+        //        {
+        //            roomControl.CreateRoomButtonClicked -= RoomControl_CreateRoomButtonClicked;
+        //            roomControl.JoinRoomButtonClicked -= RoomControl_JoinRoomButtonClicked;
+        //            roomControl.RandomMatchButtonClicked -= RoomControl_RandomMatchButtonClicked;
+        //            roomControl.BackButtonClicked -= CloseButtonClicked;
+        //        }
+        //        else if (currentView is JoinRoom joinRoom)
+        //        {
+        //            joinRoom.BackButtonClicked -= CloseButtonClicked;
+        //            joinRoom.NavigateToGameOnline -= RoomControl_NavigateToGameOnline;
+        //        }
+        //        else if (currentView is CreateRoom createRoom)
+        //        {
+        //            createRoom.BackButtonClicked -= CloseButtonClicked;
+        //            createRoom.NavigateToGameOnline -= RoomControl_NavigateToGameOnline;
+        //        }
+        //        else if (currentView is SaveSlotControl saveSlotControl)
+        //        {
+        //            saveSlotControl.CloseButtonClicked -= ContinueButtonClicked;
+        //            saveSlotControl.SelectedLoadSlot -= SelectedLoadSlot_Clicked;
+        //        }
+        //        else if (currentView is HistoryMenu historyMenu)
+        //        {
+        //            historyMenu.CloseButtonClicked -= CloseButtonClicked;
+        //        }
+        //        else if(currentView is GameOnline gameOnline)
+        //        {
+        //            gameOnline.SettingButtonClicked -= SettingsButtonClicked;
+        //            gameOnline.LeaveRoomButtonClicked -= GameOnline_LeaveRoomButtonClicked;
+        //        }
 
-            }
-        }
+        //    }
+        //}
 
 
 
         private void CreateMainMenu()
         {
-            CleanupCurrentView();
             onGame = false;
 
 
@@ -136,7 +135,6 @@ namespace ChessUI
 
         private void CreateSelectGameModeMenu()
         {
-            CleanupCurrentView();
             SelectGameModeMenu selectGameModeMenu = new SelectGameModeMenu();
 
             selectGameModeMenu.CloseButtonClicked += CloseButtonClicked;
@@ -161,7 +159,6 @@ namespace ChessUI
         }
         private void CreateInstructionMenu()
         {
-            CleanupCurrentView();
             InstructionsMenu instructionsMenu = new InstructionsMenu();
 
             instructionsMenu.CloseButtonClicked += CloseButtonClicked;
@@ -172,7 +169,6 @@ namespace ChessUI
 
         private void CreateSettingsMenu()
         {
-            CleanupCurrentView();
 
             SettingsMenu settingsMenu = new SettingsMenu(settingsModel);
             mainWindowGrid.Children.Add(settingsMenu);
@@ -188,7 +184,6 @@ namespace ChessUI
             settingsMenu.VolumeSliderValueChanged += SettingsMenu_VolumeSliderValueChanged;
             settingsMenu.isTimeLimitChecked += SettingsMenu_isTimeLimitChecked;
             settingsMenu.isTimeLimitUnchecked += SettingsMenu_isTimeLimitUnchecked;
-            settingsMenu.TimeLimitTextBoxChanged += SettingsMenu_TimeLimitTextBoxChanged;
             settingsMenu.SettingsChanged += SettingsMenu_SettingsChanged;
 
 
@@ -198,7 +193,6 @@ namespace ChessUI
 
         private void CreateHistoryMenu()
         {
-            CleanupCurrentView();
             HistoryMenu historyMenu = new HistoryMenu();
 
             historyMenu.CloseButtonClicked += CloseButtonClicked;
@@ -337,7 +331,6 @@ namespace ChessUI
         {
             if (e is NavigateToGameOnlineEventArgs args)
             {
-                CleanupCurrentView();
                 string roomName = args.RoomName;
                 string username = args.Username;
                 string opponentUsername = args.OpponentUsername;
@@ -351,6 +344,7 @@ namespace ChessUI
                 GameOnline gameOnline = new GameOnline(roomName, color, time, username, opponentUsername);
                 gameOnline.SettingButtonClicked += SettingsButtonClicked;
                 gameOnline.LeaveRoomButtonClicked += GameOnline_LeaveRoomButtonClicked;
+                gameOnline.GameOver += OnGameOver;
 
                 mainWindowGrid.Children.Clear();
                 mainWindowGrid.Children.Add(gameOnline);

@@ -185,36 +185,7 @@ namespace ChessUI.Menus
             //RaiseEvent(new RoutedEventArgs(isTimeLimitUncheckedEvent));
         }
 
-        public static readonly RoutedEvent TimeLimitTextBoxChangedEvent = EventManager.RegisterRoutedEvent(
-            "TimeLimitTextBoxChanged",
-            RoutingStrategy.Bubble,
-            typeof(RoutedEventHandler),
-            typeof(SettingsMenu)
-            );
-
-        public event RoutedEventHandler TimeLimitTextBoxChanged
-        {
-            add { AddHandler(TimeLimitTextBoxChangedEvent, value); }
-            remove { RemoveHandler(TimeLimitTextBoxChangedEvent, value); }
-        }
-
-        private void TimeLimitTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            //int time;
-            //if (!int.TryParse(TimeLimitTextBox.Text, out time))
-            //{
-            //    return;
-            //    //TimeLimitTextBox.Text = settings.TimeLimit.ToString();
-            //    //RaiseEvent(new RoutedEventArgs(TimeLimitTextBoxChangedEvent));
-            //}
-            //else
-            //{
-            //    TimeLimitTextBox.Text = time.ToString();
-            //    settings.TimeLimit = time;
-            //    SettingsChanged?.Invoke(settings);
-            //}
-            
-        }
+        
 
         private void TimeLimitTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
