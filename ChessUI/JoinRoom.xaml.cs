@@ -93,7 +93,6 @@ namespace ChessUI
             {
                 Dispatcher.Invoke(() =>
                 {
-                    MessageBox.Show($"Joined room {roomName} successfully.");
                     NavigateToGameOnlineE(roomName, username, Player.Black, time, opponentUsername);
                 });
             });
@@ -102,7 +101,7 @@ namespace ChessUI
             {
                 Dispatcher.Invoke(() =>
                 {
-                    MessageBox.Show(message);
+                    ShowNotification(message);
                 });
             });
 

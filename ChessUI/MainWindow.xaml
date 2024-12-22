@@ -9,7 +9,6 @@
         Title="Cờ Tướng" Height ="720"  Width="1200"
         Icon="Assets/Images/icon.png"
         WindowStartupLocation="CenterScreen" ResizeMode="CanResize"
-        KeyDown="Window_KeyDown"
         WindowStyle="None" AllowsTransparency="True"
         Background="Transparent">
 

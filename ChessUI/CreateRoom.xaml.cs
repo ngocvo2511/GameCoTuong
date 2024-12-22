@@ -81,7 +81,6 @@ namespace ChessUI
             {
                 Dispatcher.Invoke(() =>
                 {
-                    MessageBox.Show($"Room {roomName} created successfully.");
                     NavigateToGameOnlineE(roomName, username, Player.Red, time);
                 });
             });
@@ -90,7 +89,7 @@ namespace ChessUI
             {
                 Dispatcher.Invoke(() =>
                 {
-                    MessageBox.Show(message);
+                    ShowNotification(message);
                 });
             });
 

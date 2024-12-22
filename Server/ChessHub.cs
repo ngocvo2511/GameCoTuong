@@ -128,7 +128,7 @@ namespace Server
 
         public async Task GameOver(string roomName, Result result, Player current)
         {
-            await Clients.Group(roomName).SendAsync("CreateGameOver", result, current);
+            await Clients.OthersInGroup(roomName).SendAsync("CreateGameOver", result, current);
         }
 
 

@@ -2,6 +2,7 @@
 using ChessLogic.GameStates;
 using ChessLogic.GameStates.GameState;
 using ChessUI.Menus;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -31,6 +32,7 @@ namespace ChessUI
             InitializeComponent();
 
             CreateMainMenu();
+            this.Closing += MainWindow_Closing;
 
 
         }
@@ -344,7 +346,7 @@ namespace ChessUI
                 onGame = true;
                 if(gameOnline != null) gameOnline.ResetTimer();
                 gameOnline = new GameOnline(roomName, color, time, username, opponentUsername);
-                gameOnline.SettingButtonClicked += SettingsButtonClicked;
+                gameOnline.SettingButtonClicked += GameOnline_SettingsButtonClicked;
                 gameOnline.LeaveRoomButtonClicked += GameOnline_LeaveRoomButtonClicked;
                 gameOnline.GameOver += GameOnline_CreateGameOver;
 
@@ -353,6 +355,18 @@ namespace ChessUI
             }
         }
 
+        private void GameOnline_SettingsButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Sound.PlayButtonClickSound();
+            if (mainWindowGrid.Children[mainWindowGrid.Children.Count - 1] is GameOnline gameOnline )
+            {
+                CreateSettingsMenu();
+            }
+            else
+            {
+                CloseAMenu();
+            }
+        }
         private void GameOnline_LeaveRoomButtonClicked(object sender, RoutedEventArgs e)
         {
             CreateMainMenu();
@@ -530,21 +544,6 @@ namespace ChessUI
             CloseAMenu();
         }
 
-        private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
-        {
-            if (e.Key == Key.Escape)
-            {
-                if (onGame && mainWindowGrid.Children.Count != 1)
-                {
-                    CloseAMenu();
-                }
-                else if (onGame)
-                {
-                    CreatePauseMenu();
-                }
-
-            }
-        }
 
         private void CloseAMenu()
         {
@@ -584,6 +583,14 @@ namespace ChessUI
 
                 mainWindowGrid.Children.Add(gameOverMenu);
 
+            }
+        }
+
+        private async void MainWindow_Closing(object sender, CancelEventArgs e)
+        {
+            if (gameOnline != null)
+            {
+                await gameOnline.LeaveRoomAsync();
             }
         }
 

@@ -21,7 +21,7 @@ namespace ChessUI
         private Dictionary<Position, Move> moveCache = new Dictionary<Position, Move>();
         private GameState gameState;
         private Position selectedPos = null;
-        private HubConnection connection;
+        public HubConnection connection;
         private string roomName;
         private Player color;
         private int time;
@@ -132,17 +132,17 @@ namespace ChessUI
             {
                 Dispatcher.Invoke(() =>
                 {
-                MessageBox.Show($"Player {connectionId} has left the room.");
-                    if (!start)
+                    if (gameState.IsGameOver())
                     {
-                        if (StartButton.Visibility == Visibility.Visible)
-                        {
-                            StartButton.Visibility = Visibility.Collapsed;
-                        }
+
+                    }
+                    else if (!start)
+                    {
+
                     }
                     else
                     {
-                        //win
+
                     }
                 });
             });
@@ -739,6 +739,17 @@ namespace ChessUI
             RaiseEvent(new RoutedEventArgs(LeaveRoomButtonClickedEvent));
 
         }
+
+        public async Task LeaveRoomAsync()
+        {   
+            bool IsConnected = connection != null && connection.State == HubConnectionState.Connected;
+
+            if (IsConnected)
+            {
+                await connection.InvokeAsync("LeaveRoom", roomName);
+            }
+        }
+
         private async void CloseAppButton_Click(object sender, RoutedEventArgs e)
         {
             if (connection != null && connection.State == HubConnectionState.Connected)
