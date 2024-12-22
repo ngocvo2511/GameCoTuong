@@ -1,22 +1,11 @@
 ﻿using ChessLogic.GameStates.GameState;
 using ChessLogic;
-using ChessUI.Menus;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.AspNetCore.SignalR.Client;
-using System.Data.Common;
 using System.Windows.Threading;
 
 namespace ChessUI
@@ -81,6 +70,10 @@ namespace ChessUI
             connection.Remove("PlayerJoined");
             connection.Remove("PlayerLeft");
             connection.Remove("Error");
+            connection.Remove("GameStarted");
+            connection.Remove("CreateGameOver");
+
+
 
 
             connection.On<int, int, int, int>("MoveTo", (x1, y1, x2, y2) =>
@@ -123,6 +116,15 @@ namespace ChessUI
                 {
                     time = gameTime;
                     StartGame();
+                });
+            });
+
+            connection.On<Result, Player>("CreateGameOver", (result, current) =>
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    start = false;
+                    RaiseGameOverEvent(result, current);
                 });
             });
 
@@ -174,12 +176,24 @@ namespace ChessUI
         {
             StartButton.Visibility = Visibility.Collapsed;
             start = true;
+            ResetGameState();
             InitializeTimer();
             SwitchTurn();
 
         }
 
-        private void RedTimer_Tick(object sender, EventArgs e)
+        private void ResetGameState()
+        {
+            gameState = new GameState2P(Player.Red, Board.InitialForOnline(color), time);
+            selectedPos = null;
+            moveCache.Clear();
+            DrawBoard(gameState.Board);
+            HideHighlights();
+            ResetTimer();
+            InitializeTimer();
+        }
+
+        private async Task RedTimer_TickAsync(object sender, EventArgs e)
         {
             gameState.timeRemainingRed--;
             int minutes = gameState.timeRemainingRed / 60;
@@ -198,7 +212,7 @@ namespace ChessUI
                 HideHighlights();
                 CellGrid.IsEnabled = false;
                 gameState.TimeForfeit();
-                RaiseGameOverEvent(gameState);
+                await connection.SendAsync("GameOver", roomName, gameState.Result, gameState.CurrentPlayer);
                 return;
             }
             if (gameState.timeRemainingRed < 60)
@@ -213,7 +227,7 @@ namespace ChessUI
                 }
             }
         }
-        private void BlackTimer_Tick(object sender, EventArgs e)
+        private async Task BlackTimer_TickAsync(object sender, EventArgs e)
         {
             gameState.timeRemainingBlack--;
             int minutes = gameState.timeRemainingBlack / 60;
@@ -232,7 +246,7 @@ namespace ChessUI
                 HideHighlights();
                 CellGrid.IsEnabled = false;
                 gameState.TimeForfeit();
-                RaiseGameOverEvent(gameState);
+                await connection.SendAsync("GameOver", roomName, gameState.Result, gameState.CurrentPlayer);
                 return;
             }
             if (gameState.timeRemainingBlack < 60)
@@ -679,7 +693,7 @@ namespace ChessUI
                 HideHighlights();
                 CellGrid.IsEnabled = false;
                 if (redTimer != null) StopTimer();
-                RaiseGameOverEvent(gameState);
+                await connection.SendAsync("GameOver", roomName, gameState.Result, gameState.CurrentPlayer);
             }
         }
 
@@ -760,7 +774,7 @@ namespace ChessUI
         }
 
         public static readonly RoutedEvent GameOverEvent = EventManager.RegisterRoutedEvent(
-       "GameOver", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(GameUserControl));
+       "GameOver", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(GameOnline));
 
         public event RoutedEventHandler GameOver
         {
@@ -768,10 +782,18 @@ namespace ChessUI
             remove { RemoveHandler(GameOverEvent, value); }
         }
 
-        protected void RaiseGameOverEvent(GameState gameState)
+        protected void RaiseGameOverEvent(Result result, Player currentPlayer)
         {
-            RoutedEventArgs args = new RoutedPropertyChangedEventArgs<GameState>(null, gameState, GameOverEvent);
-            RaiseEvent(args);
+            RaiseEvent(new GameOverEventArgs(GameOverEvent, result, currentPlayer));
+        }
+        private void RedTimer_Tick(object sender, EventArgs e)
+        {
+            _ = RedTimer_TickAsync(sender, e);
+        }
+
+        private void BlackTimer_Tick(object sender, EventArgs e)
+        {
+            _ = BlackTimer_TickAsync(sender, e);
         }
     }
 }

@@ -14,6 +14,7 @@ namespace ChessUI
     public partial class MainWindow : Window
     {
         GameUserControl gameUserControl;
+        GameOnline gameOnline;
         private SettingsModel settingsModel = new SettingsModel();
 
         SaveSlotControl saveloadSlotControl;
@@ -341,10 +342,11 @@ namespace ChessUI
                     return;
                 }
                 onGame = true;
-                GameOnline gameOnline = new GameOnline(roomName, color, time, username, opponentUsername);
+                if(gameOnline != null) gameOnline.ResetTimer();
+                gameOnline = new GameOnline(roomName, color, time, username, opponentUsername);
                 gameOnline.SettingButtonClicked += SettingsButtonClicked;
                 gameOnline.LeaveRoomButtonClicked += GameOnline_LeaveRoomButtonClicked;
-                gameOnline.GameOver += OnGameOver;
+                gameOnline.GameOver += GameOnline_CreateGameOver;
 
                 mainWindowGrid.Children.Clear();
                 mainWindowGrid.Children.Add(gameOnline);
@@ -565,6 +567,23 @@ namespace ChessUI
                 mainWindowGrid.Children.Add(gameOverMenu);
 
                 LocalGameHistoryService.SaveGameHistory(gameOverMenu, gameState);
+            }
+        }
+
+        private void GameOnline_CreateGameOver(object sender, RoutedEventArgs e)
+        {
+            if (e is GameOverEventArgs args)
+            {
+                Result result = args.result;
+                Player current = args.currentPlayer;
+                Sound.PlayGameOverSound();
+                gameOverMenu = new GameOverMenu(result, current);
+                gameOverMenu.NewButtonClicked += NewButtonClicked;
+                gameOverMenu.HomeButtonClicked += GameOverMenu_HomeButtonClicked;
+                gameOverMenu.ReviewButtonClicked += GameOverMenu_ReviewButtonClicked;
+
+                mainWindowGrid.Children.Add(gameOverMenu);
+
             }
         }
 

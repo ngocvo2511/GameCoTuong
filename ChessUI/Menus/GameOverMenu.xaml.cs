@@ -33,6 +33,13 @@ namespace ChessUI.Menus
             ReasonText.Text = GetReasonText(result.Reason, gameState.CurrentPlayer);
         }
 
+        public GameOverMenu(Result result, Player current)
+        {
+            InitializeComponent();
+            WinnerText.Text = GetWinnerText(result.Winner);
+            ReasonText.Text = GetReasonText(result.Reason, current);
+        }
+
         private static string GetWinnerText(Player winner)
         {
             return winner switch

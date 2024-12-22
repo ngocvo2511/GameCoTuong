@@ -10,6 +10,11 @@ namespace Server
         private static readonly Dictionary<string, List<string>> Rooms = new Dictionary<string, List<string>>();
         public static List<ClientDetail> participants = new List<ClientDetail>();
         public static Player currentPlayer = Player.Red;
+
+        private void ResetGameState()
+        {
+            currentPlayer = Player.Red;
+        }
         public async Task CreateRoom(string roomName, string username, int time)
         {
             if (!Rooms.ContainsKey(roomName))
@@ -84,6 +89,7 @@ namespace Server
                 var roomParticipants = participants.Where(p => p.RoomName == roomName).ToList();
                 if (roomParticipants.Count == 2)
                 {
+                    ResetGameState();
                     await Clients.Group(roomName).SendAsync("GameStarted", roomParticipants[0].Username, roomParticipants[1].Username, roomParticipants[0].Time);
                 }
                 else
@@ -107,6 +113,7 @@ namespace Server
                 Rooms[roomName].Remove(Context.ConnectionId);
                 await Clients.OthersInGroup(roomName).SendAsync("PlayerLeft", Context.ConnectionId);
                 await Groups.RemoveFromGroupAsync(Context.ConnectionId, roomName);
+                participants.RemoveAll(p => p.Id == Context.ConnectionId);
 
                 if (Rooms[roomName].Count == 0)
                 {
@@ -117,6 +124,11 @@ namespace Server
             {
                 await Clients.Caller.SendAsync("Error", "Room does not exist.");
             }
+        }
+
+        public async Task GameOver(string roomName, Result result, Player current)
+        {
+            await Clients.Group(roomName).SendAsync("CreateGameOver", result, current);
         }
 
 
@@ -155,5 +167,43 @@ namespace Server
         public string Username { get; set; }
         public int Time { get; set; }
         public Player Color { get; set; }
+    }
+
+    public class Result
+    {
+        public EndReason Reason { get; }
+        public Player Winner { get; }
+
+        public Result(Player winner, EndReason reason)
+        {
+            Reason = reason;
+            Winner = winner;
+        }
+
+        public static Result Win(Player winner, EndReason reason)
+        {
+            return new Result(winner, reason);
+        }
+
+        public static Result Draw(EndReason reason)
+        {
+            return new Result(Player.None, reason);
+        }
+    }
+
+    public enum EndReason
+    {
+        Checkmate,
+        Stalemate, // van la thua chu khong hoa giong nhu co vua
+        InsufficientMaterial,
+        ThreefoldRepetition,
+        FiftyMoveRule,
+        DrawAgreed,
+        Resignation,
+        TimeForfeit,
+        Abandoned,
+        Disconnected,
+        IllegalMove,
+        Unknown
     }
 }

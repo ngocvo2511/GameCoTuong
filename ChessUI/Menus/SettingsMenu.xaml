@@ -69,7 +69,7 @@
                              FontFamily="/Assets/Fonts/#Noto Serif"
                              Text="10"
                              TextAlignment="Right"
-                             TextChanged="TimeLimitTextBox_TextChanged" LostFocus="TimeLimitTextBox_LostFocus"/>
+                             LostFocus="TimeLimitTextBox_LostFocus"/>
                     <TextBlock Text = "phút"
                                FontFamily="/Assets/Fonts/#Noto Serif"
                                Margin="40,0,0,0" 
