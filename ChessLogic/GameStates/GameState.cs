@@ -19,7 +19,7 @@ namespace ChessLogic.GameStates.GameState
         public int timeRemainingBlack {  get; set; }
         public List<Piece> CapturedRedPiece { get; set; }
         public List<Piece> CapturedBlackPiece { get; set; }
-        public int noCapture { get; set; } = 0;
+        public Stack<int> noCapture { get; set; }
 
         private string stateString;
         private readonly Dictionary<string, int> stateHistory;
@@ -30,6 +30,7 @@ namespace ChessLogic.GameStates.GameState
             this.Moved = new Stack<Tuple<Move, Piece>>();
             this.CapturedBlackPiece = new List<Piece>();
             this.CapturedRedPiece = new List<Piece>();
+            this.noCapture = new Stack<int>();
             this.stateHistory = new Dictionary<string, int>();
             stateString = new StateString(player, board).ToString();
             this.stateHistory[stateString] = 1;
@@ -37,7 +38,7 @@ namespace ChessLogic.GameStates.GameState
             timeRemainingRed = timeLimit;
         }
         public GameState(Player player,Board board,int redTime,int blackTime,Stack<Tuple<Move, Piece>> Moved,Dictionary<string,int> stateHistory
-            ,List<Piece> CapturedRedPiece,List<Piece> CapturedBlackPiece,int noCapture)
+            ,List<Piece> CapturedRedPiece,List<Piece> CapturedBlackPiece,Stack<int> noCapture)
         {
             CurrentPlayer = player;
             Board = board;
@@ -84,12 +85,13 @@ namespace ChessLogic.GameStates.GameState
 
             if (capture)
             {
-                noCapture = 0;
+                noCapture.Push(0);
                 stateHistory.Clear();
             }
             else
             {
-                noCapture++;
+                if (noCapture.Count == 0) noCapture.Push(1);
+                else noCapture.Push(noCapture.Peek()+1);
             }
             CurrentPlayer = CurrentPlayer.Opponent();
             UpdateStateString();
@@ -141,7 +143,7 @@ namespace ChessLogic.GameStates.GameState
 
         private bool FiftyMoveRule()
         {
-            return noCapture >= 100;
+            return noCapture.Peek() >= 100;
         }
 
         private void UpdateStateString()
@@ -157,7 +159,7 @@ namespace ChessLogic.GameStates.GameState
                 stateHistory[stateString]++;
             }
         }
-
+       
         private bool ThreefoldRepetition()
         {
             return stateHistory[stateString] == 3;

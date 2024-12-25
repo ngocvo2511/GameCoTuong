@@ -8,6 +8,7 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using ChessLogic.GameStates;
 using Microsoft.AspNetCore.Connections.Features;
+using System.Text.RegularExpressions;
 
 namespace ChessUI
 {
@@ -569,8 +570,7 @@ namespace ChessUI
         {
             isRedTurn = !isRedTurn;
             if (redTimer != null) SwitchTurn();
-            Sound.PlayMoveSound();
-            //MainGame.IsHitTestVisible = false;
+            Sound.PlayMoveSound();           
             UnableClick();
             if (gameState.Moved.Any()) HidePrevMove(gameState.Moved.First().Item1);            
             gameState.MakeMove(move);
@@ -595,10 +595,10 @@ namespace ChessUI
                 Sound.PlayMoveSound();
             }
 
-            //MainGame.IsHitTestVisible = true;
             AbleClick();
             if (gameState.IsGameOver())
             {
+                UnableClick();
                 moveList = new Stack<Tuple<Move, Piece>>(gameState.Moved.ToArray());
                 HideHighlights();
                 CellGrid.IsEnabled = false;
@@ -660,6 +660,7 @@ namespace ChessUI
                 WarningTextBlock.Text = gameState.Board.IsInCheck(gameState.CurrentPlayer) ? "Chiếu tướng!" : null;
                 gameState.CurrentPlayer = gameState.CurrentPlayer.Opponent();
                 TurnTextBlock.Text = gameState.CurrentPlayer == Player.Red ? "Đỏ" : "Đen";
+                gameState.noCapture.Pop();
             }
             else
             {
@@ -682,8 +683,19 @@ namespace ChessUI
         {
             Sound.PlayButtonClickSound();
             if (moveList.Count == 0) return;
-            if (gameState.Moved.Count != 0) HidePrevMove(gameState.Moved.First().Item1);
-            moveList.Peek().Item1.Execute(gameState.Board);
+            if (gameState.Moved.Count != 0) HidePrevMove(gameState.Moved.First().Item1);          
+            bool capture = moveList.Peek().Item1.Execute(gameState.Board);
+
+            if (capture)
+            {
+                gameState.noCapture.Push(0);
+                //stateHistory.Clear();
+            }
+            else
+            {
+                if (gameState.noCapture.Count == 0) gameState.noCapture.Push(1);
+                else gameState.noCapture.Push(gameState.noCapture.Peek() + 1);
+            }
             gameState.Moved.Push(moveList.Pop());
             DrawBoard(gameState.Board);
             if (gameState.Moved.Count != 0)

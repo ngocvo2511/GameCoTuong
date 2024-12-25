@@ -33,6 +33,7 @@ namespace ChessLogic.GameStates.GameState
                 Board[undo.Item1.ToPos] = undo.Item2;
                 if (i == 0) AiCapturedPiece = undo.Item2;
                 else CapturedPiece = undo.Item2;
+                noCapture.Pop();
             }
             CurrentPlayer = Player.Red;
         }

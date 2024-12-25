@@ -28,7 +28,7 @@ namespace ChessLogic
         {
             GameStateForSave gameStateForSave = new GameStateForSave();
             gameStateForSave.GameType = gameState is GameState2P ? "GameState2P" : "GameStateAI";
-            gameStateForSave.noCapture = gameState.noCapture;
+            gameStateForSave.noCapture = gameState.noCapture.ToList();
             gameStateForSave.depth = (gameState is GameStateAI AI) ? AI.depth : null;
             gameStateForSave.CurrentPlayer = (gameState.CurrentPlayer == Player.Black) ? "Black" : "Red";
             gameStateForSave.timeRemainingRed = gameState.timeRemainingRed;
@@ -138,7 +138,9 @@ namespace ChessLogic
             gameStateForLoad.CapturedRedPiece = redPiece;
             gameStateForLoad.CapturedBlackPiece = blackPiece;
             gameStateForLoad.CurrentPlayer = (gameStateForSave.CurrentPlayer == "Black") ? Player.Black : Player.Red;
-            gameStateForLoad.noCapture = gameStateForSave.noCapture;
+            List<int> loadNoCapture = gameStateForSave.noCapture;
+            loadNoCapture.Reverse();
+            gameStateForLoad.noCapture = new Stack<int>(loadNoCapture);
             gameStateForLoad.depth = gameStateForSave.depth ?? 0;
             gameStateForLoad.GameType = gameStateForSave.GameType;
             gameStateForLoad.timeRemainingBlack = gameStateForSave.timeRemainingBlack;
