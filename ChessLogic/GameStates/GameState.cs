@@ -10,16 +10,16 @@ namespace ChessLogic.GameStates.GameState
     {
         public Board Board { get; }
         public Stack<Tuple<Move, Piece>> Moved { get; set; }
-        public Player CurrentPlayer { get; protected set; }
+        public Player CurrentPlayer { get; set; }
 
         public Result Result { get; protected set; } = null;
 
-        public Piece CapturedPiece { get; protected set; }
+        public Piece CapturedPiece { get; set; }
         public int timeRemainingRed { get; set; }
         public int timeRemainingBlack {  get; set; }
         public List<Piece> CapturedRedPiece { get; set; }
         public List<Piece> CapturedBlackPiece { get; set; }
-        private int noCapture = 0;
+        public int noCapture { get; set; } = 0;
 
         private string stateString;
         private readonly Dictionary<string, int> stateHistory;
@@ -37,7 +37,7 @@ namespace ChessLogic.GameStates.GameState
             timeRemainingRed = timeLimit;
         }
         public GameState(Player player,Board board,int redTime,int blackTime,Stack<Tuple<Move, Piece>> Moved,Dictionary<string,int> stateHistory
-            ,List<Piece> CapturedRedPiece,List<Piece> CapturedBlackPiece)
+            ,List<Piece> CapturedRedPiece,List<Piece> CapturedBlackPiece,int noCapture)
         {
             CurrentPlayer = player;
             Board = board;
@@ -47,6 +47,7 @@ namespace ChessLogic.GameStates.GameState
             this.CapturedRedPiece = CapturedRedPiece;
             timeRemainingBlack = blackTime;
             timeRemainingRed = redTime;
+            this.noCapture = noCapture;
         }
         public List<string> getStateHistory()
         {

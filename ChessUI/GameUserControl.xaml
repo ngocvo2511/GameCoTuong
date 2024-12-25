@@ -61,6 +61,24 @@
             </Viewbox>
             <StackPanel Grid.Column="2" Grid.Row="1" Grid.RowSpan="5"
                         VerticalAlignment="Center">
+                <Grid Width="130"
+                      Height="80" Margin="0,0,0,10">
+                    <Border Style="{StaticResource BorderStyle1}"
+                            BorderThickness="1"/>
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" >
+                        <TextBlock Text="Lượt của:"
+                                   Style="{StaticResource TextStyle2}"
+                                   Foreground="Black"
+                                   FontSize="20"
+                                   Margin="0,0,0,5"
+                                   />
+                        <TextBlock x:Name="TurnTextBlock"
+                                   Style="{StaticResource TextStyle1}"
+                                   Foreground="Red"
+                                   FontSize="22"
+                        />
+                    </StackPanel>
+                </Grid>
                 <Button x:Name="SaveButton"
                         Style="{StaticResource ButtonStyle2}"
                         Margin="0,0,0,10" Click="SaveButton_Click">
@@ -78,25 +96,17 @@
                         Margin="0,0,0,10" Click="UndoButton_Click">
                     <iconPacks:PackIconModern Kind="Undo" Width="40" Height="40"/>
                 </Button>
-
-                <Grid Width="130"
-                      Height="80">
-                    <Border Style="{StaticResource BorderStyle1}"
-                            BorderThickness="1"/>
-                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" >
-                        <TextBlock Text="Lượt của:"
-                                   Style="{StaticResource TextStyle2}"
-                                   Foreground="Black"
-                                   FontSize="20"
-                                   Margin="0,0,0,5"
-                                   />
-                        <TextBlock x:Name="TurnTextBlock"
-                                   Style="{StaticResource TextStyle1}"
-                                   Foreground="Red"
-                                   FontSize="22"
-                                   />
-                    </StackPanel>
-                </Grid>
+                <Button x:Name="DoButton"
+                        Style="{StaticResource ButtonStyle2}"
+                        Margin="0,0,0,10" 
+                        Click="DoButton_Click"
+                        Visibility="Hidden">
+                    <iconPacks:PackIconModern Kind="Undo" Width="40" Height="40" RenderTransformOrigin="0.5,0.5">
+                        <iconPacks:PackIconModern.RenderTransform>
+                            <ScaleTransform ScaleX="-1" />
+                        </iconPacks:PackIconModern.RenderTransform>
+                    </iconPacks:PackIconModern>
+                </Button>
             </StackPanel>
 
             <Border Grid.Row="1" Margin="10"

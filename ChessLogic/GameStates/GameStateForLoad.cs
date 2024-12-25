@@ -12,6 +12,7 @@ namespace ChessLogic.GameStates
         public Board Board { get; set; }
         public Stack<Tuple<Move, Piece>> Moved { get; set; }
         public Player CurrentPlayer { get; set; }
+        public int noCapture {  get; set; }
         public int depth {  get; set; }
         public int timeRemainingRed {  get; set; }
         public int timeRemainingBlack { get; set; }

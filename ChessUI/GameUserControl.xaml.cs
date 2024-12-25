@@ -7,6 +7,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using ChessLogic.GameStates;
+using Microsoft.AspNetCore.Connections.Features;
 
 namespace ChessUI
 {
@@ -30,6 +31,8 @@ namespace ChessUI
         private Brush redBrush = new SolidColorBrush(Colors.Red);
         private Brush blackBrush = new SolidColorBrush(Colors.Black);
         private CancellationTokenSource cts = new CancellationTokenSource();
+        public Stack<Tuple<Move, Piece>> moveList { get; set; }
+        public bool isReview { get; set; } = false;
         public GameUserControl(Player color, int timeLimit, bool isAI, int difficult = 1)
         {
             InitializeComponent();
@@ -38,7 +41,7 @@ namespace ChessUI
             else gameState = new GameState2P(Player.Red, Board.Initial(),timeLimit);
             ShowGameInformation(difficult);
             DrawBoard(gameState.Board);
-            if (color == Player.Black) isRedTurn = false;
+            if (color == Player.Black && isAI==true) isRedTurn = false;
             if (timeLimit != 0)
             {
                 InitializeTimer();
@@ -124,11 +127,13 @@ namespace ChessUI
         }
         internal void StopTimer()
         {
+            if (redTimer == null) return;
             redTimer.Stop();
             blackTimer.Stop();
         }
         internal void ContinueTimer()
         {
+            if (redTimer == null) return;
             if (!gameState.IsGameOver())
             {
                 if(isRedTurn)
@@ -204,7 +209,7 @@ namespace ChessUI
             //MainGame.IsHitTestVisible = true;
             AbleClick();
             isRedTurn = !isRedTurn;
-            SwitchTurn();
+            if (redTimer != null) SwitchTurn();
         }
         private void UnableClick()
         {
@@ -252,7 +257,7 @@ namespace ChessUI
             }  
         }
 
-        private void DrawBoard(Board board)
+        public void DrawBoard(Board board)
         {
             for (int r = 0; r < 10; r++)
             {
@@ -550,12 +555,12 @@ namespace ChessUI
             };
             canvas.Children.Add(sideBotRightArrow);
         }
-        private void ShowPrevMove(Move move)
+        public void ShowPrevMove(Move move)
         {
             DrawOldPos(posMoved[move.FromPos.Row, move.FromPos.Column],move.ToPos.Row,move.ToPos.Column);
             DrawNewPos(posMoved[move.ToPos.Row, move.ToPos.Column],move.ToPos.Row,move.ToPos.Column);
         }
-        private void HidePrevMove(Move move)
+        public void HidePrevMove(Move move)
         {
             posMoved[move.FromPos.Row, move.FromPos.Column].Children.Clear();
             posMoved[move.ToPos.Row, move.ToPos.Column].Children.Clear();
@@ -594,6 +599,7 @@ namespace ChessUI
             AbleClick();
             if (gameState.IsGameOver())
             {
+                moveList = new Stack<Tuple<Move, Piece>>(gameState.Moved.ToArray());
                 HideHighlights();
                 CellGrid.IsEnabled = false;
                 if (redTimer != null) StopTimer();
@@ -634,21 +640,60 @@ namespace ChessUI
         private void UndoButton_Click(object sender, RoutedEventArgs e)
         {
             Sound.PlayButtonClickSound();
-            if(gameState.Moved.Any()) HidePrevMove(gameState.Moved.First().Item1);
+            if(gameState.Moved.Count!=0) HidePrevMove(gameState.Moved.First().Item1);
             OnToPositionSelected(selectedPos);
-            gameState.UndoMove();
+            if (isReview == true)
+            {
+                if (gameState.Moved.Count == 0) return;
+                var move = gameState.Moved.Pop();
+                Move doMove = new NormalMove(move.Item1.ToPos, move.Item1.FromPos);
+                doMove.Execute(gameState.Board);
+                gameState.Board[doMove.FromPos] = move.Item2;
+                DrawBoard(gameState.Board);
+                if (gameState.Moved.Count != 0)
+                {
+                    ShowPrevMove(gameState.Moved.First().Item1);
+                }
+                gameState.CapturedPiece=move.Item2;
+                moveList.Push(move);
+                UndoCapturedGrid(gameState.CapturedPiece);
+                WarningTextBlock.Text = gameState.Board.IsInCheck(gameState.CurrentPlayer) ? "Chiếu tướng!" : null;
+                gameState.CurrentPlayer = gameState.CurrentPlayer.Opponent();
+                TurnTextBlock.Text = gameState.CurrentPlayer == Player.Red ? "Đỏ" : "Đen";
+            }
+            else
+            {
+                gameState.UndoMove();
+                DrawBoard(gameState.Board);
+                if (gameState.Moved.Count != 0)
+                {
+                    ShowPrevMove(gameState.Moved.First().Item1);
+                }
+                WarningTextBlock.Text = gameState.Board.IsInCheck(gameState.CurrentPlayer) ? "Chiếu tướng!" : null;
+                TurnTextBlock.Text = gameState.CurrentPlayer == Player.Red ? "Đỏ" : "Đen";
+                UndoCapturedGrid(gameState.CapturedPiece);
+                if (gameState is GameStateAI AI)
+                    UndoAiCapturedGrid(AI.AiCapturedPiece);
+                isRedTurn = gameState.CurrentPlayer == Player.Red;
+                if (redTimer != null) SwitchTurn();
+            }            
+        }
+        private void DoButton_Click(object sender, RoutedEventArgs e)
+        {
+            Sound.PlayButtonClickSound();
+            if (moveList.Count == 0) return;
+            if (gameState.Moved.Count != 0) HidePrevMove(gameState.Moved.First().Item1);
+            moveList.Peek().Item1.Execute(gameState.Board);
+            gameState.Moved.Push(moveList.Pop());
             DrawBoard(gameState.Board);
-            if (gameState.Moved.Any())
+            if (gameState.Moved.Count != 0)
             {
                 ShowPrevMove(gameState.Moved.First().Item1);
             }
-            TurnTextBlock.Text = gameState.CurrentPlayer == Player.Red ? "Đỏ" : "Đen";
             WarningTextBlock.Text = gameState.Board.IsInCheck(gameState.CurrentPlayer) ? "Chiếu tướng!" : null;
-            UndoCapturedGrid(gameState.CapturedPiece);
-            if (gameState is GameStateAI AI)
-                UndoAiCapturedGrid(AI.AiCapturedPiece);
-            isRedTurn = gameState.CurrentPlayer == Player.Red;
-            if (redTimer != null) SwitchTurn();
+            DrawCapturedGrid(gameState.Moved.Peek().Item2);
+            gameState.CurrentPlayer = gameState.CurrentPlayer.Opponent();
+            TurnTextBlock.Text = gameState.CurrentPlayer == Player.Red ? "Đỏ" : "Đen";
         }
 
         private void CloseAppButton_Click(object sender, RoutedEventArgs e)

@@ -26,7 +26,6 @@ namespace ChessUI
         bool onGame = false;
         Player color = Player.Red;
         int time = 600;
-
         public MainWindow()
         {
             InitializeComponent();
@@ -241,7 +240,7 @@ namespace ChessUI
             onGame = true;
             if (gameUserControl != null) gameUserControl.ResetTimer();
             color = settingsModel.HumanFirst ? Player.Red : Player.Black;
-            gameUserControl = new GameUserControl(color, time, true, difficulty);
+            gameUserControl = new GameUserControl(color, settingsModel.TimeLimit * 60, true, difficulty);
             gameUserControl.PauseButtonClicked += PauseButtonClicked;
             gameUserControl.SaveButtonClicked += SaveButtonClicked;
             gameUserControl.GameOver += OnGameOver;
@@ -542,9 +541,25 @@ namespace ChessUI
         {
             Sound.PlayButtonClickSound();
             CloseAMenu();
+            gameUserControl.isReview = true;
+            Board newBoard = Board.Initial();
+            Player startPlayer;
+            if (newBoard[gameUserControl.moveList.Peek().Item1.FromPos].Color == Player.Black) startPlayer= Player.Black;
+            else startPlayer= Player.Red;
+            gameUserControl.HidePrevMove(gameUserControl.gameState.Moved.Peek().Item1);
+            gameUserControl.gameState = new GameState2P(startPlayer,Board.Initial());
+            gameUserControl.TurnTextBlock.Text = (startPlayer == Player.Black) ? "Đen" : "Đỏ";
+            gameUserControl.BlackCapturedGrid.Children.Clear();
+            gameUserControl.RedCapturedGrid.Children.Clear();
+            gameUserControl.redClock.Text = null;
+            gameUserControl.blackClock.Text = null;
+            gameUserControl.WarningTextBlock.Text = null;
+            gameUserControl.ResetTimer();
+            gameUserControl.DrawBoard(gameUserControl.gameState.Board);
+            gameUserControl.SaveButton.IsEnabled = false;
+            gameUserControl.CellGrid.IsHitTestVisible = false;
+            gameUserControl.DoButton.Visibility = Visibility.Visible;
         }
-
-
         private void CloseAMenu()
         {
             mainWindowGrid.Children.RemoveAt(mainWindowGrid.Children.Count - 1);

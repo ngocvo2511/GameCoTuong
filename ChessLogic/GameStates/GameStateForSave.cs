@@ -11,6 +11,7 @@ namespace ChessLogic.GameStates
         public string GameType { get; set; }
         public List<string> Board { get; set; }
         public string CurrentPlayer {  get; set; }
+        public int noCapture {  get; set; }
         public int? depth { get; set; }
         public List<string> Moved {  get; set; }
         public List<string> stateHistory {  get; set; }
