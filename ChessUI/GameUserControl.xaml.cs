@@ -32,8 +32,8 @@ namespace ChessUI
         private Brush redBrush = new SolidColorBrush(Colors.Red);
         private Brush blackBrush = new SolidColorBrush(Colors.Black);
         private CancellationTokenSource cts = new CancellationTokenSource();
-        public Stack<Tuple<Move, Piece>> moveList { get; set; }
-        public bool isReview { get; set; } = false;
+        private Stack<Tuple<Move, Piece>> moveList;
+        private bool isReview = false;
         public GameUserControl(Player color, int timeLimit, bool isAI, int difficult = 1)
         {
             InitializeComponent();
@@ -749,6 +749,28 @@ namespace ChessUI
         {
             RoutedEventArgs args = new RoutedPropertyChangedEventArgs<GameState>(null, gameState, GameOverEvent);
             RaiseEvent(args);
+        }
+        public void Review()
+        {
+            isReview = true;
+            Board newBoard = Board.Initial();
+            Player startPlayer;
+            if (newBoard[moveList.Peek().Item1.FromPos].Color == Player.Black) startPlayer = Player.Black;
+            else startPlayer = Player.Red;
+            HidePrevMove(gameState.Moved.Peek().Item1);
+            gameState = new GameState2P(startPlayer, Board.Initial());
+            TurnTextBlock.Text = (startPlayer == Player.Black) ? "Đen" : "Đỏ";
+            BlackCapturedGrid.Children.Clear();
+            RedCapturedGrid.Children.Clear();
+            redClock.Text = null;
+            blackClock.Text = null;
+            WarningTextBlock.Text = null;
+            ResetTimer();
+            DrawBoard(gameState.Board);
+            AbleClick();
+            SaveButton.IsEnabled = false;
+            CellGrid.IsHitTestVisible = false;
+            DoButton.Visibility = Visibility.Visible;
         }
     }
 }
