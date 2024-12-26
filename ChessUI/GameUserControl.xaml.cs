@@ -656,10 +656,10 @@ namespace ChessUI
                 }
                 gameState.CapturedPiece=move.Item2;
                 moveList.Push(move);
-                UndoCapturedGrid(gameState.CapturedPiece);
-                WarningTextBlock.Text = gameState.Board.IsInCheck(gameState.CurrentPlayer) ? "Chiếu tướng!" : null;
+                UndoCapturedGrid(gameState.CapturedPiece);                
                 gameState.CurrentPlayer = gameState.CurrentPlayer.Opponent();
                 TurnTextBlock.Text = gameState.CurrentPlayer == Player.Red ? "Đỏ" : "Đen";
+                WarningTextBlock.Text = gameState.Board.IsInCheck(gameState.CurrentPlayer) ? "Chiếu tướng!" : null;
                 gameState.noCapture.Pop();
             }
             else
@@ -701,10 +701,10 @@ namespace ChessUI
             if (gameState.Moved.Count != 0)
             {
                 ShowPrevMove(gameState.Moved.First().Item1);
-            }
-            WarningTextBlock.Text = gameState.Board.IsInCheck(gameState.CurrentPlayer) ? "Chiếu tướng!" : null;
+            }            
             DrawCapturedGrid(gameState.Moved.Peek().Item2);
             gameState.CurrentPlayer = gameState.CurrentPlayer.Opponent();
+            WarningTextBlock.Text = gameState.Board.IsInCheck(gameState.CurrentPlayer) ? "Chiếu tướng!" : null;
             TurnTextBlock.Text = gameState.CurrentPlayer == Player.Red ? "Đỏ" : "Đen";
         }
 

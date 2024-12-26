@@ -10,7 +10,7 @@
     <Border Width="300"
         Height="250"
         Style="{StaticResource BorderStyle1}"
-        Background="Azure">
+        Background="White">
         <StackPanel VerticalAlignment="Center">
             <TextBlock x:Name="Message"
                    TextAlignment="Center"

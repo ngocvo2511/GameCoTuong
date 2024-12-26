@@ -6,46 +6,47 @@
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:local="clr-namespace:ChessUI"
              mc:Ignorable="d" 
-             d:DesignHeight="690" d:DesignWidth="1200">
-    <Border Style="{StaticResource BorderStyle1}" Padding="10" Height="450" Width="450">
-        <Grid>
-            <Button x:Name="CloseButton"
-                    HorizontalAlignment="Right" VerticalAlignment="Top"
-                    Background="Transparent"
-                    Foreground="Black"
-                    BorderThickness="0"
-                    Width="30" Height="30" 
-                    Margin="0,10,10,0"
-                    Click="CloseButton_Click">
-                <iconPacks:PackIconMaterial Kind="Close" Height="20" Width="20"/>
-            </Button>
-            <StackPanel>
-                <TextBlock x:Name="title" 
-                           Style="{StaticResource TextStyle1}" 
-                           FontSize="50"
-                           Margin="0,0,0,10" 
-                           HorizontalAlignment="Center" />
-                <ListBox Name="SaveSlotList"
-                         BorderThickness="0" 
-                         Background="Transparent" MouseUp="SaveSlotList_MouseUp">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Margin="5" Height="50">
-                                <TextBlock Text="{Binding}"
-                                           VerticalAlignment="Center" 
-                                           Margin="10,0,0,0" 
-                                           FontSize="16" />
-                            </Grid>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </StackPanel>
-            <Grid x:Name="ConfirmationDialogContainer" Background="Transparent" Visibility="Collapsed" Width="450" Height="450">
-                <local:SaveLoadConfirm x:Name="ConfirmationControl" 
-                                         HorizontalAlignment="Center" 
-                                         VerticalAlignment="Center" />
+             d:DesignHeight="720" d:DesignWidth="1200">
+    <Grid>
+        <Border Style="{StaticResource BorderStyle1}" Padding="10" Height="450" Width="450">
+            <Grid>
+                <Button x:Name="CloseButton"
+                HorizontalAlignment="Right" VerticalAlignment="Top"
+                Background="Transparent"
+                Foreground="Black"
+                BorderThickness="0"
+                Width="30" Height="30" 
+                Margin="0,10,10,0"
+                Click="CloseButton_Click">
+                    <iconPacks:PackIconMaterial Kind="Close" Height="20" Width="20"/>
+                </Button>
+                <StackPanel>
+                    <TextBlock x:Name="title" 
+                       Style="{StaticResource TextStyle1}" 
+                       FontSize="50"
+                       Margin="0,0,0,10" 
+                       HorizontalAlignment="Center" />
+                    <ListBox Name="SaveSlotList"
+                     BorderThickness="0" 
+                     Background="Transparent" MouseUp="SaveSlotList_MouseUp">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="5" Height="50">
+                                    <TextBlock Text="{Binding}"
+                                       VerticalAlignment="Center" 
+                                       Margin="10,0,0,0" 
+                                       FontSize="16" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
             </Grid>
+        </Border>
+        <Grid x:Name="ConfirmationDialogContainer" Background="#80000000" Visibility="Collapsed" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <local:SaveLoadConfirm x:Name="ConfirmationControl" 
+                     HorizontalAlignment="Center" 
+                     VerticalAlignment="Center" />
         </Grid>
-        
-    </Border>
+    </Grid>
 </UserControl>

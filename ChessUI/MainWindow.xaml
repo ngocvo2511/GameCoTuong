@@ -18,7 +18,5 @@
         <Grid x:Name="mainWindowGrid">
             <ContentControl x:Name="view"/>
         </Grid>
-
-
     </Border>
 </Window>
