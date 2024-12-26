@@ -21,7 +21,8 @@ namespace ChessLogic.GameStates.GameState
         public List<Piece> CapturedBlackPiece { get; set; }
         public Stack<int> noCapture { get; set; }
 
-        private string stateString;
+        private Stack<string> stateString { get; set; }
+
         private readonly Dictionary<string, int> stateHistory;
         public GameState(Player player, Board board, int timeLimit)
         {
@@ -32,8 +33,9 @@ namespace ChessLogic.GameStates.GameState
             this.CapturedRedPiece = new List<Piece>();
             this.noCapture = new Stack<int>();
             this.stateHistory = new Dictionary<string, int>();
-            stateString = new StateString(player, board).ToString();
-            this.stateHistory[stateString] = 1;
+            stateString = new Stack<string>();
+            stateString.Push(new StateString(player, board).ToString());
+            this.stateHistory[stateString.Peek()] = 1;
             timeRemainingBlack = timeLimit;
             timeRemainingRed = timeLimit;
         }
@@ -148,21 +150,28 @@ namespace ChessLogic.GameStates.GameState
 
         private void UpdateStateString()
         {
-            stateString = new StateString(CurrentPlayer, Board).ToString();
+            string currentStateString = new StateString(CurrentPlayer, Board).ToString();
+            stateString.Push(currentStateString);
 
-            if (!stateHistory.ContainsKey(stateString))
+            if (!stateHistory.ContainsKey(currentStateString))
             {
-                stateHistory[stateString] = 1;
+                stateHistory[currentStateString] = 1;
             }
             else
             {
-                stateHistory[stateString]++;
+                stateHistory[currentStateString]++;
             }
         }
-       
+
+        protected void UndoStateString()
+        {
+            string currentStateString = stateString.Pop();
+            stateHistory[currentStateString]--;
+        }
+
         private bool ThreefoldRepetition()
         {
-            return stateHistory[stateString] == 3;
+            return stateHistory[stateString.Peek()] == 3;
         }
         public void TimeForfeit()
         {

@@ -27,6 +27,7 @@ namespace ChessLogic.GameStates.GameState
             if (Moved.Count <= 1 || CurrentPlayer == Player.Black) return;
             for (int i = 0; i < 2; i++)
             {
+                UndoStateString();
                 var undo = Moved.Pop();
                 Move undoMove = new NormalMove(undo.Item1.ToPos, undo.Item1.FromPos);
                 undoMove.Execute(Board);
