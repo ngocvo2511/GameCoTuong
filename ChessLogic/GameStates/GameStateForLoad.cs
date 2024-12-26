@@ -17,6 +17,7 @@ namespace ChessLogic.GameStates
         public int timeRemainingRed {  get; set; }
         public int timeRemainingBlack { get; set; }
         public Dictionary<string, int> stateHistory = new Dictionary<string, int>();
+        public Stack<string> stateString = new Stack<string>();
         public List<Piece> CapturedRedPiece {  get; set; }
         public List<Piece> CapturedBlackPiece { get; set; }
     }

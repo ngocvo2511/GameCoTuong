@@ -38,6 +38,7 @@ namespace ChessLogic
             gameStateForSave.Moved = new List<string>();
             gameStateForSave.CapturedRedPiece = new List<string>();
             gameStateForSave.CapturedBlackPiece = new List<string>();
+            gameStateForSave.stateString = gameState.stateString.ToList();
             List<Tuple<Move, Piece>> currentMoved = gameState.Moved.ToList();
             currentMoved.Reverse();
             for (int i = 0; i < 10; i++)
@@ -141,6 +142,9 @@ namespace ChessLogic
             List<int> loadNoCapture = gameStateForSave.noCapture;
             loadNoCapture.Reverse();
             gameStateForLoad.noCapture = new Stack<int>(loadNoCapture);
+            List<string> strings = gameStateForSave.stateString;
+            strings.Reverse();
+            gameStateForLoad.stateString = new Stack<string>(strings);
             gameStateForLoad.depth = gameStateForSave.depth ?? 0;
             gameStateForLoad.GameType = gameStateForSave.GameType;
             gameStateForLoad.timeRemainingBlack = gameStateForSave.timeRemainingBlack;

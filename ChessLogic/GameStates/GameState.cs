@@ -21,7 +21,7 @@ namespace ChessLogic.GameStates.GameState
         public List<Piece> CapturedBlackPiece { get; set; }
         public Stack<int> noCapture { get; set; }
 
-        private Stack<string> stateString { get; set; }
+        public Stack<string> stateString { get; set; }
 
         private readonly Dictionary<string, int> stateHistory;
         public GameState(Player player, Board board, int timeLimit)
@@ -40,12 +40,13 @@ namespace ChessLogic.GameStates.GameState
             timeRemainingRed = timeLimit;
         }
         public GameState(Player player,Board board,int redTime,int blackTime,Stack<Tuple<Move, Piece>> Moved,Dictionary<string,int> stateHistory
-            ,List<Piece> CapturedRedPiece,List<Piece> CapturedBlackPiece,Stack<int> noCapture)
+            ,List<Piece> CapturedRedPiece,List<Piece> CapturedBlackPiece,Stack<int> noCapture,Stack<string> stateString)
         {
             CurrentPlayer = player;
             Board = board;
             this.Moved = Moved;
             this.stateHistory = stateHistory;
+            this.stateString = stateString;
             this.CapturedBlackPiece = CapturedBlackPiece;
             this.CapturedRedPiece = CapturedRedPiece;
             timeRemainingBlack = blackTime;

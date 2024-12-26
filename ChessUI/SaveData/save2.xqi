@@ -2,7 +2,7 @@
   "GameType": "GameState2P",
   "Board": [
     "bCh",
-    "rC",
+    "bH",
     "bE",
     "bA",
     "bG",
@@ -65,7 +65,7 @@
     "n",
     "rS",
     "n",
-    "n",
+    "rC",
     "n",
     "n",
     "n",
@@ -92,26 +92,19 @@
     "rH",
     "rCh"
   ],
-  "CurrentPlayer": "Black",
-  "noCapture": [
-    0
-  ],
+  "CurrentPlayer": "Red",
+  "noCapture": [],
   "depth": null,
-  "Moved": [
-    "7",
-    "1",
-    "0",
-    "1",
-    "bH"
-  ],
+  "Moved": [],
   "stateHistory": [
-    "cNeagaehc/9/1n5n1/s1s1s1s1s/9/9/S1S1S1S1S/7N1/9/CHEAGAEHC b",
+    "cheagaehc/9/1n5n1/s1s1s1s1s/9/9/S1S1S1S1S/1N5N1/9/CHEAGAEHC r",
     "1"
   ],
-  "timeRemainingRed": 599,
+  "stateString": [
+    "cheagaehc/9/1n5n1/s1s1s1s1s/9/9/S1S1S1S1S/1N5N1/9/CHEAGAEHC r"
+  ],
+  "timeRemainingRed": 598,
   "timeRemainingBlack": 600,
   "CapturedRedPiece": [],
-  "CapturedBlackPiece": [
-    "bH"
-  ]
+  "CapturedBlackPiece": []
 }

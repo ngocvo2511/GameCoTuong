@@ -10,7 +10,8 @@ namespace ChessLogic.GameStates.GameState
     {
         public GameState2P(Player player, Board board, int timeLimit = 0) : base(player, board, timeLimit) { }
         public GameState2P(GameStateForLoad gameStateForLoad) : base(gameStateForLoad.CurrentPlayer, gameStateForLoad.Board, gameStateForLoad.timeRemainingRed, gameStateForLoad.timeRemainingBlack,
-            gameStateForLoad.Moved, gameStateForLoad.stateHistory, gameStateForLoad.CapturedRedPiece, gameStateForLoad.CapturedBlackPiece, gameStateForLoad.noCapture)
+            gameStateForLoad.Moved, gameStateForLoad.stateHistory, gameStateForLoad.CapturedRedPiece, 
+            gameStateForLoad.CapturedBlackPiece, gameStateForLoad.noCapture,gameStateForLoad.stateString)
         { }
         public override void UndoMove()
         {
