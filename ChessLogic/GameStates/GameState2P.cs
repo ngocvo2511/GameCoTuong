@@ -6,14 +6,16 @@ using System.Threading.Tasks;
 
 namespace ChessLogic.GameStates.GameState
 {
-    public class GameState2P:GameState
+    public class GameState2P : GameState
     {
-        public GameState2P(Player player, Board board,int timeLimit=0) : base(player, board,timeLimit) { }
-        public GameState2P(GameStateForLoad gameStateForLoad): base(gameStateForLoad.CurrentPlayer, gameStateForLoad.Board, gameStateForLoad.timeRemainingRed, gameStateForLoad.timeRemainingBlack,
-            gameStateForLoad.Moved, gameStateForLoad.stateHistory, gameStateForLoad.CapturedRedPiece, gameStateForLoad.CapturedBlackPiece,gameStateForLoad.noCapture) { }
+        public GameState2P(Player player, Board board, int timeLimit = 0) : base(player, board, timeLimit) { }
+        public GameState2P(GameStateForLoad gameStateForLoad) : base(gameStateForLoad.CurrentPlayer, gameStateForLoad.Board, gameStateForLoad.timeRemainingRed, gameStateForLoad.timeRemainingBlack,
+            gameStateForLoad.Moved, gameStateForLoad.stateHistory, gameStateForLoad.CapturedRedPiece, gameStateForLoad.CapturedBlackPiece, gameStateForLoad.noCapture)
+        { }
         public override void UndoMove()
         {
             if (!Moved.Any()) return;
+            UndoStateString();
             var undo = Moved.Pop();
             Move undoMove = new NormalMove(undo.Item1.ToPos, undo.Item1.FromPos);
             undoMove.Execute(Board);

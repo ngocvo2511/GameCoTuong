@@ -181,16 +181,7 @@ namespace ChessUI
             settingsMenu.TimeLimitTextBox.IsEnabled = !onGame;
 
             settingsMenu.CloseButtonClicked += CloseButtonClicked;
-            settingsMenu.humanFirstChecked += SettingsMenu_humanFirstChecked;
-            settingsMenu.botFirstChecked += SettingsMenu_botFirstChecked;
-            settingsMenu.VolumeSliderValueChanged += SettingsMenu_VolumeSliderValueChanged;
-            settingsMenu.isTimeLimitChecked += SettingsMenu_isTimeLimitChecked;
-            settingsMenu.isTimeLimitUnchecked += SettingsMenu_isTimeLimitUnchecked;
             settingsMenu.SettingsChanged += SettingsMenu_SettingsChanged;
-
-
-
-
         }
 
         private void CreateHistoryMenu()
@@ -240,7 +231,7 @@ namespace ChessUI
             onGame = true;
             if (gameUserControl != null) gameUserControl.ResetTimer();
             color = settingsModel.HumanFirst ? Player.Red : Player.Black;
-            gameUserControl = new GameUserControl(color, settingsModel.TimeLimit * 60, true, difficulty);
+            gameUserControl = new GameUserControl(color, settingsModel.IsTimeLimit ? settingsModel.TimeLimit * 60 : 0, true, difficulty);
             gameUserControl.PauseButtonClicked += PauseButtonClicked;
             gameUserControl.SaveButtonClicked += SaveButtonClicked;
             gameUserControl.GameOver += OnGameOver;
@@ -254,7 +245,7 @@ namespace ChessUI
             onGame = true;
             if (gameUserControl != null) gameUserControl.ResetTimer();
             color = settingsModel.HumanFirst ? Player.Red : Player.Black;
-            gameUserControl = new GameUserControl(color, settingsModel.TimeLimit * 60, false);
+            gameUserControl = new GameUserControl(color, settingsModel.IsTimeLimit ? settingsModel.TimeLimit * 60 : 0, false);
             gameUserControl.PauseButtonClicked += PauseButtonClicked;
             gameUserControl.SaveButtonClicked += SaveButtonClicked;
             gameUserControl.GameOver += OnGameOver;
@@ -470,31 +461,8 @@ namespace ChessUI
             Sound.SetVolume((int)updatedSettings.Volume);
             settingsModel = updatedSettings;
 
-            // Nếu cần, bạn cũng có thể lưu trạng thái hoặc cập nhật UI khác
-        }
-        private void SettingsMenu_VolumeSliderValueChanged(object sender, RoutedEventArgs e)
-        {
-            //settingsModel.Volume =
-            //Sound.SetVolume((int)settingsMenu.VolumeSlider.Value);
-
         }
 
-        private void SettingsMenu_isTimeLimitChecked(object sender, RoutedEventArgs e)
-        {
-            Sound.PlayButtonClickSound();
-            //this.time = Convert.ToInt16(settingsMenu.TimeLimitTextBox.Text);
-        }
-
-        private void SettingsMenu_isTimeLimitUnchecked(object sender, RoutedEventArgs e)
-        {
-            Sound.PlayButtonClickSound();
-            this.time = 0;
-        }
-        private void SettingsMenu_TimeLimitTextBoxChanged(object sender, RoutedEventArgs e)
-        {
-            //if (string.IsNullOrEmpty(settingsMenu.TimeLimitTextBox.Text)) this.time = 0;
-            //else this.time = Convert.ToInt16(settingsMenu.TimeLimitTextBox.Text) * 60;
-        }
         private void SaveButtonClicked(object sender, RoutedEventArgs e)
         {
             if (time != 0) gameUserControl.StopTimer();
