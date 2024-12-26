@@ -541,24 +541,7 @@ namespace ChessUI
         {
             Sound.PlayButtonClickSound();
             CloseAMenu();
-            gameUserControl.isReview = true;
-            Board newBoard = Board.Initial();
-            Player startPlayer;
-            if (newBoard[gameUserControl.moveList.Peek().Item1.FromPos].Color == Player.Black) startPlayer= Player.Black;
-            else startPlayer= Player.Red;
-            gameUserControl.HidePrevMove(gameUserControl.gameState.Moved.Peek().Item1);
-            gameUserControl.gameState = new GameState2P(startPlayer,Board.Initial());
-            gameUserControl.TurnTextBlock.Text = (startPlayer == Player.Black) ? "Đen" : "Đỏ";
-            gameUserControl.BlackCapturedGrid.Children.Clear();
-            gameUserControl.RedCapturedGrid.Children.Clear();
-            gameUserControl.redClock.Text = null;
-            gameUserControl.blackClock.Text = null;
-            gameUserControl.WarningTextBlock.Text = null;
-            gameUserControl.ResetTimer();
-            gameUserControl.DrawBoard(gameUserControl.gameState.Board);
-            gameUserControl.SaveButton.IsEnabled = false;
-            gameUserControl.CellGrid.IsHitTestVisible = false;
-            gameUserControl.DoButton.Visibility = Visibility.Visible;
+            gameUserControl.Review();
         }
         private void CloseAMenu()
         {
