@@ -178,7 +178,7 @@ namespace ChessUI
             settingsMenu.humanFirst.IsEnabled = !onGame;
             settingsMenu.botFirst.IsEnabled = !onGame;
             settingsMenu.isTimeLimit.IsEnabled = !onGame;
-            settingsMenu.TimeLimitTextBox.IsEnabled = !onGame;
+            settingsMenu.TimeLimitTextBox.IsEnabled = !onGame && settingsModel.IsTimeLimit;
 
             settingsMenu.CloseButtonClicked += CloseButtonClicked;
             settingsMenu.SettingsChanged += SettingsMenu_SettingsChanged;
