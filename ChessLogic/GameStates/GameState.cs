@@ -89,6 +89,7 @@ namespace ChessLogic.GameStates.GameState
             if (capture)
             {
                 noCapture.Push(0);
+                stateString.Push("Clear");
                 stateHistory.Clear();
             }
             else
@@ -168,6 +169,26 @@ namespace ChessLogic.GameStates.GameState
         {
             string currentStateString = stateString.Pop();
             stateHistory[currentStateString]--;
+
+            if (stateString.Count > 0 && stateString.Peek() == "Clear")
+            {
+                stateString.Pop();
+                foreach(string state in stateString)
+                {
+                    if(state == "Clear")
+                    {
+                        break;
+                    }
+                    if (!stateHistory.ContainsKey(state))
+                    {
+                        stateHistory[state] = 1;
+                    }
+                    else
+                    {
+                        stateHistory[state]++;
+                    }
+                }
+            }
         }
 
         private bool ThreefoldRepetition()
