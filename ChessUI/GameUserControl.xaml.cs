@@ -655,9 +655,9 @@ namespace ChessUI
                     ShowPrevMove(gameState.Moved.First().Item1);
                 }
                 gameState.CapturedPiece=move.Item2;
-                moveList.Push(move);
-                UndoCapturedGrid(gameState.CapturedPiece);                
+                moveList.Push(move);                
                 gameState.CurrentPlayer = gameState.CurrentPlayer.Opponent();
+                UndoCapturedGrid(gameState.CapturedPiece);
                 TurnTextBlock.Text = gameState.CurrentPlayer == Player.Red ? "Đỏ" : "Đen";
                 WarningTextBlock.Text = gameState.Board.IsInCheck(gameState.CurrentPlayer) ? "Chiếu tướng!" : null;
                 gameState.noCapture.Pop();
