@@ -17,6 +17,7 @@
 	  <None Remove="Assets\Images\background.png" />
 	  <None Remove="Assets\Images\board.jpg" />
 	  <None Remove="Assets\Images\cungVaSong.jpg" />
+	  <None Remove="Assets\Images\gameBackground.png" />
 	  <None Remove="Assets\Images\icon.png" />
 	  <None Remove="Assets\Images\MaDo.png" />
 	  <None Remove="Assets\Images\MaXanh.png" />
@@ -85,6 +86,10 @@
 	  <Content Include="Assets\Sounds\moveSound.mp3">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\Images\gameBackground.png" />
   </ItemGroup>
 
   <ItemGroup>

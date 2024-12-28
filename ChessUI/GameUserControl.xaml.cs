@@ -1,14 +1,12 @@
-﻿using ChessLogic.GameStates.GameState;
-using ChessLogic;
+﻿using ChessLogic;
+using ChessLogic.GameStates;
+using ChessLogic.GameStates.GameState;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-using ChessLogic.GameStates;
-using Microsoft.AspNetCore.Connections.Features;
-using System.Text.RegularExpressions;
 
 namespace ChessUI
 {
@@ -708,9 +706,21 @@ namespace ChessUI
             TurnTextBlock.Text = gameState.CurrentPlayer == Player.Red ? "Đỏ" : "Đen";
         }
 
+        public static readonly RoutedEvent CloseAppButtonClickedEvent = EventManager.RegisterRoutedEvent(
+            "CloseAppButtonClicked",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(GameUserControl)
+        );
+        public event RoutedEventHandler CloseAppButtonClicked
+        {
+            add { AddHandler(CloseAppButtonClickedEvent, value); }
+            remove { RemoveHandler(CloseAppButtonClickedEvent, value); }
+        }
+
         private void CloseAppButton_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            RaiseEvent(new RoutedEventArgs(CloseAppButtonClickedEvent));
         }
 
         private void MinimizeAppButton_Click(object sender, RoutedEventArgs e)

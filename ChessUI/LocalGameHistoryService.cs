@@ -19,11 +19,11 @@ namespace ChessUI
         public static void SaveGameHistory(GameOverMenu gameOverMenu, GameState gameState)
         {
             // Đọc dữ liệu cũ
-            List<GameHistory> history = new List<GameHistory>();
+            Stack<GameHistory> history = new Stack<GameHistory>();
             if (File.Exists(filePath))
             {
                 string jsonData = File.ReadAllText(filePath);
-                history = JsonConvert.DeserializeObject<List<GameHistory>>(jsonData) ?? new List<GameHistory>();
+                history = JsonConvert.DeserializeObject<Stack<GameHistory>>(jsonData) ?? new Stack<GameHistory>();
             }
             string gameMode = "Chế độ chơi: ";
             if (gameState is GameStateAI AI)
@@ -43,7 +43,7 @@ namespace ChessUI
             }
             else gameMode += "2 người chơi";
             // Thêm lịch sử mới
-            history.Add(new GameHistory
+            history.Push(new GameHistory
             {
                 WinnerImagePath = gameState.CurrentPlayer == ChessLogic.Player.Red ? "/Assets/Images/TuongXanh.png" : "/Assets/Images/TuongDo.png",
                 PlayTime = DateTime.Now,

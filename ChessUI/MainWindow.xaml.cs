@@ -4,8 +4,6 @@ using ChessLogic.GameStates.GameState;
 using ChessUI.Menus;
 using System.ComponentModel;
 using System.Windows;
-using System.Windows.Input;
-using System.Windows.Media;
 
 namespace ChessUI
 {
@@ -128,8 +126,8 @@ namespace ChessUI
             mainMenu.InstructionsButtonClicked += MainMenu_InstructionsButtonClicked;
             mainMenu.SettingsButtonClicked += SettingsButtonClicked;
             mainMenu.HistoryButtonClicked += MainMenu_HistoryButtonClicked;
-            mainMenu.LoadButtonClicked += LoadButton_Clicked;
-
+            mainMenu.LoadButtonClicked += MainMenu_LoadButton_Clicked;
+            mainMenu.CloseAppButtonClicked += CloseAppButtonClicked;
 
             mainWindowGrid.Children.Clear();
             mainWindowGrid.Children.Add(mainMenu);
@@ -190,7 +188,6 @@ namespace ChessUI
 
             historyMenu.CloseButtonClicked += CloseButtonClicked;
 
-
             historyMenu.LoadHistory();
             mainWindowGrid.Children.Add(historyMenu);
         }
@@ -211,19 +208,16 @@ namespace ChessUI
             mainWindowGrid.Children.Add(pauseMenu);
         }
 
-        private void CreateConfirmMenu()
+        private void CreateConfirmMenu(bool wantToCloseApp = false)
         {
-
             ConfirmMenu confirmMenu = new ConfirmMenu();
 
-            confirmMenu.YesButtonClicked += ConfirmMenu_YesButtonClicked;
+            if (wantToCloseApp) confirmMenu.YesButtonClicked += CloseApp;
+            else confirmMenu.YesButtonClicked += ConfirmMenu_YesButtonClicked;
             confirmMenu.NoButtonClicked += CloseButtonClicked;
-
 
             mainWindowGrid.Children.Add(confirmMenu);
         }
-
-
 
         private void CreateViewGameAI(int difficulty)
         {
@@ -235,6 +229,7 @@ namespace ChessUI
             gameUserControl.PauseButtonClicked += PauseButtonClicked;
             gameUserControl.SaveButtonClicked += SaveButtonClicked;
             gameUserControl.GameOver += OnGameOver;
+            gameUserControl.CloseAppButtonClicked += CloseAppButtonClicked;
 
             mainWindowGrid.Children.Clear();
             mainWindowGrid.Children.Add(gameUserControl);
@@ -249,6 +244,7 @@ namespace ChessUI
             gameUserControl.PauseButtonClicked += PauseButtonClicked;
             gameUserControl.SaveButtonClicked += SaveButtonClicked;
             gameUserControl.GameOver += OnGameOver;
+            gameUserControl.CloseAppButtonClicked += CloseAppButtonClicked;
 
             mainWindowGrid.Children.Clear();
             mainWindowGrid.Children.Add(gameUserControl);
@@ -261,6 +257,7 @@ namespace ChessUI
             gameUserControl.PauseButtonClicked += PauseButtonClicked;
             gameUserControl.SaveButtonClicked += SaveButtonClicked;
             gameUserControl.GameOver += OnGameOver;
+            gameUserControl.CloseAppButtonClicked += CloseAppButtonClicked;
 
             mainWindowGrid.Children.Clear();
             mainWindowGrid.Children.Add(gameUserControl);
@@ -385,7 +382,7 @@ namespace ChessUI
             CreateHistoryMenu();
         }
 
-        private void LoadButton_Clicked(object sender, RoutedEventArgs e)
+        private void MainMenu_LoadButton_Clicked(object sender, RoutedEventArgs e)
         {
             Sound.PlayButtonClickSound();
             CreateLoadMenu();
@@ -500,6 +497,11 @@ namespace ChessUI
             CreateMainMenu();
         }
 
+        private void CloseApp(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
         private void GameOverMenu_HomeButtonClicked(object sender, RoutedEventArgs e)
         {
             Sound.PlayButtonClickSound();
@@ -558,6 +560,12 @@ namespace ChessUI
             {
                 await gameOnline.LeaveRoomAsync();
             }
+        }
+
+        private void CloseAppButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Sound.PlayButtonClickSound();
+            CreateConfirmMenu(true);
         }
 
     }

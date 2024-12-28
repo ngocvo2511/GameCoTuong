@@ -9,7 +9,7 @@
              d:DesignHeight="720" d:DesignWidth="1200">
     <Border BorderBrush="Transparent"
             BorderThickness="0"
-            CornerRadius="20">
+            CornerRadius="10">
         <Border.Background>
             <ImageBrush ImageSource="/Assets/Images/background.png"/>
         </Border.Background>
