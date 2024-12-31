@@ -65,8 +65,36 @@
                             <LineBreak/>
                             <Run FontWeight="Bold">7. Tốt:</Run> Đi một ô mỗi lượt. Khi chưa qua sông, Tốt chỉ được đi thẳng
                             tiến. Khi đã vượt qua sông có thể đi ngang hoặc dọc.
-                            <LineBreak/>
-                            <LineBreak/>
+                        </TextBlock>
+
+                        <Image Source="/Assets/Images/quanCo.png" 
+                               Margin="10" 
+                               Height="200" 
+                               HorizontalAlignment="Center"/>
+
+
+                        <TextBlock TextWrapping="Wrap" FontSize="18" LineHeight="25" Margin="50,20,30,0" 
+                                   Style="{StaticResource TextStyle2}" HorizontalAlignment="Left">
+                            Sắp xếp ban đầu của các quân cờ:
+                        </TextBlock>
+                        
+                        <Image Source="/Assets/Images/sapxepquanco.png" 
+                               Margin="10" 
+                               Height="500" 
+                               HorizontalAlignment="Center"/>
+
+                        <TextBlock TextWrapping="Wrap" FontSize="18" LineHeight="25" Margin="50,20,30,0"
+                                   Style="{StaticResource TextStyle2}" HorizontalAlignment="Left">
+                            Vị trí sông và cung:
+                        </TextBlock>
+
+                        <Image Source="/Assets/Images/cungVaSong.jpg" 
+                               Margin="10" 
+                               Height="550" 
+                               HorizontalAlignment="Center"/>
+                        
+                        <TextBlock TextWrapping="Wrap" FontSize="18" LineHeight="25" Margin="50,20,30,10"
+                                   Style="{StaticResource TextStyle2}" HorizontalAlignment="Left">
                             Các quy tắc:
                             <LineBreak/>
                             <LineBreak/>
@@ -83,40 +111,31 @@
                             <LineBreak/>
                             <LineBreak/>
                             <Run FontWeight="Bold">Chiếu bí:</Run> Nếu đối phương không thể bảo vệ Tướng khi bị chiếu thì 
-                            được xem là bị chiếu bí.            
+                            được xem là bị chiếu bí. 
                             <LineBreak/>
                             <LineBreak/>
                             <Run FontWeight="Bold">Hết nước đi:</Run> Nếu một bên tới lượt đi nhưng không có nước hợp lệ để đi,
-                            bên đó sẽ bị thua.        
+                            bên đó sẽ bị xử thua.
                             <LineBreak/>
                             <LineBreak/>
-                            Các quân cờ:
+                            <Run FontWeight="Bold">Hết thời gian:</Run> Mặc định, mỗi bên sẽ có 10 phút để chơi (có thể tuỳ
+                            chỉnh trong phần cài đặt), khi đến lượt người chơi nào thì thời gian còn lại của bên đó sẽ đếm 
+                            ngược, khi 1 bên hết thời gian thì bên đó sẽ bị xử thua. 
+                            <LineBreak/>
+                            <LineBreak/>
+                            Các trường hợp ván chơi hoà:
+                            <LineBreak/>
+                            <LineBreak/>
+                            <Run FontWeight="Bold">Luật 50 nước:</Run> Trong vòng 50 nước liên tục không có quân nào bị ăn
+                            <LineBreak/>
+                            <LineBreak/>
+                            <Run FontWeight="Bold">Lặp lại nước đi 3 lần:</Run> Khi 2 bên lặp lại nước đi cũ 3 lần liên tiếp
+                            <LineBreak/>
+                            <LineBreak/>
+                            <Run FontWeight="Bold">Thiếu quân:</Run> Khi xét thấy cả 2 bên không còn đủ quân để giành chiến thắng
                         </TextBlock>
 
-                        <Image Source="/Assets/Images/quanCo.png" 
-                               Margin="10" 
-                               Height="200" 
-                               HorizontalAlignment="Center"/>
 
-                        <TextBlock TextWrapping="Wrap" FontSize="18" LineHeight="25" Margin="50,20,30,0" 
-                                   Style="{StaticResource TextStyle2}" HorizontalAlignment="Left">
-                            Sắp xếp ban đầu của các quân cờ:
-                        </TextBlock>
-
-                        <Image Source="/Assets/Images/sapxepquanco.png" 
-                               Margin="10" 
-                               Height="500" 
-                               HorizontalAlignment="Center"/>
-
-                        <TextBlock TextWrapping="Wrap" FontSize="18" LineHeight="25" Margin="50,20,30,0"
-                                   Style="{StaticResource TextStyle2}" HorizontalAlignment="Left">
-                            Vị trí sông và cung:
-                        </TextBlock>
-
-                        <Image Source="/Assets/Images/cungVaSong.jpg" 
-                               Margin="10" 
-                               Height="550" 
-                               HorizontalAlignment="Center"/>
                     </StackPanel>
                 </ScrollViewer>
             </Grid>

@@ -8,56 +8,51 @@
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="1200">
     <Grid>
-        <Border Width="500"
-            Height="450"
-            Style="{StaticResource BorderStyle1}">
+        <Border Width="500" Height="450"
+                Style="{StaticResource BorderStyle1}">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Grid Width="250" Height="60" Margin="0,0,0,20">
                     <TextBox x:Name="RoomNameTextBox"
-                         Tag="Enter Room Name"
-                         FontSize="20" 
-                         VerticalContentAlignment="Center"
-                         HorizontalContentAlignment="Center"
-                         GotFocus="RemovePlaceholderText" LostFocus="ShowPlaceholderText"/>
+                             Tag="Enter Room Name"
+                             FontSize="20" 
+                             VerticalContentAlignment="Center"
+                             HorizontalContentAlignment="Center"
+                             GotFocus="RemovePlaceholderText" LostFocus="ShowPlaceholderText"/>
                     <TextBlock x:Name="PlaceholderTextBlock" 
-                        Text="Nhập tên phòng" Foreground="Gray"
-                         FontSize="20"
-                        IsHitTestVisible="False" 
-                        VerticalAlignment="Center" Margin="10"/>
+                               Text="Nhập tên phòng" Foreground="Gray"
+                               FontSize="20"
+                               IsHitTestVisible="False" 
+                               VerticalAlignment="Center" Margin="10"/>
                 </Grid>
                 <Grid Width="250" Height="60" Margin="0,0,0,20">
                     <TextBox x:Name="UsernameTextBox"
-                         Tag="Enter Username"
-                         FontSize="20" 
-                         VerticalContentAlignment="Center"
-                         HorizontalContentAlignment="Center"
-                         GotFocus="RemovePlaceholderText1" LostFocus="ShowPlaceholderText1"/>
+                             Tag="Enter Username"
+                             FontSize="20" 
+                             VerticalContentAlignment="Center"
+                             HorizontalContentAlignment="Center"
+                             GotFocus="RemovePlaceholderText1" LostFocus="ShowPlaceholderText1"/>
                     <TextBlock x:Name="PlaceholderTextBlock1"
                                Text="Tên của bạn" Foreground="Gray"
-                                 FontSize="20"
-                                 IsHitTestVisible="False"
-                                    VerticalAlignment="Center" Margin="10,0,10,0"/>
+                               FontSize="20"
+                               IsHitTestVisible="False"
+                               VerticalAlignment="Center" Margin="10,0,10,0"/>
                     
                 </Grid>
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
-                    <TextBlock Text = "Thời gian: "
-               FontSize="20"
-               Margin="0,0,20,0" 
-               VerticalAlignment="Center"/>
+                    <TextBlock Text = "Thời gian: " FontSize="20"
+                               Margin="0,0,20,0" VerticalAlignment="Center"/>
                     <TextBox x:Name="TimeLimitTextBox" Width="66"
-             FontSize="20"
-             Text="10"
-             TextAlignment="Right"
-             TextChanged="TimeLimitTextBox_TextChanged" LostFocus="TimeLimitTextBox_LostFocus"/>
-                    <TextBlock Text = "phút"
-               FontSize="20"
-               Margin="20,0,0,0" 
-               VerticalAlignment="Center"/>
+                             FontSize="20" Text="10"
+                             TextAlignment="Right"
+                             TextChanged="TimeLimitTextBox_TextChanged" LostFocus="TimeLimitTextBox_LostFocus"/>
+                    <TextBlock Text = "phút" FontSize="20"
+                               Margin="20,0,0,0" 
+                               VerticalAlignment="Center"/>
                 </StackPanel>
 
                 <Button x:Name="CreateRoomButton" 
-                    Style="{StaticResource ButtonStyle1}"
-                    Margin="0,0,0,20" Click="CreateRoomButton_Click">
+                        Style="{StaticResource ButtonStyle1}"
+                        Margin="0,0,0,20" Click="CreateRoomButton_Click">
                     <StackPanel Orientation="Horizontal">
                         <iconPacks:PackIconMaterial Kind="Plus" Width="30" Height="30" Margin="0,0,20,0"/>
                         <TextBlock Text="Tạo phòng" VerticalAlignment="Center"/>
@@ -65,17 +60,17 @@
                 </Button>
 
                 <Button x:Name="BackButton"
-                    Style="{StaticResource ButtonStyle2}"
-                    Click="BackButton_Click"
-                    Width="70" Height="70">
+                        Style="{StaticResource ButtonStyle2}"
+                        Click="BackButton_Click"
+                        Width="70" Height="70">
                     <iconPacks:PackIconMaterial Kind="ArrowLeft" Height="50" Width="50"/>
                 </Button>
             </StackPanel>
         </Border>
         <Border x:Name="NotificationPanel" Background="LightCoral" CornerRadius="10" 
-             Opacity="0" 
-            HorizontalAlignment="Center" VerticalAlignment="Top" 
-            Margin="0,144,0,0" Padding="10">
+                Opacity="0" 
+                HorizontalAlignment="Center" VerticalAlignment="Top" 
+                Margin="0,144,0,0" Padding="10">
             <TextBlock Text="Invalid action! Please try again." Foreground="White" FontSize="16"/>
         </Border>
     </Grid>

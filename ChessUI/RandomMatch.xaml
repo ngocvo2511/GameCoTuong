@@ -3,72 +3,65 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:ChessUI"
+             xmlns:local="clr-namespace:ChessUI.Menus"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="1200">
     <Grid>
-        <Border Width="500"
-         Height="450"
-         Style="{StaticResource BorderStyle1}">
+        <Border Width="500" Height="450"
+                Style="{StaticResource BorderStyle1}">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Grid Width="250" Height="60" Margin="0,0,0,20">
-                    <TextBox x:Name="UsernameTextBox"
-                      Tag="Enter Username"
-                      FontSize="20" 
-                      VerticalContentAlignment="Center"
-                      HorizontalContentAlignment="Center"
-                      GotFocus="RemovePlaceholderText1" LostFocus="ShowPlaceholderText1"/>
-                    <TextBlock x:Name="PlaceholderTextBlock1"
-                            Text="Tên của bạn" Foreground="Gray"
-                              FontSize="20"
-                              IsHitTestVisible="False"
-                                 VerticalAlignment="Center" Margin="10,0,10,0"/>
+                    <TextBox x:Name="UsernameTextBox" FontSize="20" 
+                             Tag="Enter Username"
+                             VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
+                             GotFocus="RemovePlaceholderText1" LostFocus="ShowPlaceholderText1"/>
+                    <TextBlock x:Name="PlaceholderTextBlock1" FontSize="20" 
+                               Text="Tên của bạn" Foreground="Gray"
+                               IsHitTestVisible="False"
+                               VerticalAlignment="Center" Margin="10,0,10,0"/>
 
                 </Grid>
                 
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
-                    <TextBlock Text = "Thời gian: "
-            FontSize="20"
-            Margin="0,0,20,0" 
-            VerticalAlignment="Center"/>
+                    <TextBlock Text = "Thời gian: " FontSize="20"
+                               Style="{StaticResource TextStyle2}"
+                               Margin="0,0,20,0" VerticalAlignment="Center"/>
                     <ComboBox x:Name="TimeComboBox" Width="60" Height="30" VerticalAlignment="Top" Margin="10">
                         <ComboBoxItem Content="5" Tag="300"/>
                         <ComboBoxItem Content="10" Tag="600"/>
                         <ComboBoxItem Content="15" Tag="900"/>
                         <ComboBoxItem Content="20" Tag="1200"/>
                     </ComboBox>
-                    <TextBlock Text = "phút"
-FontSize="20"
-Margin="20,0,0,0" 
-VerticalAlignment="Center"/>
+                    <TextBlock Text = "phút" FontSize="20"
+                               Style="{StaticResource TextStyle2}"
+                               Margin="20,0,0,0" VerticalAlignment="Center"/>
 
                 </StackPanel>
 
                 <Button x:Name="FindMatchButton" 
-                 Style="{StaticResource ButtonStyle1}"
-                 Margin="0,0,0,20" Click="FindMatchButton_Click">
+                        Style="{StaticResource ButtonStyle1}"
+                        Margin="0,0,0,20" Click="FindMatchButton_Click">
                     <StackPanel Orientation="Horizontal">
-                        <iconPacks:PackIconMaterial Kind="Plus" Width="30" Height="30" Margin="0,0,20,0"/>
+                        <iconPacks:PackIconMaterial Kind="Magnify" Width="30" Height="30" Margin="0,0,20,0"/>
                         <TextBlock Text="Tìm trận" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
 
                 <Button x:Name="BackButton"
-                 Style="{StaticResource ButtonStyle2}"
-                 Click="BackButton_Click"
-                 Width="70" Height="70">
+                        Style="{StaticResource ButtonStyle2}"
+                        Click="BackButton_Click"
+                        Width="70" Height="70">
                     <iconPacks:PackIconMaterial Kind="ArrowLeft" Height="50" Width="50"/>
                 </Button>
             </StackPanel>
         </Border>
         <Border x:Name="NotificationPanel" Background="LightCoral" CornerRadius="10" 
-          Opacity="0" 
-         HorizontalAlignment="Center" VerticalAlignment="Top" 
-         Margin="0,144,0,0" Padding="10">
+                Opacity="0" 
+                HorizontalAlignment="Center" VerticalAlignment="Top" 
+                Margin="0,144,0,0" Padding="10">
             <TextBlock Text="Invalid action! Please try again." Foreground="White" FontSize="16"/>
         </Border>
-        <TextBlock x:Name="SearchingTextBlock" Text="Searching for a match..." Visibility="Collapsed" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="24" Foreground="Red"/>
-
+        <local:SearchingMatchMenu x:Name="searchingMatchMenu" Visibility="Collapsed"/>
     </Grid>
 </UserControl>
