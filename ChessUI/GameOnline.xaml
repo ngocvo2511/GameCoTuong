@@ -184,7 +184,13 @@
                     <iconPacks:PackIconMaterial Kind="Close" Width="20" Height="20" />
                 </Button>
             </StackPanel>
-            <Button x:Name="StartButton" Content="Bắt đầu" Click="StartButton_Click" Grid.Column="1" Margin="83,200,227,25" Grid.Row="2" Grid.RowSpan="2" Visibility="Collapsed" />
+            <Popup x:Name="CountdownPopup" Placement="Center" IsOpen="False">
+                <Border Background="White" BorderBrush="Black" BorderThickness="2" CornerRadius="10" Padding="20">
+                    <StackPanel>
+                        <TextBlock x:Name="CountdownText" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+            </Popup>
         </Grid>
 
     </Border>

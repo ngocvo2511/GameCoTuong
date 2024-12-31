@@ -70,6 +70,7 @@ namespace ChessUI.Menus
                 EndReason.FiftyMoveRule => "Hòa vì 50 nước không ăn quân",
                 EndReason.ThreefoldRepetition => "Hòa vì lặp lại nước đi 3 lần",
                 EndReason.TimeForfeit => $"{PlayerString(currentPlayer)} hết thời gian",
+                EndReason.PlayerDisconnected => $"{PlayerString(currentPlayer)} đã thoát",
                 _ => ""
             };
         }

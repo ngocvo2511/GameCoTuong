@@ -17,8 +17,8 @@ namespace ChessLogic
         Resignation,
         TimeForfeit,
         Abandoned,
-        Disconnected,
         IllegalMove,
+        PlayerDisconnected,
         Unknown
     }
 }

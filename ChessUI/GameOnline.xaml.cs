@@ -58,7 +58,6 @@ namespace ChessUI
             redInfo.Text = username;
             blackInfo.Text = opponentUsername;
             TurnTextBlock.Text = gameState.CurrentPlayer == Player.Red ? "Đỏ" : "Đen";
-            StartButton.Visibility = (color == Player.Red && opponentUsername != "") ? Visibility.Visible : Visibility.Collapsed;
 
         }
         private async void ConnectHub()
@@ -69,9 +68,9 @@ namespace ChessUI
             connection.Remove("MoveTo");
             connection.Remove("PlayerJoined");
             connection.Remove("PlayerLeft");
-            connection.Remove("Error");
             connection.Remove("GameStarted");
             connection.Remove("CreateGameOver");
+            connection.Remove("Countdown");
 
 
 
@@ -103,18 +102,28 @@ namespace ChessUI
 
             connection.On<string, string>("PlayerJoined", (creatorUsername, joinerUsername) =>
             {
-                Dispatcher.Invoke(() =>
+                Dispatcher.Invoke(async () =>
                 {
                     opponentUsername = joinerUsername;
                     ShowGameInformation();
+                    await connection.SendAsync("StartGame", roomName);
                 });
             });
 
-            connection.On<string, string, int>("GameStarted", (player1, player2, gameTime) =>
+            connection.On<int>("Countdown", (count) =>
             {
                 Dispatcher.Invoke(() =>
                 {
-                    time = gameTime;
+                    CountdownText.Text = "Trận đấu sẽ bắt đầu sau: " + count.ToString();
+                    CountdownPopup.IsOpen = true;
+                });
+            });
+
+            connection.On<int>("GameStarted", (gameTime) =>
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    CountdownPopup.IsOpen = false;
                     StartGame();
                 });
             });
@@ -130,56 +139,32 @@ namespace ChessUI
 
             connection.On<string>("PlayerLeft", (connectionId) =>
             {
-                Dispatcher.Invoke(() =>
+                Dispatcher.Invoke(async () =>
                 {
-                    if (gameState.IsGameOver())
+                    if (!start)
                     {
-
-                    }
-                    else if (!start)
-                    {
-
+                        opponentUsername = "";
                     }
                     else
                     {
-
+                        gameState.Result = Result.Win(color, EndReason.PlayerDisconnected);
+                        await connection.SendAsync("GameOver", roomName, gameState.Result, gameState.CurrentPlayer);
                     }
                 });
             });
 
-            connection.On<string>("Error", (message) =>
-            {
-                Dispatcher.Invoke(() =>
-                {
-                    MessageBox.Show(message);
-                });
-            });
 
             await connectionManager.StartConnectionAsync();
 
         }
 
-        private async void StartButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (connection != null && connection.State == HubConnectionState.Connected)
-            {
-                await connection.SendAsync("StartGame", roomName);
-
-            }
-            else
-            {
-                MessageBox.Show("Not connected to the server.");
-            }
-        }
 
         private void StartGame()
         {
-            StartButton.Visibility = Visibility.Collapsed;
             start = true;
             ResetGameState();
             InitializeTimer();
             SwitchTurn();
-
         }
 
         private void ResetGameState()
@@ -728,13 +713,9 @@ namespace ChessUI
 
         private async void LeaveRoomButton_Click(object sender, RoutedEventArgs e)
         {
-            if (connection != null && connection.State == HubConnectionState.Connected)
+            if (connection != null && connection.State == HubConnectionState.Connected && start)
             {
                 await connection.InvokeAsync("LeaveRoom", roomName);
-            }
-            else
-            {
-                MessageBox.Show("Not connected to the server.");
             }
             RaiseEvent(new RoutedEventArgs(LeaveRoomButtonClickedEvent));
 
@@ -752,13 +733,9 @@ namespace ChessUI
 
         private async void CloseAppButton_Click(object sender, RoutedEventArgs e)
         {
-            if (connection != null && connection.State == HubConnectionState.Connected)
+            if (connection != null && connection.State == HubConnectionState.Connected && start)
             {
                 await connection.InvokeAsync("LeaveRoom", roomName);
-            }
-            else
-            {
-                MessageBox.Show("Not connected to the server.");
             }
             Application.Current.Shutdown();
         }

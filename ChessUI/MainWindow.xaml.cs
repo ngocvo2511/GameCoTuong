@@ -292,7 +292,29 @@ namespace ChessUI
 
         private void RoomControl_RandomMatchButtonClicked(object sender, RoutedEventArgs e)
         {
+            Sound.PlayButtonClickSound();
+            CreateRandomMatchControl();
+        }
 
+        private void CreateRandomMatchControl()
+        {
+            RandomMatch randomMatch = new RandomMatch();
+            randomMatch.BackButtonClicked += CloseButtonClicked;
+
+            mainWindowGrid.Children.Add(randomMatch);
+        }
+
+        public void NavigateToGameOnline(string roomName, Player color, int time, string username, string opponentUsername)
+        {
+            onGame = true;
+            if (gameOnline != null) gameOnline.ResetTimer();
+            gameOnline = new GameOnline(roomName, color, time, username, opponentUsername);
+            gameOnline.SettingButtonClicked += GameOnline_SettingsButtonClicked;
+            gameOnline.LeaveRoomButtonClicked += GameOnline_LeaveRoomButtonClicked;
+            gameOnline.GameOver += GameOnline_CreateGameOver;
+
+            mainWindowGrid.Children.Clear();
+            mainWindowGrid.Children.Add(gameOnline);
         }
 
         private void RoomControl_JoinRoomButtonClicked(object sender, RoutedEventArgs e)

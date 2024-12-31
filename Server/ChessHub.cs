@@ -9,18 +9,75 @@ namespace Server
     {
         private static readonly Dictionary<string, List<string>> Rooms = new Dictionary<string, List<string>>();
         public static List<ClientDetail> participants = new List<ClientDetail>();
-        public static Player currentPlayer = Player.Red;
+        public static Dictionary<string, Player> currentPlayer = new Dictionary<string, Player>();
+        private static readonly Dictionary<int, List<string>> waitingList = new Dictionary<int, List<string>>();
 
-        private void ResetGameState()
+        private void ResetGameState(string roomName)
         {
-            currentPlayer = Player.Red;
+            if (currentPlayer.ContainsKey(roomName))
+            {
+                currentPlayer[roomName] = Player.Red;
+            }
+            else
+            {
+                currentPlayer.Add(roomName, Player.Red);
+            }
         }
+
+        public async Task JoinRandomMatch(string username, int time)
+        {
+            if (waitingList.ContainsKey(time) && waitingList[time].Count > 0)
+            {
+                var opponentId = waitingList[time][0];
+                waitingList[time].RemoveAt(0);
+
+
+
+                var opponent = participants.First(p => p.Id == opponentId);
+                string roomName = opponent.RoomName;
+                Rooms[roomName].Add(Context.ConnectionId);
+                participants.Add(new ClientDetail
+                {
+                    Id = Context.ConnectionId,
+                    RoomName = roomName,
+                    Username = username,
+                    Color = Player.Black,
+                    Time = time
+                });
+
+                await Groups.AddToGroupAsync(Context.ConnectionId, roomName);
+                await Groups.AddToGroupAsync(opponentId, roomName);
+
+                await Clients.Client(opponentId).SendAsync("RandomMatchFound", roomName, opponent.Username, username, Player.Red, time);
+                await Clients.Caller.SendAsync("RandomMatchFound", roomName, username, opponent.Username, Player.Black, time);
+                await StartGame(roomName);
+            }
+            else
+            {
+                if (!waitingList.ContainsKey(time))
+                {
+                    waitingList[time] = new List<string>();
+                }
+                waitingList[time].Add(Context.ConnectionId);
+                var roomName = Guid.NewGuid().ToString();
+                Rooms[roomName] = new List<string> { Context.ConnectionId };
+                participants.Add(new ClientDetail
+                {
+                    Id = Context.ConnectionId,
+                    RoomName = roomName,
+                    Username = username,
+                    Color = Player.Red,
+                    Time = time
+                });
+            }
+        }
+
         public async Task CreateRoom(string roomName, string username, int time)
         {
             if (!Rooms.ContainsKey(roomName))
             {
                 var checkAny = participants.Count(p => p.Id == Context.ConnectionId);
-                if(checkAny > 0)
+                if (checkAny > 0)
                 {
                     return;
                 }
@@ -41,7 +98,7 @@ namespace Server
             }
             else
             {
-                await Clients.Caller.SendAsync("Error", "Room already exists.");
+                await Clients.Caller.SendAsync("Error", "Tên phòng đã tồn tại.");
             }
         }
 
@@ -56,10 +113,10 @@ namespace Server
                 }
                 if (Rooms[roomName].Count >= 2)
                 {
-                    await Clients.Caller.SendAsync("Error", "Room is full.");
+                    await Clients.Caller.SendAsync("Error", "Phòng đã đầy.");
                     return;
                 }
-                
+
 
                 Rooms[roomName].Add(Context.ConnectionId);
                 var roomCreator = participants.Where(p => p.RoomName == roomName).FirstOrDefault();
@@ -78,7 +135,7 @@ namespace Server
             }
             else
             {
-                await Clients.Caller.SendAsync("Error", "Room does not exist.");
+                await Clients.Caller.SendAsync("Error", "Phòng không tồn tại.");
             }
         }
 
@@ -89,18 +146,19 @@ namespace Server
                 var roomParticipants = participants.Where(p => p.RoomName == roomName).ToList();
                 if (roomParticipants.Count == 2)
                 {
-                    ResetGameState();
-                    await Clients.Group(roomName).SendAsync("GameStarted", roomParticipants[0].Username, roomParticipants[1].Username, roomParticipants[0].Time);
+                    ResetGameState(roomName);
+                    await Task.Delay(1000);
+                    for (int i = 5; i > 0; i--)
+                    {
+
+                        await Clients.Group(roomName).SendAsync("Countdown", i);
+                        await Task.Delay(1000);
+                    }
+                    await Clients.Group(roomName).SendAsync("GameStarted", roomParticipants[0].Time);
                 }
-                else
-                {
-                    await Clients.Caller.SendAsync("Error", "Not enough players to start the game.");
-                }
+
             }
-            else
-            {
-                await Clients.Caller.SendAsync("Error", "Room does not exist.");
-            }
+
         }
 
         public async Task LeaveRoom(string roomName)
@@ -113,22 +171,20 @@ namespace Server
                 Rooms[roomName].Remove(Context.ConnectionId);
                 await Clients.OthersInGroup(roomName).SendAsync("PlayerLeft", Context.ConnectionId);
                 await Groups.RemoveFromGroupAsync(Context.ConnectionId, roomName);
-                participants.RemoveAll(p => p.Id == Context.ConnectionId);
 
                 if (Rooms[roomName].Count == 0)
                 {
                     Rooms.Remove(roomName);
                 }
             }
-            else
-            {
-                await Clients.Caller.SendAsync("Error", "Room does not exist.");
-            }
+
         }
 
         public async Task GameOver(string roomName, Result result, Player current)
         {
-            await Clients.OthersInGroup(roomName).SendAsync("CreateGameOver", result, current);
+            await Clients.Caller.SendAsync("CreateGameOver", result, current);
+            Rooms.Remove(roomName);
+            participants.RemoveAll(p => p.RoomName == roomName);
         }
 
 
@@ -137,16 +193,15 @@ namespace Server
             // cần đủ 2 người chơi
             var item = participants.Where(p => p.Id == Context.ConnectionId).FirstOrDefault();
             var roomCount = participants.Count(p => p.RoomName == item.RoomName);
-            if(roomCount < 2)
+            if (roomCount < 2)
             {
                 return;
             }
 
-            if(currentPlayer == item.Color)
+            if (currentPlayer[item.RoomName] == item.Color)
             {
                 await Clients.Group(item.RoomName).SendAsync("MoveTo", a, b, c, d);
-                currentPlayer = item.Color == Player.Red ? Player.Black : Player.Red;
-
+                currentPlayer[item.RoomName] = item.Color == Player.Red ? Player.Black : Player.Red;
             }
 
 
@@ -202,7 +257,7 @@ namespace Server
         Resignation,
         TimeForfeit,
         Abandoned,
-        Disconnected,
+        PlayerDisconnected,
         IllegalMove,
         Unknown
     }

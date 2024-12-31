@@ -12,7 +12,7 @@ namespace ChessLogic.GameStates.GameState
         public Stack<Tuple<Move, Piece>> Moved { get; set; }
         public Player CurrentPlayer { get; set; }
 
-        public Result Result { get; protected set; } = null;
+        public Result Result { get; set; } = null;
 
         public Piece CapturedPiece { get; set; }
         public int timeRemainingRed { get; set; }
