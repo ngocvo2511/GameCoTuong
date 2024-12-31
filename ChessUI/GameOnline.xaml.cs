@@ -148,7 +148,7 @@ namespace ChessUI
                     else
                     {
                         gameState.Result = Result.Win(color, EndReason.PlayerDisconnected);
-                        await connection.SendAsync("GameOver", roomName, gameState.Result, gameState.CurrentPlayer);
+                        await connection.SendAsync("GameOver", roomName, gameState.Result, color == Player.Red ? Player.Black : Player.Red);
                     }
                 });
             });
