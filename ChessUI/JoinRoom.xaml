@@ -16,6 +16,7 @@
                     <TextBox x:Name="RoomNameTextBox"
                              Tag="Enter Room Name"
                              FontSize="20" 
+                             FontFamily="{StaticResource TextFont}"
                              VerticalContentAlignment="Center"
                              HorizontalContentAlignment="Center"
                              GotFocus="RemovePlaceholderText" LostFocus="ShowPlaceholderText"/>
@@ -29,6 +30,7 @@
                     <TextBox x:Name="UsernameTextBox"
                              Tag="Enter Username"
                              FontSize="20" 
+                             FontFamily="{StaticResource TextFont}"
                              VerticalContentAlignment="Center"
                              HorizontalContentAlignment="Center"
                              GotFocus="RemovePlaceholderText1" LostFocus="ShowPlaceholderText1"/>

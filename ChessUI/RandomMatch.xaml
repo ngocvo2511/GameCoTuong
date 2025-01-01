@@ -13,6 +13,7 @@
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Grid Width="250" Height="60" Margin="0,0,0,20">
                     <TextBox x:Name="UsernameTextBox" FontSize="20" 
+                             FontFamily="{StaticResource TextFont}"
                              Tag="Enter Username"
                              VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
                              GotFocus="RemovePlaceholderText1" LostFocus="ShowPlaceholderText1"/>
@@ -26,8 +27,10 @@
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
                     <TextBlock Text = "Thời gian: " FontSize="20"
                                Style="{StaticResource TextStyle2}"
-                               Margin="0,0,20,0" VerticalAlignment="Center"/>
-                    <ComboBox x:Name="TimeComboBox" Width="60" Height="30" VerticalAlignment="Top" Margin="10">
+                               Margin="0,0,20,0"/>
+                    <ComboBox x:Name="TimeComboBox" Width="60" Height="30" SelectedIndex="1"
+                              VerticalAlignment="Top" Margin="10"
+                              FontSize="16" FontFamily="{StaticResource TextFont}" Padding="12,4,0,0">
                         <ComboBoxItem Content="5" Tag="300"/>
                         <ComboBoxItem Content="10" Tag="600"/>
                         <ComboBoxItem Content="15" Tag="900"/>

@@ -378,6 +378,7 @@ namespace ChessUI
         }
         private void GameOnline_LeaveRoomButtonClicked(object sender, RoutedEventArgs e)
         {
+            Sound.PlayButtonClickSound();
             CreateMainMenu();
         }
 
@@ -417,6 +418,7 @@ namespace ChessUI
         }
         private void SelectedLoadSlot_Clicked(object sender, SaveSlotEventArgs e)
         {
+            Sound.PlayButtonClickSound();
             GameStateForLoad gameStateForLoad = SaveService.Load(e.FilePath);
             CreateViewGameLoad(gameStateForLoad);
         }

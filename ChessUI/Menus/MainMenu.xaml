@@ -88,6 +88,7 @@
                                        Style="{StaticResource TextStyle1}"/>
                         </Button.ToolTip>
                         <ToolTipService.HorizontalOffset>-45</ToolTipService.HorizontalOffset>
+                        <ToolTipService.InitialShowDelay>0</ToolTipService.InitialShowDelay>
                     </Button>
 
                     <Button x:Name="SettingsButton"
@@ -102,6 +103,7 @@
                                        Style="{StaticResource TextStyle1}"/>
                         </Button.ToolTip>
                         <ToolTipService.HorizontalOffset>-10</ToolTipService.HorizontalOffset>
+                        <ToolTipService.InitialShowDelay>0</ToolTipService.InitialShowDelay>
                     </Button>
 
                     <Button x:Name="PlayButton"
@@ -116,6 +118,7 @@
                                        Style="{StaticResource TextStyle1}"/>
                         </Button.ToolTip>
                         <ToolTipService.HorizontalOffset>20</ToolTipService.HorizontalOffset>
+                        <ToolTipService.InitialShowDelay>0</ToolTipService.InitialShowDelay>
                     </Button>
 
                     <Button x:Name="HistoryButton"
@@ -130,6 +133,7 @@
                                        Style="{StaticResource TextStyle1}"/>
                         </Button.ToolTip>
                         <ToolTipService.HorizontalOffset>-30</ToolTipService.HorizontalOffset>
+                        <ToolTipService.InitialShowDelay>0</ToolTipService.InitialShowDelay>
                     </Button>
 
                     <Button x:Name="DownloadButton" 
@@ -144,6 +148,7 @@
                                        Style="{StaticResource TextStyle1}"/>
                         </Button.ToolTip>
                         <ToolTipService.HorizontalOffset>10</ToolTipService.HorizontalOffset>
+                        <ToolTipService.InitialShowDelay>0</ToolTipService.InitialShowDelay>
                     </Button>
 
                 </StackPanel>

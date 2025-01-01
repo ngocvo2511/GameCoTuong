@@ -1,11 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace ChessUI
 {
@@ -18,7 +12,7 @@ namespace ChessUI
         private SignalRConnectionManager()
         {
             Connection = new HubConnectionBuilder()
-                .WithUrl("https://localhost:7013/chessHub")
+                .WithUrl("https://localhost:7182/chessHub")
                 .Build();
         }
 

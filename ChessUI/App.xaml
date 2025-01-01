@@ -4,10 +4,11 @@
              xmlns:local="clr-namespace:ChessUI"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <SolidColorBrush x:Key="StrokeColor1">#5b7b57</SolidColorBrush>
         <SolidColorBrush x:Key="FillColor">#ffffff</SolidColorBrush>
         <SolidColorBrush x:Key="TextColor">#a93737</SolidColorBrush>
-        <SolidColorBrush x:Key="ButtonColor">#a93737</SolidColorBrush>
+
+        <FontFamily x:Key="TitleFont">Assets/Fonts/#Bungee</FontFamily>
+        <FontFamily x:Key="TextFont">Assets/Fonts/#Noto Serif</FontFamily>
 
         <Style TargetType="Border" x:Key="BorderStyle1">
             <Setter Property="Opacity" Value="1"/>
@@ -20,13 +21,13 @@
         <Style TargetType="Border" x:Key="BorderStyle2">
             <Setter Property="Opacity" Value="0.8"/>
             <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="CornerRadius" Value="25"/>
             <Setter Property="BorderBrush" Value="Transparent"/>
             <Setter Property="Background" Value="{StaticResource FillColor}"/>
-            <Setter Property="CornerRadius" Value="25"/>            
         </Style>
 
         <Style TargetType="TextBlock" x:Key="TextStyle1">
-            <Setter Property="FontFamily" Value="Assets/Fonts/#Bungee"/>
+            <Setter Property="FontFamily" Value="{StaticResource TitleFont}"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
@@ -34,7 +35,7 @@
 
 
         <Style TargetType="TextBlock" x:Key="TextStyle2">
-            <Setter Property="FontFamily" Value="Assets/Fonts/#Noto Serif"/>
+            <Setter Property="FontFamily" Value="{StaticResource TextFont}"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Foreground" Value="Black"/>
@@ -43,7 +44,7 @@
         <Style TargetType="Button" x:Key="ButtonStyle1">
             <Setter Property="Width" Value="250"/>
             <Setter Property="Height" Value="60"/>
-            <Setter Property="FontFamily" Value="Assets/Fonts/#Noto Serif"/>
+            <Setter Property="FontFamily" Value="{StaticResource TextFont}"/>
             <Setter Property="FontSize" Value="20"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="BorderBrush" Value="Black"/>
@@ -61,8 +62,8 @@
             <Setter Property="Height" Value="70"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="BorderBrush" Value="Black"/>
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="Foreground" Value="{StaticResource ButtonColor}"/>
+            <Setter Property="Background" Value="{StaticResource FillColor}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
             <Style.Resources>
                 <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="100"/>
