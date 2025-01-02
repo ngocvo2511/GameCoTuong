@@ -311,6 +311,7 @@ namespace ChessUI
             gameOnline = new GameOnline(roomName, color, time, username, opponentUsername);
             gameOnline.SettingButtonClicked += GameOnline_SettingsButtonClicked;
             gameOnline.LeaveRoomButtonClicked += GameOnline_LeaveRoomButtonClicked;
+            gameOnline.CloseAppButtonClicked += GameOnline_CloseAppButtonClicked;
             gameOnline.GameOver += GameOnline_CreateGameOver;
 
             mainWindowGrid.Children.Clear();
@@ -353,10 +354,11 @@ namespace ChessUI
                     return;
                 }
                 onGame = true;
-                if(gameOnline != null) gameOnline.ResetTimer();
+                if (gameOnline != null) gameOnline.ResetTimer();
                 gameOnline = new GameOnline(roomName, color, time, username, opponentUsername);
                 gameOnline.SettingButtonClicked += GameOnline_SettingsButtonClicked;
                 gameOnline.LeaveRoomButtonClicked += GameOnline_LeaveRoomButtonClicked;
+                gameOnline.CloseAppButtonClicked += GameOnline_CloseAppButtonClicked;
                 gameOnline.GameOver += GameOnline_CreateGameOver;
 
                 mainWindowGrid.Children.Clear();
@@ -367,7 +369,7 @@ namespace ChessUI
         private void GameOnline_SettingsButtonClicked(object sender, RoutedEventArgs e)
         {
             Sound.PlayButtonClickSound();
-            if (mainWindowGrid.Children[mainWindowGrid.Children.Count - 1] is GameOnline gameOnline )
+            if (mainWindowGrid.Children[mainWindowGrid.Children.Count - 1] is GameOnline gameOnline)
             {
                 CreateSettingsMenu();
             }
@@ -378,7 +380,37 @@ namespace ChessUI
         }
         private void GameOnline_LeaveRoomButtonClicked(object sender, RoutedEventArgs e)
         {
+            GameOnline_CreateConfirmMenu();
+        }
+
+        private void GameOnline_CreateConfirmMenu(bool close = false)
+        {
             Sound.PlayButtonClickSound();
+            ConfirmMenu confirmMenu = new ConfirmMenu();
+            if (close) confirmMenu.YesButtonClicked += GameOnline_Close;
+            else
+                confirmMenu.YesButtonClicked += GameOnline_ConfirmMenu_YesButtonClicked;
+            confirmMenu.NoButtonClicked += CloseButtonClicked;
+
+            mainWindowGrid.Children.Add(confirmMenu);
+        }
+
+        private async void GameOnline_Close(object sender, RoutedEventArgs e)
+        {
+            if (gameOnline != null)
+            {
+                await gameOnline.LeaveRoomAsync();
+            }
+            Application.Current.Shutdown();
+        }
+
+        private async void GameOnline_ConfirmMenu_YesButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Sound.PlayButtonClickSound();
+            if (gameOnline != null)
+            {
+                await gameOnline.LeaveRoomAsync();
+            }
             CreateMainMenu();
         }
 
@@ -590,6 +622,12 @@ namespace ChessUI
         {
             Sound.PlayButtonClickSound();
             CreateConfirmMenu(true);
+        }
+
+        private void GameOnline_CloseAppButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Sound.PlayButtonClickSound();
+            GameOnline_CreateConfirmMenu(true);
         }
 
     }

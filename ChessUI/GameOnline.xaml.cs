@@ -711,12 +711,12 @@ namespace ChessUI
             typeof(GameOnline)
         );
 
-        private async void LeaveRoomButton_Click(object sender, RoutedEventArgs e)
+        private void LeaveRoomButton_Click(object sender, RoutedEventArgs e)
         {
-            if (connection != null && connection.State == HubConnectionState.Connected && start)
-            {
-                await connection.InvokeAsync("LeaveRoom", roomName);
-            }
+            //if (connection != null && connection.State == HubConnectionState.Connected && start)
+            //{
+            //    await connection.InvokeAsync("LeaveRoom", roomName);
+            //}
             RaiseEvent(new RoutedEventArgs(LeaveRoomButtonClickedEvent));
 
         }
@@ -731,13 +731,26 @@ namespace ChessUI
             }
         }
 
-        private async void CloseAppButton_Click(object sender, RoutedEventArgs e)
+
+        public static readonly RoutedEvent CloseAppButtonClickedEvent = EventManager.RegisterRoutedEvent(
+            "CloseAppButtonClicked",
+            RoutingStrategy.Bubble,
+            typeof(RoutedEventHandler),
+            typeof(GameOnline)
+        );
+        public event RoutedEventHandler CloseAppButtonClicked
         {
-            if (connection != null && connection.State == HubConnectionState.Connected && start)
-            {
-                await connection.InvokeAsync("LeaveRoom", roomName);
-            }
-            Application.Current.Shutdown();
+            add { AddHandler(CloseAppButtonClickedEvent, value); }
+            remove { RemoveHandler(CloseAppButtonClickedEvent, value); }
+        }
+
+        private void CloseAppButton_Click(object sender, RoutedEventArgs e)
+        {
+            //if (connection != null && connection.State == HubConnectionState.Connected && start)
+            //{
+            //    await connection.InvokeAsync("LeaveRoom", roomName);
+            //}
+            RaiseEvent(new RoutedEventArgs(CloseAppButtonClickedEvent));
         }
 
         private void MinimizeAppButton_Click(object sender, RoutedEventArgs e)
