@@ -116,6 +116,7 @@ namespace ChessUI
             {
                 Dispatcher.Invoke(() =>
                 {
+                    UnableClick();
                     CountdownText.Text = "Trận đấu sẽ bắt đầu sau: " + count.ToString();
                     CountdownPopup.IsOpen = true;
                 });
@@ -126,6 +127,7 @@ namespace ChessUI
                 Dispatcher.Invoke(() =>
                 {
                     CountdownPopup.IsOpen = false;
+                    AbleClick();
                     StartGame();
                 });
             });
@@ -150,6 +152,7 @@ namespace ChessUI
                     else
                     {
                         gameState.Result = Result.Win(color, EndReason.PlayerDisconnected);
+                        moveList = new Stack<Tuple<Move, Piece>>(gameState.Moved.ToArray());
                         await connection.SendAsync("GameOver", roomName, gameState.Result, color == Player.Red ? Player.Black : Player.Red);
                     }
                 });
@@ -802,8 +805,8 @@ namespace ChessUI
 
         public void Review()
         {
-
-            HidePrevMove(gameState.Moved.Peek().Item1);
+            if(gameState.Moved.Count != 0)
+                HidePrevMove(gameState.Moved.Peek().Item1);
             gameState = new GameState2P(Player.Red, Board.InitialForOnline(color));
             TurnTextBlock.Text = "Đỏ";
             BlackCapturedGrid.Children.Clear();
@@ -892,13 +895,17 @@ namespace ChessUI
         private void AbleClick()
         {
             CellGrid.IsHitTestVisible = true;
-            UndoButton.IsEnabled = true;
+            LeaveButton.IsEnabled = true;
+            SettingButton.IsEnabled = true;
+            CloseAppButton.IsEnabled = true;
         }
 
         private void UnableClick()
         {
             CellGrid.IsHitTestVisible = false;
-            UndoButton.IsEnabled = false;
+            LeaveButton.IsEnabled = false;
+            SettingButton.IsEnabled = false;
+            CloseAppButton.IsEnabled = false;
         }
     }
 }

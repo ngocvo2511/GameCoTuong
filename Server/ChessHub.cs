@@ -72,6 +72,21 @@ namespace Server
             }
         }
 
+        public void CancelFindMatch()
+        {
+            var item = participants.Where(p => p.Id == Context.ConnectionId).FirstOrDefault();
+            if (item != null)
+            {
+                var time = item.Time;
+                if (waitingList.ContainsKey(time))
+                {
+                    waitingList[time].Remove(Context.ConnectionId);
+                }
+                participants.Remove(item);
+                Rooms.Remove(item.RoomName);
+            }
+        }
+
         public async Task CreateRoom(string roomName, string username, int time)
         {
             if (!Rooms.ContainsKey(roomName))

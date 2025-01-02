@@ -138,6 +138,11 @@ namespace ChessUI
             }
 
             searchingMatchMenu.Visibility = Visibility.Visible;
+            searchingMatchMenu.BackButtonClicked += async (s, e) =>
+            {
+                searchingMatchMenu.Visibility = Visibility.Collapsed;
+                await _connection.SendAsync("CancelFindMatch");
+            };
 
             if (_connection != null && _connection.State == HubConnectionState.Connected)
             {
