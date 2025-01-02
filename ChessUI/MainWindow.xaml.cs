@@ -603,11 +603,19 @@ namespace ChessUI
                 gameOverMenu = new GameOverMenu(result, current);
                 gameOverMenu.NewButtonClicked += NewButtonClicked;
                 gameOverMenu.HomeButtonClicked += GameOverMenu_HomeButtonClicked;
-                gameOverMenu.ReviewButtonClicked += GameOverMenu_ReviewButtonClicked;
+                gameOverMenu.ReviewButtonClicked += GameOnline_GameOverMenu_ReviewButtonClicked;
 
                 mainWindowGrid.Children.Add(gameOverMenu);
 
             }
+        }
+
+
+        private void GameOnline_GameOverMenu_ReviewButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Sound.PlayButtonClickSound();
+            CloseAMenu();
+            gameOnline.Review();
         }
 
         private async void MainWindow_Closing(object sender, CancelEventArgs e)
