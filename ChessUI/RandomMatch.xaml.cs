@@ -127,30 +127,25 @@ namespace ChessUI
 
         private async void FindMatchButton_Click(object sender, RoutedEventArgs e)
         {
+            Sound.PlayButtonClickSound();
             var username = UsernameTextBox.Text;
             int time = (TimeComboBox.SelectedIndex + 1) * 300;
 
 
-            if (string.IsNullOrEmpty(username))
-            {
-                ShowNotification("Please enter a username.");
-                return;
-            }
-
-            searchingMatchMenu.Visibility = Visibility.Visible;
-            searchingMatchMenu.BackButtonClicked += async (s, e) =>
-            {
-                searchingMatchMenu.Visibility = Visibility.Collapsed;
-                await _connection.SendAsync("CancelFindMatch");
-            };
 
             if (_connection != null && _connection.State == HubConnectionState.Connected)
             {
                 await _connection.SendAsync("JoinRandomMatch", username, time);
+                searchingMatchMenu.Visibility = Visibility.Visible;
+                searchingMatchMenu.BackButtonClicked += async (s, e) =>
+                {
+                    searchingMatchMenu.Visibility = Visibility.Collapsed;
+                    await _connection.SendAsync("CancelFindMatch");
+                };
             }
             else
             {
-                ShowNotification("Not connected to the server.");
+                ShowNotification("Không thể kết nối đến server, vui lòng kiểm tra kết nối mạng.");
             }
         }
     }
