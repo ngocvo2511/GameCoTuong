@@ -35,6 +35,7 @@ namespace Server
 
                 var opponent = participants.First(p => p.Id == opponentId);
                 string roomName = opponent.RoomName;
+                username = "Người chơi 2";
                 Rooms[roomName].Add(Context.ConnectionId);
                 participants.Add(new ClientDetail
                 {
@@ -60,6 +61,7 @@ namespace Server
                 }
                 waitingList[time].Add(Context.ConnectionId);
                 var roomName = Guid.NewGuid().ToString();
+                username = "Người chơi 1";
                 Rooms[roomName] = new List<string> { Context.ConnectionId };
                 participants.Add(new ClientDetail
                 {

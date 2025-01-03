@@ -48,19 +48,13 @@ namespace ChessUI
             ShowGameInformation();
             DrawBoard(gameState.Board);
             ConnectHub();
-            //settingsMenu.BackButtonClicked += BackButtonClicked;
-            //selectGameModeMenu.BackButtonClicked += BackButtonClicked;
         }
-        //private void BackButtonClicked(object sender, EventArgs e)
-        //{
-        //    pauseMenu.Visibility = Visibility.Visible;
-        //}
+
         private void ShowGameInformation()
         {
             redInfo.Text = username;
             blackInfo.Text = opponentUsername;
             TurnTextBlock.Text = gameState.CurrentPlayer == Player.Red ? "Đỏ" : "Đen";
-
         }
         private async void ConnectHub()
         {

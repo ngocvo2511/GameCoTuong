@@ -12,7 +12,7 @@ namespace ChessUI
         private SignalRConnectionManager()
         {
             Connection = new HubConnectionBuilder()
-                .WithUrl("https://localhost:7013/chessHub")
+                .WithUrl("https://server20250103004954.azurewebsites.net/chessHub")
                 .Build();
         }
 
@@ -33,16 +33,27 @@ namespace ChessUI
 
         public async Task StartConnectionAsync()
         {
-            if(Connection.State == HubConnectionState.Connected)
+            if(Connection.State == HubConnectionState.Connected || Connection.State == HubConnectionState.Connecting)
             {
                 return;
             }
-            try
+
+            int retryCount = 0;
+            const int maxRetryAttempts = 3;
+            const int delayBetweenRetries = 2;
+
+            while (retryCount < maxRetryAttempts)
             {
-                await Connection.StartAsync();
-            }
-            catch (HttpRequestException ex)
-            {
+                try
+                {
+                    await Connection.StartAsync();
+                    return; 
+                }
+                catch (HttpRequestException ex)
+                {
+                    retryCount++;
+                    await Task.Delay(delayBetweenRetries);
+                }
             }
         }
     }
