@@ -33,6 +33,11 @@ namespace ChessLogic.GameStates.GameState
                 Move undoMove = new NormalMove(undo.Item1.ToPos, undo.Item1.FromPos);
                 undoMove.Execute(Board);
                 Board[undo.Item1.ToPos] = undo.Item2;
+                if (undo.Item2 != null)
+                {
+                    if (undo.Item2.Color == Player.Black) CapturedBlackPiece.RemoveAt(CapturedBlackPiece.Count - 1);
+                    else CapturedRedPiece.RemoveAt(CapturedRedPiece.Count - 1);
+                }
                 if (i == 0) AiCapturedPiece = undo.Item2;
                 else CapturedPiece = undo.Item2;
                 noCapture.Pop();

@@ -1,5 +1,5 @@
 {
-  "GameType": "GameState2P",
+  "GameType": "GameStateAI",
   "Board": [
     "bCh",
     "bH",
@@ -8,7 +8,7 @@
     "bG",
     "bA",
     "bE",
-    "bH",
+    "n",
     "bCh",
     "n",
     "n",
@@ -25,7 +25,7 @@
     "n",
     "n",
     "n",
-    "n",
+    "bH",
     "bC",
     "n",
     "bS",
@@ -65,10 +65,10 @@
     "n",
     "rS",
     "n",
+    "n",
+    "n",
+    "n",
     "rC",
-    "n",
-    "n",
-    "n",
     "n",
     "n",
     "rC",
@@ -93,17 +93,41 @@
     "rCh"
   ],
   "CurrentPlayer": "Red",
-  "noCapture": [],
-  "depth": null,
-  "Moved": [],
+  "noCapture": [
+    2,
+    1
+  ],
+  "depth": 2,
+  "Moved": [
+    "7",
+    "1",
+    "7",
+    "4",
+    "n",
+    "0",
+    "7",
+    "2",
+    "6",
+    "n"
+  ],
   "stateHistory": [
+    "cheagae1c/9/1n5n1/s1s1h1s1s/9/9/S1S1S1S1S/7N1/9/CHEAGAEHC r",
+    "0",
+    "cheagae1c/9/1n4hn1/s1s1N1s1s/9/9/S1S1S1S1S/7N1/9/CHEAGAEHC b",
+    "0",
+    "cheagae1c/9/1n4hn1/s1s1s1s1s/9/9/S1S1S1S1S/4N2N1/9/CHEAGAEHC r",
+    "1",
+    "cheagaehc/9/1n5n1/s1s1s1s1s/9/9/S1S1S1S1S/4N2N1/9/CHEAGAEHC b",
+    "1",
     "cheagaehc/9/1n5n1/s1s1s1s1s/9/9/S1S1S1S1S/1N5N1/9/CHEAGAEHC r",
     "1"
   ],
   "stateString": [
+    "cheagae1c/9/1n4hn1/s1s1s1s1s/9/9/S1S1S1S1S/4N2N1/9/CHEAGAEHC r",
+    "cheagaehc/9/1n5n1/s1s1s1s1s/9/9/S1S1S1S1S/4N2N1/9/CHEAGAEHC b",
     "cheagaehc/9/1n5n1/s1s1s1s1s/9/9/S1S1S1S1S/1N5N1/9/CHEAGAEHC r"
   ],
-  "timeRemainingRed": 598,
+  "timeRemainingRed": 593,
   "timeRemainingBlack": 600,
   "CapturedRedPiece": [],
   "CapturedBlackPiece": []
