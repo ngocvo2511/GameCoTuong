@@ -12,7 +12,7 @@ namespace ChessUI
         private SignalRConnectionManager()
         {
             Connection = new HubConnectionBuilder()
-                .WithUrl("https://server20250103004954.azurewebsites.net/chessHub")
+                .WithUrl("https://server20250109130908.azurewebsites.net/ChessHub")
                 .Build();
         }
 
