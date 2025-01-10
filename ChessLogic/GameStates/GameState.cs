@@ -2,6 +2,7 @@
 {
     public abstract class GameState
     {
+        #region properties
         public Board Board { get; }
         public Stack<Tuple<Move, Piece>> Moved { get; set; }
         public Player CurrentPlayer { get; set; }
@@ -18,6 +19,8 @@
         public Stack<string> stateString { get; set; }
 
         private readonly Dictionary<string, int> stateHistory;
+        #endregion
+        #region constructor
         public GameState(Player player, Board board, int timeLimit)
         {
             CurrentPlayer = player;
@@ -47,6 +50,8 @@
             timeRemainingRed = redTime;
             this.noCapture = noCapture;
         }
+        #endregion
+        #region methods
         public List<string> getStateHistory()
         {
             List<string> history = new List<string>();
@@ -193,5 +198,6 @@
         {
             Result = Result.Win(CurrentPlayer.Opponent(), EndReason.TimeForfeit);
         }
+        #endregion
     }
 }

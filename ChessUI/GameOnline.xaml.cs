@@ -15,6 +15,7 @@ namespace ChessUI
     /// </summary>
     public partial class GameOnline : UserControl
     {
+        #region properties
         private readonly Image[,] pieceImages = new Image[10, 9];
         private readonly Ellipse[,] highlights = new Ellipse[10, 9];
         private readonly Canvas[,] posMoved = new Canvas[10, 9];
@@ -33,7 +34,8 @@ namespace ChessUI
         private Brush redBrush = new SolidColorBrush(Colors.Red);
         private Brush blackBrush = new SolidColorBrush(Colors.Black);
         private Stack<Tuple<Move, Piece>> moveList;
-
+        #endregion
+        #region constructor
         public GameOnline(string roomName, Player color, int time, string username, string opponentUsername = "")
         {
             InitializeComponent();
@@ -48,7 +50,9 @@ namespace ChessUI
             DrawBoard(gameState.Board);
             ConnectHub();
         }
-
+        #endregion
+        #region method
+        #region inGame
         private void ShowGameInformation()
         {
             redInfo.Text = username;
@@ -158,7 +162,20 @@ namespace ChessUI
             InitializeTimer();
             SwitchTurn();
         }
+        private void SwitchTurn()
+        {
+            redTimer.Stop();
+            blackTimer.Stop();
 
+            if (gameState.CurrentPlayer == Player.Red)
+            {
+                redTimer.Start();
+            }
+            else
+            {
+                blackTimer.Start();
+            }
+        }
         private void ResetGameState()
         {
             gameState = new GameState2P(Player.Red, Board.InitialForOnline(color), time);
@@ -169,7 +186,130 @@ namespace ChessUI
             ResetTimer();
             InitializeTimer();
         }
+        private async void HandleMove(Move move)
+        {
 
+            await Dispatcher.InvokeAsync(() => MainGame.IsHitTestVisible = false);
+
+            if (gameState.Moved.Any())
+            {
+                await Dispatcher.InvokeAsync(() => HidePrevMove(gameState.Moved.First().Item1));
+            }
+
+            await Task.Run(() =>
+            {
+                gameState.MakeMove(move);
+            });
+
+            await Dispatcher.InvokeAsync(() =>
+            {
+                SwitchTurn();
+                Sound.PlayMoveSound();
+                DrawBoard(gameState.Board);
+                ShowPrevMove(move);
+                DrawCapturedGrid(gameState.CapturedPiece);
+                WarningTextBlock.Text = gameState.Board.IsInCheck(gameState.CurrentPlayer) ? "Chiếu tướng!" : null;
+                TurnTextBlock.Text = gameState.CurrentPlayer == Player.Red ? "Đỏ" : "Đen";
+            });
+
+
+            await Dispatcher.InvokeAsync(() => MainGame.IsHitTestVisible = true);
+
+            if (gameState.IsGameOver())
+            {
+                moveList = new Stack<Tuple<Move, Piece>>(gameState.Moved.ToArray());
+                HideHighlights();
+                CellGrid.IsEnabled = false;
+                if (redTimer != null) StopTimer();
+                await connection.SendAsync("GameOver", roomName, gameState.Result, gameState.CurrentPlayer);
+            }
+        }
+        private void UndoButton_Click(object sender, RoutedEventArgs e)
+        {
+            Sound.PlayButtonClickSound();
+            if (gameState.Moved.Count != 0) HidePrevMove(gameState.Moved.First().Item1);
+            OnToPositionSelected(selectedPos);
+            if (gameState.Moved.Count == 0) return;
+            var move = gameState.Moved.Pop();
+            Move doMove = new NormalMove(move.Item1.ToPos, move.Item1.FromPos);
+            doMove.Execute(gameState.Board);
+            gameState.Board[doMove.FromPos] = move.Item2;
+            DrawBoard(gameState.Board);
+            if (gameState.Moved.Count != 0)
+            {
+                ShowPrevMove(gameState.Moved.First().Item1);
+            }
+            gameState.CapturedPiece = move.Item2;
+            moveList.Push(move);
+            gameState.CurrentPlayer = gameState.CurrentPlayer.Opponent();
+            UndoCapturedGrid(gameState.CapturedPiece);
+            TurnTextBlock.Text = gameState.CurrentPlayer == Player.Red ? "Đỏ" : "Đen";
+            WarningTextBlock.Text = gameState.Board.IsInCheck(gameState.CurrentPlayer) ? "Chiếu tướng!" : null;
+            gameState.noCapture.Pop();
+        }
+
+        private void DoButton_Click(object sender, RoutedEventArgs e)
+        {
+            Sound.PlayButtonClickSound();
+            if (moveList.Count == 0) return;
+            if (gameState.Moved.Count != 0) HidePrevMove(gameState.Moved.First().Item1);
+            bool capture = moveList.Peek().Item1.Execute(gameState.Board);
+
+            if (capture)
+            {
+                gameState.noCapture.Push(0);
+            }
+            else
+            {
+                if (gameState.noCapture.Count == 0) gameState.noCapture.Push(1);
+                else gameState.noCapture.Push(gameState.noCapture.Peek() + 1);
+            }
+            gameState.Moved.Push(moveList.Pop());
+            DrawBoard(gameState.Board);
+            if (gameState.Moved.Count != 0)
+            {
+                ShowPrevMove(gameState.Moved.First().Item1);
+            }
+            DrawCapturedGrid(gameState.Moved.Peek().Item2);
+            gameState.CurrentPlayer = gameState.CurrentPlayer.Opponent();
+            WarningTextBlock.Text = gameState.Board.IsInCheck(gameState.CurrentPlayer) ? "Chiếu tướng!" : null;
+            TurnTextBlock.Text = gameState.CurrentPlayer == Player.Red ? "Đỏ" : "Đen";
+        }
+        public void Review()
+        {
+            if (gameState.Moved.Count != 0)
+                HidePrevMove(gameState.Moved.Peek().Item1);
+            gameState = new GameState2P(Player.Red, Board.InitialForOnline(color));
+            TurnTextBlock.Text = "Đỏ";
+            BlackCapturedGrid.Children.Clear();
+            RedCapturedGrid.Children.Clear();
+            bottomClock.Text = null;
+            topClock.Text = null;
+            WarningTextBlock.Text = null;
+            ResetTimer();
+            DrawBoard(gameState.Board);
+            AbleClick();
+            CellGrid.IsHitTestVisible = false;
+            DoButton.Visibility = Visibility.Visible;
+            UndoButton.Visibility = Visibility.Visible;
+        }
+        private void AbleClick()
+        {
+            CellGrid.IsHitTestVisible = true;
+            LeaveButton.IsEnabled = true;
+            SettingButton.IsEnabled = true;
+            CloseAppButton.IsEnabled = true;
+        }
+
+        private void UnableClick()
+        {
+            CellGrid.IsHitTestVisible = false;
+            LeaveButton.IsEnabled = false;
+            SettingButton.IsEnabled = false;
+            CloseAppButton.IsEnabled = false;
+        }
+        #endregion
+        #region timer
         private async Task RedTimer_TickAsync(object sender, EventArgs e)
         {
             gameState.timeRemainingRed--;
@@ -258,21 +398,6 @@ namespace ChessUI
                 }
             }
         }
-        private void SwitchTurn()
-        {
-            redTimer.Stop();
-            blackTimer.Stop();
-
-            if (gameState.CurrentPlayer == Player.Red)
-            {
-                redTimer.Start();
-            }
-            else
-            {
-                blackTimer.Start();
-            }
-        }
-
         private void InitializeTimer()
         {
             int minutes = gameState.timeRemainingRed / 60;
@@ -303,7 +428,17 @@ namespace ChessUI
                 blackTimer = null;
             }
         }
+        private void RedTimer_Tick(object sender, EventArgs e)
+        {
+            _ = RedTimer_TickAsync(sender, e);
+        }
 
+        private void BlackTimer_Tick(object sender, EventArgs e)
+        {
+            _ = BlackTimer_TickAsync(sender, e);
+        }
+        #endregion
+        #region board
         private void InitializeBoard()
         {
             for (int r = 0; r < 10; r++)
@@ -623,46 +758,24 @@ namespace ChessUI
             posMoved[move.FromPos.Row, move.FromPos.Column].Children.Clear();
             posMoved[move.ToPos.Row, move.ToPos.Column].Children.Clear();
         }
-        private async void HandleMove(Move move)
+        private void UndoCapturedGrid(Piece piece)
         {
-
-            await Dispatcher.InvokeAsync(() => MainGame.IsHitTestVisible = false);
-
-            if (gameState.Moved.Any())
+            if (piece == null) return;
+            if (gameState.CurrentPlayer == Player.Black)
             {
-                await Dispatcher.InvokeAsync(() => HidePrevMove(gameState.Moved.First().Item1));
+                int count = BlackCapturedGrid.Children.Count;
+                if (count > 0)
+                    BlackCapturedGrid.Children.RemoveAt(count - 1);
             }
-
-            await Task.Run(() =>
+            else
             {
-                gameState.MakeMove(move);
-            });
-
-            await Dispatcher.InvokeAsync(() =>
-            {
-                SwitchTurn();
-                Sound.PlayMoveSound();
-                DrawBoard(gameState.Board);
-                ShowPrevMove(move);
-                DrawCapturedGrid(gameState.CapturedPiece);
-                WarningTextBlock.Text = gameState.Board.IsInCheck(gameState.CurrentPlayer) ? "Chiếu tướng!" : null;
-                TurnTextBlock.Text = gameState.CurrentPlayer == Player.Red ? "Đỏ" : "Đen";
-            });
-
-
-            await Dispatcher.InvokeAsync(() => MainGame.IsHitTestVisible = true);
-
-            if (gameState.IsGameOver())
-            {
-                moveList = new Stack<Tuple<Move, Piece>>(gameState.Moved.ToArray());
-                HideHighlights();
-                CellGrid.IsEnabled = false;
-                if (redTimer != null) StopTimer();
-                await connection.SendAsync("GameOver", roomName, gameState.Result, gameState.CurrentPlayer);
+                int count = RedCapturedGrid.Children.Count;
+                if (count > 0)
+                    RedCapturedGrid.Children.RemoveAt(count - 1);
             }
         }
-
-
+        #endregion
+        #region event
         public event RoutedEventHandler SettingButtonClicked
         {
             add { AddHandler(SettingButtonClickedEvent, value); }
@@ -695,18 +808,6 @@ namespace ChessUI
         {
             RaiseEvent(new RoutedEventArgs(LeaveRoomButtonClickedEvent));
         }
-
-        public async Task LeaveRoomAsync()
-        {
-            bool IsConnected = connection != null && connection.State == HubConnectionState.Connected;
-
-            if (IsConnected)
-            {
-                await connection.InvokeAsync("LeaveRoom", roomName);
-            }
-        }
-
-
         public static readonly RoutedEvent CloseAppButtonClickedEvent = EventManager.RegisterRoutedEvent(
             "CloseAppButtonClicked",
             RoutingStrategy.Bubble,
@@ -723,6 +824,20 @@ namespace ChessUI
         {
             RaiseEvent(new RoutedEventArgs(CloseAppButtonClickedEvent));
         }
+        public static readonly RoutedEvent GameOverEvent = EventManager.RegisterRoutedEvent(
+      "GameOver", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(GameOnline));
+
+        public event RoutedEventHandler GameOver
+        {
+            add { AddHandler(GameOverEvent, value); }
+            remove { RemoveHandler(GameOverEvent, value); }
+        }
+
+        protected void RaiseGameOverEvent(Result result, Player currentPlayer)
+        {
+            RaiseEvent(new GameOverEventArgs(GameOverEvent, result, currentPlayer));
+        }
+        #endregion
 
         private void MinimizeAppButton_Click(object sender, RoutedEventArgs e)
         {
@@ -743,133 +858,16 @@ namespace ChessUI
             {
                 Application.Current.MainWindow.DragMove();
             }
-        }
-
-        public static readonly RoutedEvent GameOverEvent = EventManager.RegisterRoutedEvent(
-       "GameOver", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(GameOnline));
-
-        public event RoutedEventHandler GameOver
+        }              
+        public async Task LeaveRoomAsync()
         {
-            add { AddHandler(GameOverEvent, value); }
-            remove { RemoveHandler(GameOverEvent, value); }
-        }
+            bool IsConnected = connection != null && connection.State == HubConnectionState.Connected;
 
-        protected void RaiseGameOverEvent(Result result, Player currentPlayer)
-        {
-            RaiseEvent(new GameOverEventArgs(GameOverEvent, result, currentPlayer));
-        }
-        private void RedTimer_Tick(object sender, EventArgs e)
-        {
-            _ = RedTimer_TickAsync(sender, e);
-        }
-
-        private void BlackTimer_Tick(object sender, EventArgs e)
-        {
-            _ = BlackTimer_TickAsync(sender, e);
-        }
-
-        public void Review()
-        {
-            if (gameState.Moved.Count != 0)
-                HidePrevMove(gameState.Moved.Peek().Item1);
-            gameState = new GameState2P(Player.Red, Board.InitialForOnline(color));
-            TurnTextBlock.Text = "Đỏ";
-            BlackCapturedGrid.Children.Clear();
-            RedCapturedGrid.Children.Clear();
-            bottomClock.Text = null;
-            topClock.Text = null;
-            WarningTextBlock.Text = null;
-            ResetTimer();
-            DrawBoard(gameState.Board);
-            AbleClick();
-            CellGrid.IsHitTestVisible = false;
-            DoButton.Visibility = Visibility.Visible;
-            UndoButton.Visibility = Visibility.Visible;
-        }
-
-        private void UndoButton_Click(object sender, RoutedEventArgs e)
-        {
-            Sound.PlayButtonClickSound();
-            if (gameState.Moved.Count != 0) HidePrevMove(gameState.Moved.First().Item1);
-            OnToPositionSelected(selectedPos);
-            if (gameState.Moved.Count == 0) return;
-            var move = gameState.Moved.Pop();
-            Move doMove = new NormalMove(move.Item1.ToPos, move.Item1.FromPos);
-            doMove.Execute(gameState.Board);
-            gameState.Board[doMove.FromPos] = move.Item2;
-            DrawBoard(gameState.Board);
-            if (gameState.Moved.Count != 0)
+            if (IsConnected)
             {
-                ShowPrevMove(gameState.Moved.First().Item1);
+                await connection.InvokeAsync("LeaveRoom", roomName);
             }
-            gameState.CapturedPiece = move.Item2;
-            moveList.Push(move);
-            gameState.CurrentPlayer = gameState.CurrentPlayer.Opponent();
-            UndoCapturedGrid(gameState.CapturedPiece);
-            TurnTextBlock.Text = gameState.CurrentPlayer == Player.Red ? "Đỏ" : "Đen";
-            WarningTextBlock.Text = gameState.Board.IsInCheck(gameState.CurrentPlayer) ? "Chiếu tướng!" : null;
-            gameState.noCapture.Pop();
-        }
-
-        private void DoButton_Click(object sender, RoutedEventArgs e)
-        {
-            Sound.PlayButtonClickSound();
-            if (moveList.Count == 0) return;
-            if (gameState.Moved.Count != 0) HidePrevMove(gameState.Moved.First().Item1);
-            bool capture = moveList.Peek().Item1.Execute(gameState.Board);
-
-            if (capture)
-            {
-                gameState.noCapture.Push(0);
-            }
-            else
-            {
-                if (gameState.noCapture.Count == 0) gameState.noCapture.Push(1);
-                else gameState.noCapture.Push(gameState.noCapture.Peek() + 1);
-            }
-            gameState.Moved.Push(moveList.Pop());
-            DrawBoard(gameState.Board);
-            if (gameState.Moved.Count != 0)
-            {
-                ShowPrevMove(gameState.Moved.First().Item1);
-            }
-            DrawCapturedGrid(gameState.Moved.Peek().Item2);
-            gameState.CurrentPlayer = gameState.CurrentPlayer.Opponent();
-            WarningTextBlock.Text = gameState.Board.IsInCheck(gameState.CurrentPlayer) ? "Chiếu tướng!" : null;
-            TurnTextBlock.Text = gameState.CurrentPlayer == Player.Red ? "Đỏ" : "Đen";
-        }
-
-        private void UndoCapturedGrid(Piece piece)
-        {
-            if (piece == null) return;
-            if (gameState.CurrentPlayer == Player.Black)
-            {
-                int count = BlackCapturedGrid.Children.Count;
-                if (count > 0)
-                    BlackCapturedGrid.Children.RemoveAt(count - 1);
-            }
-            else
-            {
-                int count = RedCapturedGrid.Children.Count;
-                if (count > 0)
-                    RedCapturedGrid.Children.RemoveAt(count - 1);
-            }
-        }
-
-        private void AbleClick()
-        {
-            CellGrid.IsHitTestVisible = true;
-            LeaveButton.IsEnabled = true;
-            SettingButton.IsEnabled = true;
-            CloseAppButton.IsEnabled = true;
-        }
-
-        private void UnableClick()
-        {
-            CellGrid.IsHitTestVisible = false;
-            LeaveButton.IsEnabled = false;
-            SettingButton.IsEnabled = false;
-            CloseAppButton.IsEnabled = false;
-        }
+        }        
+        #endregion
     }
 }

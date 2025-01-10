@@ -38,6 +38,7 @@
             }
             CurrentPlayer = Player.Red;
         }
+        #region MinMax Algorithm
         private void MakeTestMove(Move move)
         {
             Moved.Push(Tuple.Create(move, Board[move.ToPos]));
@@ -109,5 +110,6 @@
             }
             else return value.GetValueBoard(Board);
         }
+        #endregion
     }
 }
