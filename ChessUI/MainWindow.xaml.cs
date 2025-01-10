@@ -19,8 +19,6 @@ namespace ChessUI
         SaveSlotControl saveloadSlotControl;
         GameOverMenu gameOverMenu;
 
-
-
         bool onGame = false;
         Player color = Player.Red;
         int time = 600;
@@ -32,6 +30,7 @@ namespace ChessUI
             this.Closing += MainWindow_Closing;
         }
 
+        #region MainMenu
         private void CreateMainMenu()
         {
             onGame = false;
@@ -49,6 +48,31 @@ namespace ChessUI
             mainWindowGrid.Children.Add(mainMenu);
         }
 
+        private void MainMenu_PlayButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Sound.PlayButtonClickSound();
+            CreateSelectGameModeMenu();
+        }
+
+        private void MainMenu_InstructionsButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Sound.PlayButtonClickSound();
+            CreateInstructionMenu();
+        }
+        private void MainMenu_HistoryButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Sound.PlayButtonClickSound();
+            CreateHistoryMenu();
+        }
+
+        private void MainMenu_LoadButton_Clicked(object sender, RoutedEventArgs e)
+        {
+            Sound.PlayButtonClickSound();
+            CreateLoadMenu();
+        }
+        #endregion
+
+        #region SelectGameModeMenu
         private void CreateSelectGameModeMenu()
         {
             SelectGameModeMenu selectGameModeMenu = new SelectGameModeMenu();
@@ -60,6 +84,27 @@ namespace ChessUI
 
             mainWindowGrid.Children.Add(selectGameModeMenu);
         }
+
+        private void SelectGameMode_PlayWithBotButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Sound.PlayButtonClickSound();
+            CreateSelectDifficultMenu();
+        }
+
+        private void SelectGameMode_TwoPlayerButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Sound.PlayButtonClickSound();
+            CreateViewGame2P();
+        }
+
+        private void SelectGameMode_PlayOnlineButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Sound.PlayButtonClickSound();
+            CreateRoomControl();
+        }
+        #endregion
+
+        #region SelectDifficultMenu
         private void CreateSelectDifficultMenu()
         {
             GameDifficultyMenu gameDifficultyMenu = new GameDifficultyMenu();
@@ -71,6 +116,29 @@ namespace ChessUI
 
             mainWindowGrid.Children.Add(gameDifficultyMenu);
         }
+        private void GameDifficultyMenu_BackButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Sound.PlayButtonClickSound();
+            mainWindowGrid.Children.RemoveAt(mainWindowGrid.Children.Count - 1);
+        }
+        private void GameDifficultyMenu_PlayEasyBotButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Sound.PlayButtonClickSound();
+            CreateViewGameAI(2);
+        }
+        private void GameDifficultyMenu_PlayNormalBotButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Sound.PlayButtonClickSound();
+            CreateViewGameAI(3);
+        }
+        private void GameDifficultyMenu_PlayHardBotButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Sound.PlayButtonClickSound();
+            CreateViewGameAI(4);
+        }
+        #endregion
+
+        #region InstructionMenu
         private void CreateInstructionMenu()
         {
             InstructionsMenu instructionsMenu = new InstructionsMenu();
@@ -79,7 +147,9 @@ namespace ChessUI
 
             mainWindowGrid.Children.Add(instructionsMenu);
         }
+        #endregion
 
+        #region SettingsMenu
         private void CreateSettingsMenu()
         {
             SettingsMenu settingsMenu = new SettingsMenu(settingsModel);
@@ -94,6 +164,14 @@ namespace ChessUI
             settingsMenu.SettingsChanged += SettingsMenu_SettingsChanged;
         }
 
+        private void SettingsMenu_SettingsChanged(SettingsModel updatedSettings)
+        {
+            Sound.SetVolume((int)updatedSettings.Volume);
+            settingsModel = updatedSettings;
+        }
+        #endregion
+
+        #region HistoryMenu
         private void CreateHistoryMenu()
         {
             HistoryMenu historyMenu = new HistoryMenu();
@@ -103,7 +181,9 @@ namespace ChessUI
             historyMenu.LoadHistory();
             mainWindowGrid.Children.Add(historyMenu);
         }
+        #endregion
 
+        #region PauseMenu
         private void CreatePauseMenu()
         {
             if (time != 0) gameUserControl.StopTimer();
@@ -118,6 +198,15 @@ namespace ChessUI
             mainWindowGrid.Children.Add(pauseMenu);
         }
 
+        private void PauseMenu_HomeButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Sound.PlayButtonClickSound();
+            CreateConfirmMenu();
+        }
+        #endregion
+
+        #region ConfirmMenu
+
         private void CreateConfirmMenu(bool wantToCloseApp = false)
         {
             ConfirmMenu confirmMenu = new ConfirmMenu();
@@ -129,6 +218,14 @@ namespace ChessUI
             mainWindowGrid.Children.Add(confirmMenu);
         }
 
+        private void ConfirmMenu_YesButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Sound.PlayButtonClickSound();
+            CreateMainMenu();
+        }
+        #endregion
+
+        #region ViewGameAI
         private void CreateViewGameAI(int difficulty)
         {
             onGame = true;
@@ -143,7 +240,9 @@ namespace ChessUI
             mainWindowGrid.Children.Clear();
             mainWindowGrid.Children.Add(gameUserControl);
         }
+        #endregion
 
+        #region ViewGame2P
         private void CreateViewGame2P()
         {
             onGame = true;
@@ -158,6 +257,9 @@ namespace ChessUI
             mainWindowGrid.Children.Clear();
             mainWindowGrid.Children.Add(gameUserControl);
         }
+        #endregion
+
+        #region ViewGameLoad
         private void CreateViewGameLoad(GameStateForLoad gameStateForLoad)
         {
             onGame = true;
@@ -171,6 +273,9 @@ namespace ChessUI
             mainWindowGrid.Children.Clear();
             mainWindowGrid.Children.Add(gameUserControl);
         }
+        #endregion
+
+        #region SaveMenu
         private void CreateSaveMenu()
         {
             saveloadSlotControl = new SaveSlotControl(gameUserControl.gameState);
@@ -178,6 +283,9 @@ namespace ChessUI
 
             mainWindowGrid.Children.Add(saveloadSlotControl);
         }
+        #endregion
+
+        #region LoadMenu
         private void CreateLoadMenu()
         {
             saveloadSlotControl = new SaveSlotControl();
@@ -186,6 +294,16 @@ namespace ChessUI
 
             mainWindowGrid.Children.Add(saveloadSlotControl);
         }
+
+        private void SelectedLoadSlot_Clicked(object sender, SaveSlotEventArgs e)
+        {
+            Sound.PlayButtonClickSound();
+            GameStateForLoad gameStateForLoad = SaveService.Load(e.FilePath);
+            CreateViewGameLoad(gameStateForLoad);
+        }
+        #endregion
+
+        #region ViewGameOnline
         private void CreateRoomControl()
         {
             RoomControl roomControl = new RoomControl();
@@ -195,6 +313,27 @@ namespace ChessUI
             roomControl.BackButtonClicked += CloseButtonClicked;
 
             mainWindowGrid.Children.Add(roomControl);
+        }
+
+        private void RoomControl_CreateRoomButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Sound.PlayButtonClickSound();
+            CreateRoom createRoom = new CreateRoom();
+            createRoom.BackButtonClicked += CloseButtonClicked;
+            createRoom.NavigateToGameOnline += RoomControl_NavigateToGameOnline;
+
+            mainWindowGrid.Children.Add(createRoom);
+        }
+
+        private void RoomControl_JoinRoomButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Sound.PlayButtonClickSound();
+
+            JoinRoom joinRoom = new JoinRoom();
+            joinRoom.BackButtonClicked += CloseButtonClicked;
+            joinRoom.NavigateToGameOnline += RoomControl_NavigateToGameOnline;
+
+            mainWindowGrid.Children.Add(joinRoom);
         }
 
         private void RoomControl_RandomMatchButtonClicked(object sender, RoutedEventArgs e)
@@ -223,28 +362,6 @@ namespace ChessUI
 
             mainWindowGrid.Children.Clear();
             mainWindowGrid.Children.Add(gameOnline);
-        }
-
-        private void RoomControl_JoinRoomButtonClicked(object sender, RoutedEventArgs e)
-        {
-            Sound.PlayButtonClickSound();
-
-            JoinRoom joinRoom = new JoinRoom();
-            joinRoom.BackButtonClicked += CloseButtonClicked;
-            joinRoom.NavigateToGameOnline += RoomControl_NavigateToGameOnline;
-
-            mainWindowGrid.Children.Add(joinRoom);
-        }
-
-        private void RoomControl_CreateRoomButtonClicked(object sender, RoutedEventArgs e)
-        {
-            Sound.PlayButtonClickSound();
-            CreateRoom createRoom = new CreateRoom();
-            createRoom.BackButtonClicked += CloseButtonClicked;
-            createRoom.NavigateToGameOnline += RoomControl_NavigateToGameOnline;
-
-            mainWindowGrid.Children.Add(createRoom);
-
         }
 
         private void RoomControl_NavigateToGameOnline(object sender, RoutedEventArgs e)
@@ -321,33 +438,42 @@ namespace ChessUI
             CreateMainMenu();
         }
 
+        private void GameOnline_CreateGameOver(object sender, RoutedEventArgs e)
+        {
+            if (e is GameOverEventArgs args)
+            {
+                Result result = args.result;
+                Player current = args.currentPlayer;
+                Sound.PlayGameOverSound();
+                gameOverMenu = new GameOverMenu(result, current);
+                gameOverMenu.NewButtonClicked += NewButtonClicked;
+                gameOverMenu.HomeButtonClicked += GameOverMenu_HomeButtonClicked;
+                gameOverMenu.ReviewButtonClicked += GameOnline_GameOverMenu_ReviewButtonClicked;
+
+                mainWindowGrid.Children.Add(gameOverMenu);
+
+            }
+        }
+
+        private void GameOnline_GameOverMenu_ReviewButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Sound.PlayButtonClickSound();
+            CloseAMenu();
+            gameOnline.Review();
+        }
+
+        private void GameOnline_CloseAppButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Sound.PlayButtonClickSound();
+            GameOnline_CreateConfirmMenu(true);
+        }
+        #endregion
+
+        #region ShareFunction
         private void CloseButtonClicked(object sender, RoutedEventArgs e)
         {
             Sound.PlayButtonClickSound();
             CloseAMenu();
-        }
-
-        private void MainMenu_PlayButtonClicked(object sender, RoutedEventArgs e)
-        {
-            Sound.PlayButtonClickSound();
-            CreateSelectGameModeMenu();
-        }
-
-        private void MainMenu_InstructionsButtonClicked(object sender, RoutedEventArgs e)
-        {
-            Sound.PlayButtonClickSound();
-            CreateInstructionMenu();
-        }
-        private void MainMenu_HistoryButtonClicked(object sender, RoutedEventArgs e)
-        {
-            Sound.PlayButtonClickSound();
-            CreateHistoryMenu();
-        }
-
-        private void MainMenu_LoadButton_Clicked(object sender, RoutedEventArgs e)
-        {
-            Sound.PlayButtonClickSound();
-            CreateLoadMenu();
         }
 
         private void SettingsButtonClicked(object sender, RoutedEventArgs e)
@@ -355,77 +481,8 @@ namespace ChessUI
             Sound.PlayButtonClickSound();
             CreateSettingsMenu();
         }
-        private void SelectedLoadSlot_Clicked(object sender, SaveSlotEventArgs e)
-        {
-            Sound.PlayButtonClickSound();
-            GameStateForLoad gameStateForLoad = SaveService.Load(e.FilePath);
-            CreateViewGameLoad(gameStateForLoad);
-        }
-        private void SelectGameMode_PlayWithBotButtonClicked(object sender, RoutedEventArgs e)
-        {
-            Sound.PlayButtonClickSound();
-            CreateSelectDifficultMenu();
-        }
-        private void GameDifficultyMenu_BackButtonClicked(object sender, RoutedEventArgs e)
-        {
-            Sound.PlayButtonClickSound();
-            mainWindowGrid.Children.RemoveAt(mainWindowGrid.Children.Count - 1);
-        }
-        private void GameDifficultyMenu_PlayEasyBotButtonClicked(object sender, RoutedEventArgs e)
-        {
-            Sound.PlayButtonClickSound();
-            CreateViewGameAI(2);
-        }
-        private void GameDifficultyMenu_PlayNormalBotButtonClicked(object sender, RoutedEventArgs e)
-        {
-            Sound.PlayButtonClickSound();
-            CreateViewGameAI(3);
-        }
-        private void GameDifficultyMenu_PlayHardBotButtonClicked(object sender, RoutedEventArgs e)
-        {
-            Sound.PlayButtonClickSound();
-            CreateViewGameAI(4);
-        }
 
-        private void SelectGameMode_TwoPlayerButtonClicked(object sender, RoutedEventArgs e)
-        {
-            Sound.PlayButtonClickSound();
-            CreateViewGame2P();
-        }
-
-        private void SelectGameMode_PlayOnlineButtonClicked(object sender, RoutedEventArgs e)
-        {
-            Sound.PlayButtonClickSound();
-            CreateRoomControl();
-        }
-
-        private void SettingsMenu_humanFirstChecked(object sender, RoutedEventArgs e)
-        {
-            Sound.PlayButtonClickSound();
-            settingsModel.HumanFirst = true;
-            if (color == Player.Black)
-            {
-                color = Player.Red;
-            }
-        }
-
-        private void SettingsMenu_botFirstChecked(object sender, RoutedEventArgs e)
-        {
-            Sound.PlayButtonClickSound();
-            settingsModel.HumanFirst = false;
-            if (color == Player.Red)
-            {
-                color = Player.Black;
-            }
-        }
-
-        private void SettingsMenu_SettingsChanged(SettingsModel updatedSettings)
-        {
-            Sound.SetVolume((int)updatedSettings.Volume);
-            settingsModel = updatedSettings;
-
-        }
-
+       
         private void SaveButtonClicked(object sender, RoutedEventArgs e)
         {
             if (time != 0) gameUserControl.StopTimer();
@@ -451,39 +508,13 @@ namespace ChessUI
             CreateSelectGameModeMenu();
         }
 
-        private void PauseMenu_HomeButtonClicked(object sender, RoutedEventArgs e)
-        {
-            Sound.PlayButtonClickSound();
-            CreateConfirmMenu();
-        }
-
-        private void ConfirmMenu_YesButtonClicked(object sender, RoutedEventArgs e)
-        {
-            Sound.PlayButtonClickSound();
-            CreateMainMenu();
-        }
-
-        private void CloseApp(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
-        }
-
-        private void GameOverMenu_HomeButtonClicked(object sender, RoutedEventArgs e)
-        {
-            Sound.PlayButtonClickSound();
-            CreateMainMenu();
-        }
-        private void GameOverMenu_ReviewButtonClicked(object sender, RoutedEventArgs e)
-        {
-            Sound.PlayButtonClickSound();
-            CloseAMenu();
-            gameUserControl.Review();
-        }
         private void CloseAMenu()
         {
             mainWindowGrid.Children.RemoveAt(mainWindowGrid.Children.Count - 1);
         }
+        #endregion
 
+        #region ViewGameOver
         private void OnGameOver(object sender, RoutedEventArgs e)
         {
             if (e is RoutedPropertyChangedEventArgs<GameState> gameOverEventArgs)
@@ -503,30 +534,19 @@ namespace ChessUI
             }
         }
 
-        private void GameOnline_CreateGameOver(object sender, RoutedEventArgs e)
+        private void GameOverMenu_HomeButtonClicked(object sender, RoutedEventArgs e)
         {
-            if (e is GameOverEventArgs args)
-            {
-                Result result = args.result;
-                Player current = args.currentPlayer;
-                Sound.PlayGameOverSound();
-                gameOverMenu = new GameOverMenu(result, current);
-                gameOverMenu.NewButtonClicked += NewButtonClicked;
-                gameOverMenu.HomeButtonClicked += GameOverMenu_HomeButtonClicked;
-                gameOverMenu.ReviewButtonClicked += GameOnline_GameOverMenu_ReviewButtonClicked;
-
-                mainWindowGrid.Children.Add(gameOverMenu);
-
-            }
+            Sound.PlayButtonClickSound();
+            CreateMainMenu();
         }
-
-        private void GameOnline_GameOverMenu_ReviewButtonClicked(object sender, RoutedEventArgs e)
+        private void GameOverMenu_ReviewButtonClicked(object sender, RoutedEventArgs e)
         {
             Sound.PlayButtonClickSound();
             CloseAMenu();
-            gameOnline.Review();
+            gameUserControl.Review();
         }
-
+        #endregion
+        
         private async void MainWindow_Closing(object sender, CancelEventArgs e)
         {
             if (gameOnline != null)
@@ -541,10 +561,9 @@ namespace ChessUI
             CreateConfirmMenu(true);
         }
 
-        private void GameOnline_CloseAppButtonClicked(object sender, RoutedEventArgs e)
+        private void CloseApp(object sender, RoutedEventArgs e)
         {
-            Sound.PlayButtonClickSound();
-            GameOnline_CreateConfirmMenu(true);
+            Application.Current.Shutdown();
         }
     }
 }
