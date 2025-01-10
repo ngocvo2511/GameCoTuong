@@ -50,8 +50,8 @@ namespace ChessLogic
                     empty++;
                     continue;
                 }
-                
-                if(empty > 0)
+
+                if (empty > 0)
                 {
                     sb.Append(empty);
                     empty = 0;
@@ -60,7 +60,7 @@ namespace ChessLogic
                 sb.Append(PieceChar(board[row, c]));
             }
 
-            if(empty > 0)
+            if (empty > 0)
             {
                 sb.Append(empty);
             }
@@ -70,7 +70,7 @@ namespace ChessLogic
         {
             for (int r = 0; r < 10; r++)
             {
-                if(r != 0)
+                if (r != 0)
                 {
                     sb.Append('/');
                 }
@@ -80,7 +80,7 @@ namespace ChessLogic
 
         private void AddCurrentPlayer(Player currentPlayer)
         {
-            if(currentPlayer == Player.Red)
+            if (currentPlayer == Player.Red)
             {
                 sb.Append("r");
             }

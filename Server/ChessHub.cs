@@ -31,8 +31,6 @@ namespace Server
                 var opponentId = waitingList[time][0];
                 waitingList[time].RemoveAt(0);
 
-
-
                 var opponent = participants.First(p => p.Id == opponentId);
                 string roomName = opponent.RoomName;
                 if (string.IsNullOrEmpty(username))
@@ -136,7 +134,6 @@ namespace Server
                     return;
                 }
 
-
                 Rooms[roomName].Add(Context.ConnectionId);
                 var roomCreator = participants.Where(p => p.RoomName == roomName).FirstOrDefault();
                 participants.Add(new ClientDetail
@@ -175,9 +172,7 @@ namespace Server
                     }
                     await Clients.Group(roomName).SendAsync("GameStarted", roomParticipants[0].Time);
                 }
-
             }
-
         }
 
         public async Task LeaveRoom(string roomName)
@@ -196,7 +191,6 @@ namespace Server
                     Rooms.Remove(roomName);
                 }
             }
-
         }
 
         public async Task GameOver(string roomName, Result result, Player current)
@@ -222,8 +216,6 @@ namespace Server
                 await Clients.Group(item.RoomName).SendAsync("MoveTo", a, b, c, d);
                 currentPlayer[item.RoomName] = item.Color == Player.Red ? Player.Black : Player.Red;
             }
-
-
         }
     }
 
@@ -268,7 +260,7 @@ namespace Server
     public enum EndReason
     {
         Checkmate,
-        Stalemate, // van la thua chu khong hoa giong nhu co vua
+        Stalemate,
         InsufficientMaterial,
         ThreefoldRepetition,
         FiftyMoveRule,

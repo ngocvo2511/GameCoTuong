@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ChessLogic
+﻿namespace ChessLogic
 {
     public class Cannon : Piece
     {
@@ -38,7 +32,7 @@ namespace ChessLogic
                     if (!foundObstacle) // chua gap quan can
                     {
                         yield return pos; continue;
-                    }   
+                    }
                 }
                 else
                 {
@@ -55,7 +49,7 @@ namespace ChessLogic
                         }
                         yield break;
                     }
-                }                
+                }
             }
         }
 

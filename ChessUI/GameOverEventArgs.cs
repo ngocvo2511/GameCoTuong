@@ -12,6 +12,5 @@ namespace ChessUI
             this.result = result;
             this.currentPlayer = currentPlayer;
         }
-
     }
 }

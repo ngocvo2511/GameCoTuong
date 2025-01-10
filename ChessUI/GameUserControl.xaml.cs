@@ -21,11 +21,8 @@ namespace ChessUI
         private Dictionary<Position, Move> moveCache = new Dictionary<Position, Move>();
         public GameState gameState { get; set; }
         private Position selectedPos = null;
-        //private MainWindow _mainWindow;
         private DispatcherTimer redTimer;
         private DispatcherTimer blackTimer;
-        //private int timeRemainingRed = 600;
-        //private int timeRemainingBlack = 600;
         private bool isRedTurn = true;
         private Brush redBrush = new SolidColorBrush(Colors.Red);
         private Brush blackBrush = new SolidColorBrush(Colors.Black);
@@ -36,17 +33,17 @@ namespace ChessUI
         {
             InitializeComponent();
             InitializeBoard();
-            if (isAI == true) gameState = new GameStateAI(color, Board.Initial(), difficult,timeLimit);
-            else gameState = new GameState2P(Player.Red, Board.Initial(),timeLimit);
+            if (isAI == true) gameState = new GameStateAI(color, Board.Initial(), difficult, timeLimit);
+            else gameState = new GameState2P(Player.Red, Board.Initial(), timeLimit);
             ShowGameInformation(difficult);
             DrawBoard(gameState.Board);
-            if (color == Player.Black && isAI==true) isRedTurn = false;
+            if (color == Player.Black && isAI == true) isRedTurn = false;
             if (timeLimit != 0)
             {
                 InitializeTimer();
                 SwitchTurn();
             }
-            if(gameState is GameStateAI && color==Player.Black)
+            if (gameState is GameStateAI && color == Player.Black)
             {
                 StartAIMoveWithDelay();
             }
@@ -59,7 +56,7 @@ namespace ChessUI
             else gameState = new GameState2P(gameStateForLoad);
             ShowGameInformation(gameStateForLoad.depth);
             DrawBoard(gameState.Board);
-            foreach(var piece in gameState.CapturedRedPiece) DrawCapturedGrid(piece);
+            foreach (var piece in gameState.CapturedRedPiece) DrawCapturedGrid(piece);
             foreach (var piece in gameState.CapturedBlackPiece) DrawCapturedGrid(piece);
             if (gameState.Moved.Any()) ShowPrevMove(gameState.Moved.First().Item1);
             if (gameState.timeRemainingBlack != 0)
@@ -135,7 +132,7 @@ namespace ChessUI
             if (redTimer == null) return;
             if (!gameState.IsGameOver())
             {
-                if(isRedTurn)
+                if (isRedTurn)
                 {
                     redTimer.Start();
                 }
@@ -143,7 +140,7 @@ namespace ChessUI
                 {
                     blackTimer.Start();
                 }
-            }    
+            }
         }
         private void SwitchTurn()
         {
@@ -195,17 +192,15 @@ namespace ChessUI
         }
         private async void StartAIMoveWithDelay()
         {
-            //MainGame.IsHitTestVisible = false;
             UnableClick();
             await Task.Delay(500);
             if (gameState is GameStateAI AI)
             {
-                await Task.Run(() => AI.AiMove(cts.Token),cts.Token);
+                await Task.Run(() => AI.AiMove(cts.Token), cts.Token);
                 DrawBoard(gameState.Board);
                 ShowPrevMove(gameState.Moved.First().Item1);
                 Sound.PlayMoveSound();
             }
-            //MainGame.IsHitTestVisible = true;
             AbleClick();
             isRedTurn = !isRedTurn;
             if (redTimer != null) SwitchTurn();
@@ -243,17 +238,11 @@ namespace ChessUI
                     };
                     highlights[r, c] = highlight;
                     HighlightGrid.Children.Add(highlight);
-                    Canvas canvas = new Canvas()
-                    {
-                        //Width = 80,
-                        //Height = 80
-                        //VerticalAlignment = VerticalAlignment.Center,
-                        //HorizontalAlignment = HorizontalAlignment.Center
-                    };
+                    Canvas canvas = new Canvas() { };
                     posMoved[r, c] = canvas;
                     PosMovedGrid.Children.Add(canvas);
                 }
-            }  
+            }
         }
 
         public void DrawBoard(Board board)
@@ -267,7 +256,6 @@ namespace ChessUI
                 }
             }
         }
-        
 
         private void CacheMoves(IEnumerable<Move> moves)
         {
@@ -316,12 +304,11 @@ namespace ChessUI
 
         private Position ToSquarePosition(Point point)
         {
-            double squareWidth = BoardGrid.ActualWidth / 9;    // 9 cột cho cờ Tướng
-            double squareHeight = BoardGrid.ActualHeight / 10; // 10 hàng cho cờ Tướng
+            double squareWidth = BoardGrid.ActualWidth / 9;   
+            double squareHeight = BoardGrid.ActualHeight / 10;
 
             int row = (int)(point.Y / squareHeight);
             int col = (int)(point.X / squareWidth);
-            //MessageBox.Show(row + " " + col);
 
             return new Position(row, col);
         }
@@ -354,7 +341,7 @@ namespace ChessUI
             if (piece == null) return;
             Image image = new Image();
             image.Source = Images.GetImage(piece);
-            if (piece.Color==Player.Red)
+            if (piece.Color == Player.Red)
             {
                 BlackCapturedGrid.Children.Add(image);
             }
@@ -377,7 +364,7 @@ namespace ChessUI
                 int count = RedCapturedGrid.Children.Count;
                 if (count > 0)
                     RedCapturedGrid.Children.RemoveAt(count - 1);
-            }         
+            }
         }
         private void UndoAiCapturedGrid(Piece piece)
         {
@@ -386,7 +373,7 @@ namespace ChessUI
             if (count > 0)
                 BlackCapturedGrid.Children.RemoveAt(count - 1);
         }
-        private void DrawNewPos(Canvas canvas,int row,int col)
+        private void DrawNewPos(Canvas canvas, int row, int col)
         {
             SolidColorBrush solidColorBrush = (gameState.Board[row, col].Color == Player.Black) ? Brushes.DarkBlue : Brushes.Red;
             Line topLeftArrow = new Line
@@ -470,7 +457,7 @@ namespace ChessUI
             };
             canvas.Children.Add(sideBotRightArrow);
         }
-        private void DrawOldPos(Canvas canvas,int row,int col)
+        private void DrawOldPos(Canvas canvas, int row, int col)
         {
             SolidColorBrush solidColorBrush = (gameState.Board[row, col].Color == Player.Black) ? Brushes.DarkBlue : Brushes.Red;
             Line topLeftArrow = new Line
@@ -556,8 +543,8 @@ namespace ChessUI
         }
         public void ShowPrevMove(Move move)
         {
-            DrawOldPos(posMoved[move.FromPos.Row, move.FromPos.Column],move.ToPos.Row,move.ToPos.Column);
-            DrawNewPos(posMoved[move.ToPos.Row, move.ToPos.Column],move.ToPos.Row,move.ToPos.Column);
+            DrawOldPos(posMoved[move.FromPos.Row, move.FromPos.Column], move.ToPos.Row, move.ToPos.Column);
+            DrawNewPos(posMoved[move.ToPos.Row, move.ToPos.Column], move.ToPos.Row, move.ToPos.Column);
         }
         public void HidePrevMove(Move move)
         {
@@ -568,9 +555,9 @@ namespace ChessUI
         {
             isRedTurn = !isRedTurn;
             if (redTimer != null) SwitchTurn();
-            Sound.PlayMoveSound();           
+            Sound.PlayMoveSound();
             UnableClick();
-            if (gameState.Moved.Any()) HidePrevMove(gameState.Moved.First().Item1);            
+            if (gameState.Moved.Any()) HidePrevMove(gameState.Moved.First().Item1);
             gameState.MakeMove(move);
             DrawBoard(gameState.Board);
             ShowPrevMove(move);
@@ -581,10 +568,10 @@ namespace ChessUI
             if (gameState is GameStateAI AI)
             {
                 Move prevMove = gameState.Moved.First().Item1;
-                await Task.Run(() => AI.AiMove(cts.Token),cts.Token);
+                await Task.Run(() => AI.AiMove(cts.Token), cts.Token);
                 isRedTurn = !isRedTurn;
                 if (redTimer != null) SwitchTurn();
-                WarningTextBlock.Text = gameState.Board.IsInCheck(gameState.CurrentPlayer)? "Chiếu tướng!" : null;
+                WarningTextBlock.Text = gameState.Board.IsInCheck(gameState.CurrentPlayer) ? "Chiếu tướng!" : null;
                 TurnTextBlock.Text = gameState.CurrentPlayer == Player.Red ? "Đỏ" : "Đen";
                 DrawCapturedGrid(gameState.CapturedPiece);
                 DrawBoard(gameState.Board);
@@ -638,7 +625,7 @@ namespace ChessUI
         private void UndoButton_Click(object sender, RoutedEventArgs e)
         {
             Sound.PlayButtonClickSound();
-            if(gameState.Moved.Count!=0) HidePrevMove(gameState.Moved.First().Item1);
+            if (gameState.Moved.Count != 0) HidePrevMove(gameState.Moved.First().Item1);
             OnToPositionSelected(selectedPos);
             if (isReview == true)
             {
@@ -652,8 +639,8 @@ namespace ChessUI
                 {
                     ShowPrevMove(gameState.Moved.First().Item1);
                 }
-                gameState.CapturedPiece=move.Item2;
-                moveList.Push(move);                
+                gameState.CapturedPiece = move.Item2;
+                moveList.Push(move);
                 gameState.CurrentPlayer = gameState.CurrentPlayer.Opponent();
                 UndoCapturedGrid(gameState.CapturedPiece);
                 TurnTextBlock.Text = gameState.CurrentPlayer == Player.Red ? "Đỏ" : "Đen";
@@ -676,19 +663,18 @@ namespace ChessUI
                     UndoAiCapturedGrid(AI.AiCapturedPiece);
                 isRedTurn = gameState.CurrentPlayer == Player.Red;
                 if (redTimer != null) SwitchTurn();
-            }            
+            }
         }
         private void DoButton_Click(object sender, RoutedEventArgs e)
         {
             Sound.PlayButtonClickSound();
             if (moveList.Count == 0) return;
-            if (gameState.Moved.Count != 0) HidePrevMove(gameState.Moved.First().Item1);          
+            if (gameState.Moved.Count != 0) HidePrevMove(gameState.Moved.First().Item1);
             bool capture = moveList.Peek().Item1.Execute(gameState.Board);
 
             if (capture)
             {
                 gameState.noCapture.Push(0);
-                //stateHistory.Clear();
             }
             else
             {
@@ -700,7 +686,7 @@ namespace ChessUI
             if (gameState.Moved.Count != 0)
             {
                 ShowPrevMove(gameState.Moved.First().Item1);
-            }            
+            }
             DrawCapturedGrid(gameState.Moved.Peek().Item2);
             gameState.CurrentPlayer = gameState.CurrentPlayer.Opponent();
             WarningTextBlock.Text = gameState.Board.IsInCheck(gameState.CurrentPlayer) ? "Chiếu tướng!" : null;

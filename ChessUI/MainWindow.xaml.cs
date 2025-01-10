@@ -30,14 +30,11 @@ namespace ChessUI
 
             CreateMainMenu();
             this.Closing += MainWindow_Closing;
-
-
         }
 
         private void CreateMainMenu()
         {
             onGame = false;
-
 
             MainMenu mainMenu = new MainMenu();
 
@@ -61,7 +58,6 @@ namespace ChessUI
             selectGameModeMenu.TwoPlayerButtonClicked += SelectGameMode_TwoPlayerButtonClicked;
             selectGameModeMenu.PlayOnlineButtonClicked += SelectGameMode_PlayOnlineButtonClicked;
 
-
             mainWindowGrid.Children.Add(selectGameModeMenu);
         }
         private void CreateSelectDifficultMenu()
@@ -73,7 +69,6 @@ namespace ChessUI
             gameDifficultyMenu.PlayNormalBotButtonClicked += GameDifficultyMenu_PlayNormalBotButtonClicked;
             gameDifficultyMenu.PlayHardBotButtonClicked += GameDifficultyMenu_PlayHardBotButtonClicked;
 
-
             mainWindowGrid.Children.Add(gameDifficultyMenu);
         }
         private void CreateInstructionMenu()
@@ -82,13 +77,11 @@ namespace ChessUI
 
             instructionsMenu.CloseButtonClicked += CloseButtonClicked;
 
-
             mainWindowGrid.Children.Add(instructionsMenu);
         }
 
         private void CreateSettingsMenu()
         {
-
             SettingsMenu settingsMenu = new SettingsMenu(settingsModel);
             mainWindowGrid.Children.Add(settingsMenu);
 
@@ -113,7 +106,6 @@ namespace ChessUI
 
         private void CreatePauseMenu()
         {
-
             if (time != 0) gameUserControl.StopTimer();
 
             PauseMenu pauseMenu = new PauseMenu();
@@ -122,7 +114,6 @@ namespace ChessUI
             pauseMenu.NewButtonClicked += NewButtonClicked;
             pauseMenu.HomeButtonClicked += PauseMenu_HomeButtonClicked;
             pauseMenu.SettingsButtonClicked += SettingsButtonClicked;
-
 
             mainWindowGrid.Children.Add(pauseMenu);
         }
@@ -140,7 +131,6 @@ namespace ChessUI
 
         private void CreateViewGameAI(int difficulty)
         {
-
             onGame = true;
             if (gameUserControl != null) gameUserControl.ResetTimer();
             color = settingsModel.HumanFirst ? Player.Red : Player.Black;
@@ -203,8 +193,6 @@ namespace ChessUI
             roomControl.JoinRoomButtonClicked += RoomControl_JoinRoomButtonClicked;
             roomControl.RandomMatchButtonClicked += RoomControl_RandomMatchButtonClicked;
             roomControl.BackButtonClicked += CloseButtonClicked;
-
-
 
             mainWindowGrid.Children.Add(roomControl);
         }
@@ -532,7 +520,6 @@ namespace ChessUI
             }
         }
 
-
         private void GameOnline_GameOverMenu_ReviewButtonClicked(object sender, RoutedEventArgs e)
         {
             Sound.PlayButtonClickSound();
@@ -559,6 +546,5 @@ namespace ChessUI
             Sound.PlayButtonClickSound();
             GameOnline_CreateConfirmMenu(true);
         }
-
     }
 }

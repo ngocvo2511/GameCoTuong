@@ -1,22 +1,15 @@
-﻿using ChessLogic;
-using Microsoft.AspNetCore.SignalR.Client;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Animation;
-using System.Windows.Threading;
 
 namespace ChessUI
 {
     public partial class RoomControl : UserControl
     {
-        
-
         public RoomControl()
         {
             InitializeComponent();
-            
-        }        
-        
+        }
+
         public static readonly RoutedEvent CreateRoomButtonClickedEvent = EventManager.RegisterRoutedEvent(
             "CreateRoomButtonClicked",
             RoutingStrategy.Bubble,
@@ -88,7 +81,5 @@ namespace ChessUI
         {
             RaiseEvent(new RoutedEventArgs(BackButtonClickedEvent));
         }
-
-        
     }
 }

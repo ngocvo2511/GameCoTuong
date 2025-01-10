@@ -1,27 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ChessLogic.GameStates.GameState
+﻿namespace ChessLogic.GameStates.GameState
 {
     public class GameStateAI : GameState
     {
         public int depth { get; set; }
         private ValuePiece value;
         public Piece AiCapturedPiece { get; protected set; }
-        public GameStateAI(Player player, Board board, int depth,int timeLimit) : base(player, board, timeLimit)
+        public GameStateAI(Player player, Board board, int depth, int timeLimit) : base(player, board, timeLimit)
         {
             this.depth = depth;
             value = new ValuePiece();
         }
-        public GameStateAI(GameStateForLoad gameStateForLoad):base(gameStateForLoad.CurrentPlayer, gameStateForLoad.Board, 
+        public GameStateAI(GameStateForLoad gameStateForLoad) : base(gameStateForLoad.CurrentPlayer, gameStateForLoad.Board,
             gameStateForLoad.timeRemainingRed, gameStateForLoad.timeRemainingBlack, gameStateForLoad.Moved, gameStateForLoad.stateHistory,
-            gameStateForLoad.CapturedRedPiece,gameStateForLoad.CapturedBlackPiece,gameStateForLoad.noCapture,gameStateForLoad.stateString)
+            gameStateForLoad.CapturedRedPiece, gameStateForLoad.CapturedBlackPiece, gameStateForLoad.noCapture, gameStateForLoad.stateString)
         {
             this.depth = gameStateForLoad.depth;
-            value=new ValuePiece();
+            value = new ValuePiece();
         }
         public override void UndoMove()
         {
@@ -77,21 +71,21 @@ namespace ChessLogic.GameStates.GameState
                     bestMove = move;
                 }
                 if (token.IsCancellationRequested) return;
-            }            
-            if(bestMove!=null) MakeMove(bestMove);
+            }
+            if (bestMove != null) MakeMove(bestMove);
         }
         private int AlphaBeta(int depth, int alpha = -9999, int beta = 9999) // giá trị nước đi
         {
             IEnumerable<Move> moves = AllLegalMovesFor(CurrentPlayer);
             if (!moves.Any()) return (CurrentPlayer == Player.Black) ? -9999 : 9999;
-            if (depth == 0) return value.GetValueBoard(Board);            
+            if (depth == 0) return value.GetValueBoard(Board);
             if (CurrentPlayer == Player.Black)
             {
-                int bestValue = -9999;                
+                int bestValue = -9999;
                 foreach (var move in moves)
                 {
                     MakeTestMove(move);
-                    int value =  AlphaBeta(depth - 1, alpha, beta);
+                    int value = AlphaBeta(depth - 1, alpha, beta);
                     UndoTestMove();
                     bestValue = Math.Max(bestValue, value);
                     alpha = Math.Max(alpha, value);
@@ -105,7 +99,7 @@ namespace ChessLogic.GameStates.GameState
                 foreach (var move in moves)
                 {
                     MakeTestMove(move);
-                    int value =  AlphaBeta(depth - 1, alpha, beta);
+                    int value = AlphaBeta(depth - 1, alpha, beta);
                     UndoTestMove();
                     bestValue = Math.Min(bestValue, value);
                     beta = Math.Min(beta, value);

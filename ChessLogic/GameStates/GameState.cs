@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ChessLogic.GameStates.GameState
+﻿namespace ChessLogic.GameStates.GameState
 {
     public abstract class GameState
     {
@@ -16,7 +10,7 @@ namespace ChessLogic.GameStates.GameState
 
         public Piece CapturedPiece { get; set; }
         public int timeRemainingRed { get; set; }
-        public int timeRemainingBlack {  get; set; }
+        public int timeRemainingBlack { get; set; }
         public List<Piece> CapturedRedPiece { get; set; }
         public List<Piece> CapturedBlackPiece { get; set; }
         public Stack<int> noCapture { get; set; }
@@ -39,8 +33,8 @@ namespace ChessLogic.GameStates.GameState
             timeRemainingBlack = timeLimit;
             timeRemainingRed = timeLimit;
         }
-        public GameState(Player player,Board board,int redTime,int blackTime,Stack<Tuple<Move, Piece>> Moved,Dictionary<string,int> stateHistory
-            ,List<Piece> CapturedRedPiece,List<Piece> CapturedBlackPiece,Stack<int> noCapture,Stack<string> stateString)
+        public GameState(Player player, Board board, int redTime, int blackTime, Stack<Tuple<Move, Piece>> Moved, Dictionary<string, int> stateHistory
+            , List<Piece> CapturedRedPiece, List<Piece> CapturedBlackPiece, Stack<int> noCapture, Stack<string> stateString)
         {
             CurrentPlayer = player;
             Board = board;
@@ -79,9 +73,9 @@ namespace ChessLogic.GameStates.GameState
         {
             Moved.Push(Tuple.Create(move, Board[move.ToPos]));
             CapturedPiece = Board[move.ToPos];
-            if(CapturedPiece != null)
+            if (CapturedPiece != null)
             {
-                if(CapturedPiece.Color==Player.Black) CapturedBlackPiece.Add(CapturedPiece);
+                if (CapturedPiece.Color == Player.Black) CapturedBlackPiece.Add(CapturedPiece);
                 else CapturedRedPiece.Add(CapturedPiece);
             }
             bool capture = move.Execute(Board);
@@ -95,7 +89,7 @@ namespace ChessLogic.GameStates.GameState
             else
             {
                 if (noCapture.Count == 0) noCapture.Push(1);
-                else noCapture.Push(noCapture.Peek()+1);
+                else noCapture.Push(noCapture.Peek() + 1);
             }
             CurrentPlayer = CurrentPlayer.Opponent();
             UpdateStateString();
@@ -173,9 +167,9 @@ namespace ChessLogic.GameStates.GameState
             if (stateString.Count > 0 && stateString.Peek() == "Clear")
             {
                 stateString.Pop();
-                foreach(string state in stateString)
+                foreach (string state in stateString)
                 {
-                    if(state == "Clear")
+                    if (state == "Clear")
                     {
                         break;
                     }

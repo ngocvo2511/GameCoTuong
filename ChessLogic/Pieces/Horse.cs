@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ChessLogic
+﻿namespace ChessLogic
 {
     public class Horse : Piece
     {
@@ -28,7 +22,7 @@ namespace ChessLogic
             {
 
                 Position toPos = from + dir;
-                if (Board.IsInside(toPos) && board.IsEmpty(toPos)) //co the di theo huong nay
+                if (Board.IsInside(toPos) && board.IsEmpty(toPos)) //khong co quan chan
                 {
                     yield return from + 2 * dir + Direction.West;
                     yield return from + 2 * dir + Direction.East;
@@ -39,7 +33,7 @@ namespace ChessLogic
             {
 
                 Position toPos = from + dir;
-                if (Board.IsInside(toPos) && board.IsEmpty(toPos)) //co the di theo huong nay
+                if (Board.IsInside(toPos) && board.IsEmpty(toPos)) //khong co quan chan
                 {
                     yield return from + 2 * dir + Direction.North;
                     yield return from + 2 * dir + Direction.South;

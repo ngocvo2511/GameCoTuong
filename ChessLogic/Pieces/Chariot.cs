@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ChessLogic
+﻿namespace ChessLogic
 {
     public class Chariot : Piece
     {
@@ -33,7 +26,7 @@ namespace ChessLogic
             {
                 if (board.IsEmpty(pos))
                 {
-                    yield return pos; 
+                    yield return pos;
                     continue;
                 }
 

@@ -16,7 +16,7 @@ namespace ChessUI.Menus
         public SettingsMenu(SettingsModel settings)
         {
             InitializeComponent();
-            isInitializing = true; // Bắt đầu khởi tạo
+            isInitializing = true;
 
             this.settings = settings;
             VolumeSlider.Value = settings.Volume;
@@ -29,7 +29,7 @@ namespace ChessUI.Menus
             TimeLimitTextBox.Text = settings.TimeLimit.ToString();
 
 
-            isInitializing = false; // Kết thúc khởi tạo
+            isInitializing = false;
             TimeLimitTextBox.IsEnabled = settings.IsTimeLimit;
         }
 
@@ -98,9 +98,6 @@ namespace ChessUI.Menus
             TimeLimitTextBox.IsEnabled = false;
             SettingsChanged?.Invoke(settings);
         }
-
-
-
         private void TimeLimitTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
             int time;

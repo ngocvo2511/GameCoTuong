@@ -26,7 +26,7 @@ namespace ChessUI
         {
             _notificationTimer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromSeconds(2.5) // Thời gian thông báo hiển thị
+                Interval = TimeSpan.FromSeconds(2.5) 
             };
             _notificationTimer.Tick += (s, e) =>
             {
@@ -37,32 +37,25 @@ namespace ChessUI
 
         private void ShowNotification(string message)
         {
-            // Cập nhật nội dung thông báo (nếu cần)
             if (NotificationPanel.Child is TextBlock textBlock)
             {
                 textBlock.Text = message;
             }
 
-            // Hiển thị thông báo
             NotificationPanel.Visibility = Visibility.Visible;
 
-            // Hiệu ứng mờ dần khi xuất hiện
             var fadeInAnimation = new DoubleAnimation(0, 1, TimeSpan.FromSeconds(0.5));
             NotificationPanel.BeginAnimation(OpacityProperty, fadeInAnimation);
 
-            // Bắt đầu đếm thời gian tự động tắt
             _notificationTimer.Start();
         }
 
         private void HideNotification()
         {
-            // Hiệu ứng mờ dần khi ẩn
             var fadeOutAnimation = new DoubleAnimation(1, 0, TimeSpan.FromSeconds(0.5));
             fadeOutAnimation.Completed += (s, e) => NotificationPanel.Visibility = Visibility.Collapsed;
             NotificationPanel.BeginAnimation(OpacityProperty, fadeOutAnimation);
         }
-
-
 
         private async void InitializeSignalR()
         {
@@ -140,6 +133,7 @@ namespace ChessUI
                 searchingMatchMenu.BackButtonClicked += async (s, e) =>
                 {
                     searchingMatchMenu.Visibility = Visibility.Collapsed;
+                    Sound.PlayButtonClickSound();
                     await _connection.SendAsync("CancelFindMatch");
                 };
             }

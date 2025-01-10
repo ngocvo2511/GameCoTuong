@@ -1,23 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ChessLogic
+﻿namespace ChessLogic
 {
     public class ValuePiece
     {
-        public ValuePiece()
-        {
-            //rAdvisor = ReverseMatrix(bAdvisor);
-            //rCannon = ReverseMatrix(bCannon);
-            //rChariot = ReverseMatrix(bChariot);
-            //rElephant = ReverseMatrix(bElephant);
-            //rGeneral = ReverseMatrix(bGeneral);
-            //rSoldier = ReverseMatrix(bSoldier);
-            //rHorse = ReverseMatrix(bHorse);
-        }
+        public ValuePiece() { }
         #region quân đen
         private readonly int[,] bSoldier = new int[10, 9]
         {
@@ -136,7 +121,7 @@ namespace ChessLogic
             {6, 10, 8, 14, 14, 14, 8, 10, 6 },
             {4, 8, 6, 14, 12, 14, 6, 8, 4 },
             {8, 4, 8, 16, 8, 16, 8, 4, 8 },
-            {-2, 10, 6, 14, 12, 14, 6, 10, -2 }         
+            {-2, 10, 6, 14, 12, 14, 6, 10, -2 }
         };
         private readonly int[,] rCannon = new int[10, 9]
         {
@@ -149,7 +134,7 @@ namespace ChessLogic
             {0, 0, 0, 2, 4, 2, 0, 0, 0 },
             {4, 0, 8, 6, 10, 6, 8, 0, 4 },
             {0, 2, 4, 6, 6, 6, 4, 2, 0 },
-            {0, 0, 2, 6, 6, 6, 2, 0, 0 }  
+            {0, 0, 2, 6, 6, 6, 2, 0, 0 }
         };
         private readonly int[,] rHorse = new int[10, 9]
         {
@@ -162,7 +147,7 @@ namespace ChessLogic
             {2, 6, 8, 6, 10, 6, 8, 6, 2 },
             {4, 2, 8, 8, 4, 8, 8, 2, 4 },
             {0, 2, 4, 4, -2, 4, 4, 2, 0 },
-            {0, -4, 0, 0, 0, 0, 0, -4, 0 }                                            
+            {0, -4, 0, 0, 0, 0, 0, -4, 0 }
         };
         private readonly int[,] rElephant = new int[10, 9]
         {
@@ -204,20 +189,6 @@ namespace ChessLogic
             {0, 0, 0, 0, 2, 0, 0, 0, 0 }
         };
         #endregion
-        private int[,] ReverseMatrix(int[,] matrix)
-        {
-            int row = matrix.GetLength(0);
-            int col = matrix.GetLength(1);
-            int[,] newMatrix = new int[row, col];
-            for (int i = 0; i < row; i++)
-            {
-                for (int j = 0; j < col; j++)
-                {
-                    newMatrix[i, j] = matrix[row - i - 1, col - j - 1];
-                }
-            }
-            return newMatrix;
-        }
         public int GetValueBoard(Board board)
         {
             int totalvalue = 0;
@@ -256,6 +227,5 @@ namespace ChessLogic
             }
             return totalvalue;
         }
-
     }
 }

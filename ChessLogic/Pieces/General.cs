@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ChessLogic
+﻿namespace ChessLogic
 {
     public class General : Piece
     {
@@ -64,15 +58,16 @@ namespace ChessLogic
                 return false;
             }
             int rowStep = opponentKingPos.Row > to.Row ? 1 : -1;
-            for (int row = to.Row + rowStep; row != opponentKingPos.Row; row += rowStep) {
-                if(!board.IsEmpty(new Position(row, to.Column)))
+            for (int row = to.Row + rowStep; row != opponentKingPos.Row; row += rowStep)
+            {
+                if (!board.IsEmpty(new Position(row, to.Column)))
                 {
                     return false;
                 }
             }
             return true;
         }
-        
+
 
         private Position FindOpponentKing(Board board)
         {

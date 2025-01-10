@@ -34,7 +34,6 @@ namespace ChessUI
         private Brush blackBrush = new SolidColorBrush(Colors.Black);
         private Stack<Tuple<Move, Piece>> moveList;
 
-
         public GameOnline(string roomName, Player color, int time, string username, string opponentUsername = "")
         {
             InitializeComponent();
@@ -67,9 +66,6 @@ namespace ChessUI
             connection.Remove("GameStarted");
             connection.Remove("CreateGameOver");
             connection.Remove("Countdown");
-
-
-
 
             connection.On<int, int, int, int>("MoveTo", (x1, y1, x2, y2) =>
             {
@@ -152,11 +148,8 @@ namespace ChessUI
                 });
             });
 
-
             await connectionManager.StartConnectionAsync();
-
         }
-
 
         private void StartGame()
         {
@@ -330,13 +323,7 @@ namespace ChessUI
                     };
                     highlights[r, c] = highlight;
                     HighlightGrid.Children.Add(highlight);
-                    Canvas canvas = new Canvas()
-                    {
-                        //Width = 80,
-                        //Height = 80
-                        //VerticalAlignment = VerticalAlignment.Center,
-                        //HorizontalAlignment = HorizontalAlignment.Center
-                    };
+                    Canvas canvas = new Canvas() { };
                     posMoved[r, c] = canvas;
                     PosMovedGrid.Children.Add(canvas);
                 }
@@ -354,7 +341,6 @@ namespace ChessUI
                 }
             }
         }
-
 
         private void CacheMoves(IEnumerable<Move> moves)
         {
@@ -411,19 +397,17 @@ namespace ChessUI
 
         private Position ToSquarePosition(Point point)
         {
-            double squareWidth = BoardGrid.ActualWidth / 9;    // 9 cột cho cờ Tướng
-            double squareHeight = BoardGrid.ActualHeight / 10; // 10 hàng cho cờ Tướng
+            double squareWidth = BoardGrid.ActualWidth / 9;
+            double squareHeight = BoardGrid.ActualHeight / 10;
 
             int row = (int)(point.Y / squareHeight);
             int col = (int)(point.X / squareWidth);
-            //MessageBox.Show(row + " " + col);
 
             return new Position(row, col);
         }
 
         private void OnFromPositionSelected(Position pos)
         {
-
             IEnumerable<Move> moves = gameState.LegalMovesForPiece(pos);
 
             if (moves.Any())
@@ -642,7 +626,6 @@ namespace ChessUI
         private async void HandleMove(Move move)
         {
 
-            // Khóa giao diện để tránh tác động ngoài ý muốn
             await Dispatcher.InvokeAsync(() => MainGame.IsHitTestVisible = false);
 
             if (gameState.Moved.Any())
@@ -650,13 +633,11 @@ namespace ChessUI
                 await Dispatcher.InvokeAsync(() => HidePrevMove(gameState.Moved.First().Item1));
             }
 
-            // Thực hiện logic trò chơi trong luồng nền
             await Task.Run(() =>
             {
                 gameState.MakeMove(move);
             });
 
-            // Cập nhật giao diện trên luồng chính
             await Dispatcher.InvokeAsync(() =>
             {
                 SwitchTurn();
@@ -669,7 +650,6 @@ namespace ChessUI
             });
 
 
-            // Mở khóa giao diện
             await Dispatcher.InvokeAsync(() => MainGame.IsHitTestVisible = true);
 
             if (gameState.IsGameOver())
@@ -713,12 +693,7 @@ namespace ChessUI
 
         private void LeaveRoomButton_Click(object sender, RoutedEventArgs e)
         {
-            //if (connection != null && connection.State == HubConnectionState.Connected && start)
-            //{
-            //    await connection.InvokeAsync("LeaveRoom", roomName);
-            //}
             RaiseEvent(new RoutedEventArgs(LeaveRoomButtonClickedEvent));
-
         }
 
         public async Task LeaveRoomAsync()
@@ -746,10 +721,6 @@ namespace ChessUI
 
         private void CloseAppButton_Click(object sender, RoutedEventArgs e)
         {
-            //if (connection != null && connection.State == HubConnectionState.Connected && start)
-            //{
-            //    await connection.InvokeAsync("LeaveRoom", roomName);
-            //}
             RaiseEvent(new RoutedEventArgs(CloseAppButtonClickedEvent));
         }
 
@@ -799,7 +770,7 @@ namespace ChessUI
 
         public void Review()
         {
-            if(gameState.Moved.Count != 0)
+            if (gameState.Moved.Count != 0)
                 HidePrevMove(gameState.Moved.Peek().Item1);
             gameState = new GameState2P(Player.Red, Board.InitialForOnline(color));
             TurnTextBlock.Text = "Đỏ";
@@ -850,7 +821,6 @@ namespace ChessUI
             if (capture)
             {
                 gameState.noCapture.Push(0);
-                //stateHistory.Clear();
             }
             else
             {

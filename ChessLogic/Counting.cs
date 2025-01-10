@@ -22,7 +22,7 @@
             {
                 redCount[type]++;
             }
-            else if(color == Player.Black)
+            else if (color == Player.Black)
             {
                 blackCount[type]++;
             }
@@ -46,7 +46,7 @@
             {
                 return redCount[PieceType.Chariot] + redCount[PieceType.Cannon] + redCount[PieceType.Horse] + redCount[PieceType.Soldier];
             }
-            else if(color == Player.Black)
+            else if (color == Player.Black)
             {
                 return blackCount[PieceType.Chariot] + blackCount[PieceType.Cannon] + blackCount[PieceType.Horse] + blackCount[PieceType.Soldier];
             }
@@ -55,7 +55,5 @@
                 return 0;
             }
         }
-
-        
     }
 }

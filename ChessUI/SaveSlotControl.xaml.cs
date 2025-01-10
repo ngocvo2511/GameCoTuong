@@ -1,23 +1,10 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Collections.ObjectModel;
-using ChessUI.Menus;
 using ChessLogic;
 using ChessLogic.GameStates.GameState;
-using System.Security.Policy;
 
 namespace ChessUI
 {
@@ -46,7 +33,7 @@ namespace ChessUI
             title.Text = "LƯU";
             string projectRoot = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\");
             SaveDirectory = System.IO.Path.Combine(projectRoot, "SaveData");
-            if(!Directory.Exists(SaveDirectory))
+            if (!Directory.Exists(SaveDirectory))
             {
                 Directory.CreateDirectory(SaveDirectory);
             }
@@ -149,7 +136,7 @@ namespace ChessUI
                         {
                             RaiseEvent(new SaveSlotEventArgs(SelectedLoadSlotEvent, filePath));
                         }
-                    });                                     
+                    });
                 }
             }
         }
@@ -172,6 +159,6 @@ namespace ChessUI
         {
             FilePath = filePath;
         }
-    }   
+    }
 }
 

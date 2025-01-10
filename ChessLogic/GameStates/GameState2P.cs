@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ChessLogic.GameStates.GameState
+﻿namespace ChessLogic.GameStates.GameState
 {
     public class GameState2P : GameState
     {
         public GameState2P(Player player, Board board, int timeLimit = 0) : base(player, board, timeLimit) { }
         public GameState2P(GameStateForLoad gameStateForLoad) : base(gameStateForLoad.CurrentPlayer, gameStateForLoad.Board, gameStateForLoad.timeRemainingRed, gameStateForLoad.timeRemainingBlack,
-            gameStateForLoad.Moved, gameStateForLoad.stateHistory, gameStateForLoad.CapturedRedPiece, 
-            gameStateForLoad.CapturedBlackPiece, gameStateForLoad.noCapture,gameStateForLoad.stateString)
+            gameStateForLoad.Moved, gameStateForLoad.stateHistory, gameStateForLoad.CapturedRedPiece,
+            gameStateForLoad.CapturedBlackPiece, gameStateForLoad.noCapture, gameStateForLoad.stateString)
         { }
         public override void UndoMove()
         {
@@ -21,10 +15,10 @@ namespace ChessLogic.GameStates.GameState
             Move undoMove = new NormalMove(undo.Item1.ToPos, undo.Item1.FromPos);
             undoMove.Execute(Board);
             Board[undo.Item1.ToPos] = undo.Item2;
-            if(undo.Item2!= null)
+            if (undo.Item2 != null)
             {
-                if(undo.Item2.Color==Player.Black) CapturedBlackPiece.RemoveAt(CapturedBlackPiece.Count-1);
-                else CapturedRedPiece.RemoveAt(CapturedRedPiece.Count-1);
+                if (undo.Item2.Color == Player.Black) CapturedBlackPiece.RemoveAt(CapturedBlackPiece.Count - 1);
+                else CapturedRedPiece.RemoveAt(CapturedRedPiece.Count - 1);
             }
             CurrentPlayer = CurrentPlayer.Opponent();
             CapturedPiece = undo.Item2;

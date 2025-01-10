@@ -1,12 +1,6 @@
 ﻿using ChessLogic.GameStates;
 using ChessLogic.GameStates.GameState;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace ChessLogic
 {
@@ -46,7 +40,7 @@ namespace ChessLogic
                 for (int j = 0; j < 9; j++)
                 {
                     if (gameState.Board[i, j] == null) gameStateForSave.Board.Add("n");
-                    else gameStateForSave.Board.Add(gameState.Board[i,j].ToString());
+                    else gameStateForSave.Board.Add(gameState.Board[i, j].ToString());
                 }
             }
             foreach (var moved in currentMoved)
@@ -58,8 +52,8 @@ namespace ChessLogic
                 if (moved.Item2 == null) gameStateForSave.Moved.Add("n");
                 else gameStateForSave.Moved.Add(moved.Item2.ToString());
             }
-            foreach(var piece in gameState.CapturedRedPiece) gameStateForSave.CapturedRedPiece.Add(piece.ToString());
-            foreach(var piece in gameState.CapturedBlackPiece) gameStateForSave.CapturedBlackPiece.Add(piece.ToString());
+            foreach (var piece in gameState.CapturedRedPiece) gameStateForSave.CapturedRedPiece.Add(piece.ToString());
+            foreach (var piece in gameState.CapturedBlackPiece) gameStateForSave.CapturedBlackPiece.Add(piece.ToString());
             return gameStateForSave;
         }
         public static GameStateForLoad fromSave(GameStateForSave gameStateForSave)
@@ -119,7 +113,7 @@ namespace ChessLogic
                 gameStateForLoad.stateHistory[gameStateForSave.stateHistory[i]] = int.Parse(gameStateForSave.stateHistory[i + 1]);
             }
             List<Piece> blackPiece = new List<Piece>();
-            foreach(var piece in gameStateForSave.CapturedBlackPiece)
+            foreach (var piece in gameStateForSave.CapturedBlackPiece)
             {
                 if (mapping.TryGetValue(piece, out var CreatePiece))
                 {
@@ -127,7 +121,7 @@ namespace ChessLogic
                 }
             }
             List<Piece> redPiece = new List<Piece>();
-            foreach(var piece in gameStateForSave.CapturedRedPiece)
+            foreach (var piece in gameStateForSave.CapturedRedPiece)
             {
                 if (mapping.TryGetValue(piece, out var CreatePiece))
                 {
@@ -152,4 +146,4 @@ namespace ChessLogic
             return gameStateForLoad;
         }
     }
-} 
+}

@@ -33,7 +33,7 @@ namespace ChessUI
 
         public async Task StartConnectionAsync()
         {
-            if(Connection.State == HubConnectionState.Connected || Connection.State == HubConnectionState.Connecting)
+            if (Connection.State == HubConnectionState.Connected || Connection.State == HubConnectionState.Connecting)
             {
                 return;
             }
@@ -47,7 +47,7 @@ namespace ChessUI
                 try
                 {
                     await Connection.StartAsync();
-                    return; 
+                    return;
                 }
                 catch (HttpRequestException ex)
                 {

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ChessLogic
+﻿namespace ChessLogic
 {
     public class Soldier : Piece
     {
@@ -45,7 +39,6 @@ namespace ChessLogic
             copy.HasMoved = false;
             return copy;
         }
-
         private bool IsCrossedRiver(Position pos)
         {
             if (bottomPlayer == Player.Red)
@@ -79,28 +72,26 @@ namespace ChessLogic
                 }
             }
         }
-
         private IEnumerable<Position> MovePositions(Position from, Board board)
         {
             Position to = from + forward;
-            if(Board.IsInside(to) && (board.IsEmpty(to) || board[to].Color != Color))
+            if (Board.IsInside(to) && (board.IsEmpty(to) || board[to].Color != Color))
             {
                 yield return to;
             }
 
             if (IsCrossedRiver(from))
             {
-                foreach(Direction dir in new Direction[] { Direction.East, Direction.West })
+                foreach (Direction dir in new Direction[] { Direction.East, Direction.West })
                 {
                     Position sideTo = from + dir;
-                    if(Board.IsInside(sideTo) && (board.IsEmpty(sideTo) || board[sideTo].Color != Color))
+                    if (Board.IsInside(sideTo) && (board.IsEmpty(sideTo) || board[sideTo].Color != Color))
                     {
                         yield return sideTo;
                     }
                 }
             }
         }
-
         public override IEnumerable<Move> GetMoves(Position from, Board board)
         {
             foreach (Position to in MovePositions(from, board))
