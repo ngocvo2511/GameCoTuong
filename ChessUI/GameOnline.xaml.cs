@@ -561,7 +561,7 @@ namespace ChessUI
             if (pos == null) return;
             if (moveCache.TryGetValue(pos, out Move move))
             {
-
+                MainGame.IsHitTestVisible=false;
                 await Task.Run(async () =>
                 {
                     await connection.SendAsync("MakeMove", move.FromPos.Row, move.FromPos.Column, move.ToPos.Row, move.ToPos.Column);
